@@ -1,7 +1,7 @@
 
 
     
-export const firebase_confing = {
+export const firebase_config = {
         apiKey: "AIzaSyCl4pd35HfQuBTph08pgG2S9qXTFRZn1Ag",
         authDomain: "team4of5-8d52e.firebaseapp.com",
         databaseURL: "https://team4of5-8d52e.firebaseio.com",
