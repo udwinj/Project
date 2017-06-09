@@ -126,14 +126,11 @@ import UserLoginSignup from './Team4of5_App/UserLoginSignup/UserLoginSignup.js';
 
 
 ReactDOM.render(
-  <RouteMap />,
+<div>
+  <RouteMap />
+  <App />
+</div>,
 
 
-  // <Router>
-  //   <Switch>
-  //     <Route exact path='/' component={UserLoginSignup}/>
-  //     <Route path='/RouteMap' component={RouteMap}/>
-  //   </Switch>
-  // </Router>,
   document.getElementById('root')
 );
