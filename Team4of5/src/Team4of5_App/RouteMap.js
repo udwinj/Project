@@ -32,9 +32,6 @@ class RouteMap extends React.Component {
             <Route exact path='/menu' component={Menu} />
            <Route path='/projectmanage' component={ProjectManagement} />
 
-           <Route render={function () {
-              return <p>Not Found</p>
-            }} />
           </Switch>
         </div>
       </Router>

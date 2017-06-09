@@ -6,6 +6,8 @@ import * as Users from './Team4of5_Service/Users.js';
 
 import logo from './logo.svg';
 import './App.css';
+import Menu from './Team4of5_App/Menu.js';
+import Public from './Team4of5_App/Public/Public.js'
 
 import {
   BrowserRouter as Router,
@@ -14,6 +16,49 @@ import {
   Redirect,
   withRouter
 } from 'react-router-dom'
+
+const AuthExample = () => (
+  <Router>
+    <div>
+      <AuthButton/>
+      <ul>
+        <li><Link to="/public">Public Page</Link></li>
+        <li><Link to="/menu">Menu Page</Link></li>
+      </ul>
+      <Route path="/public" component={Public}/>
+      <Route path="/login" component={UserLoginSignup}/>
+      <PrivateRoute path="/protected" component={Menu}/>
+    </div>
+  </Router>
+)
+
+//Authantication Button
+const AuthButton = withRouter(({ history }) => (
+  UserLoginSignup.isAuthenticated ? (
+    <p>
+      Welcome! <button onClick={() => {
+        UserLoginSignup.signout(() => history.push('/'))
+      }}>Sign out</button>
+    </p>
+  ) : (
+    <p>You are not logged in.</p>
+  )
+))
+
+// PrivateRoute
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={props => (
+    UserLoginSignup.isAuthenticated ? (
+      <Component {...props}/>
+    ) : (
+      <Redirect to={{
+        pathname: '/login',
+        state: { from: props.location }
+      }}/>
+    )
+  )}/>
+)
+
 
 class UserLoginSignup extends React.Component {
 
@@ -93,7 +138,7 @@ class UserLoginSignup extends React.Component {
 
     return (
       <session>
-        {(redirectToMenu) && 
+        {(redirectToMenu) &&
            (
             <Redirect to={from || '/menu'}/>
             )
@@ -129,7 +174,7 @@ class UserLoginSignup extends React.Component {
     );
   }
 }
-export default UserLoginSignup
+export default AuthExample
 
 // class App extends Component {
 //   render() {

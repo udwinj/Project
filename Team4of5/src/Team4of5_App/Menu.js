@@ -27,8 +27,6 @@ class Menu extends React.Component {
         this.props.hi
     }
 
-
-
     componentDidMount() {
         console.log("2222");
     }
