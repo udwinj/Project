@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Bug from '/Users/kylemiao/Documents/GitHub/team4of5/Team4of5/src/Team4of5_App/BugTracking/BugTracking.js';
-import Chat from '/Users/kylemiao/Documents/GitHub/team4of5/Team4of5/src/Team4of5_App/Chat/Chat.js';
-import Project from '/Users/kylemiao/Documents/GitHub/team4of5/Team4of5/src/Team4of5_App/ProjectManagement/ProjectManagement.js';
-import Setting from '/Users/kylemiao/Documents/GitHub/team4of5/Team4of5/src/Team4of5_App/Setting/Setting.js';
+import BugTracking from './BugTracking/BugTracking.js';
+import Chat from './Chat/Chat.js';
+import ProjectManagement from './ProjectManagement/ProjectManagement.js';
+import Setting from './Setting/Setting.js';
 
 
 import {
@@ -38,14 +38,14 @@ class Menu extends React.Component {
         state['redirect'] = true;
         switch (index) {
 
-            case 'Bug':
-                state['directDest'] = 'Bug';
+            case 'BugTracking':
+                state['directDest'] = 'BugTracking';
                 break;
             case 'Chat':
                 state['directDest'] = 'Chat';
                 break;
-            case 'Project':
-                state['directDest'] = 'Project';
+            case 'ProjectManagement':
+                state['directDest'] = 'ProjectManagement';
                 break;
             case 'Setting':
                 state['directDest'] = 'Setting';
@@ -65,9 +65,9 @@ class Menu extends React.Component {
             return (
                 <Router>
                     <Switch>
-                        <Route path='/Menu/Bug' component={Bug} />
+                        <Route path='/Menu/BugTracking' component={BugTracking} />
                         <Route path='/Menu/Chat' component={Chat} />
-                        <Route path='/Menu/Project' component={Project} />
+                        <Route path='/Menu/ProjectManagement' component={ProjectManagement} />
                         <Route path='/Menu/Setting' component={Setting} />
                         <Redirect from={this.basePath} to={Dest} />
                     </Switch>

@@ -1,7 +1,7 @@
 
 
 import * as firebase from 'firebase';
-import * as Config from '/Users/kylemiao/Documents/GitHub/team4of5/Team4of5/src/Team4of5_Service/Config.js';
+import * as Config from '/Users/yd/React/Project/Project/Team4of5/src/Team4of5_Service/Config.js';
 
 
 firebase.initializeApp(Config.firebase_confing);
@@ -15,13 +15,13 @@ export const create_user = function (user_email, user_pass) {
 export const sign_in_user = function (user_email, user_pass) {
     return firebase.auth().signInWithEmailAndPassword(user_email, user_pass);
 }
-    
+
 export const resetPwd = function(user_email){
     return firebase.auth().sendPasswordResetEmail(user_email);
 }
-   
-    
-    
+
+
+
     // .then(function (user) {
     //     // user signed in
     //     return null;
