@@ -23,7 +23,7 @@ const AuthExample = () => (
       <AuthButton/>
       <ul>
         <li><Link to="/public">Public Page</Link></li>
-        <li><Link to="/menu">Menu Page</Link></li>
+        <li><Link to="/login">Login Page</Link></li>
       </ul>
       <Route path="/public" component={Public}/>
       <Route path="/login" component={UserLoginSignup}/>

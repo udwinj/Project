@@ -126,7 +126,6 @@ import RouteMap from './Team4of5_App/RouteMap.js';
 
 ReactDOM.render(
 <div>
-  <RouteMap />
   <App />
 </div>,
 
