@@ -27,7 +27,6 @@ const AuthExample = () => (
       </ul>
       <Route path="/public" component={Public}/>
       <Route path="/login" component={UserLoginSignup}/>
-      <PrivateRoute path="/protected" component={Menu}/>
     </div>
   </Router>
 )
@@ -37,27 +36,16 @@ const AuthButton = withRouter(({ history }) => (
   UserLoginSignup.isAuthenticated ? (
     <p>
       Welcome! <button onClick={() => {
-        UserLoginSignup.signout(() => history.push('/'))
+        UserLoginSignup().signout(() => history.push('/'))
       }}>Sign out</button>
     </p>
   ) : (
-    <p>You are not logged in.</p>
+    <p>You are not logged in. Please Login or Sign Up</p>
   )
 ))
 
 // PrivateRoute
-const PrivateRoute = ({ component: Component, ...rest }) => (
-  <Route {...rest} render={props => (
-    UserLoginSignup.isAuthenticated ? (
-      <Component {...props}/>
-    ) : (
-      <Redirect to={{
-        pathname: '/login',
-        state: { from: props.location }
-      }}/>
-    )
-  )}/>
-)
+
 
 
 class UserLoginSignup extends React.Component {
@@ -134,15 +122,14 @@ class UserLoginSignup extends React.Component {
     //     //<Redirect to={from}/>
     //   )
     // }
+    if (redirectToMenu) {
+    return (
+      <Redirect to={{pathname:'/menu', state:{from}}}/>
+    )
+  }
 
 
     return (
-      <session>
-        {(redirectToMenu) &&
-           (
-            <Redirect to={from || '/menu'}/>
-            )
-          }
       <form onSubmit={this.handleSubmit}>
         <button type="button"
           id="switchBtn"
@@ -169,8 +156,6 @@ class UserLoginSignup extends React.Component {
           value={this.state.formBtnTxt} />
       </form>
 
-
-      </session>
     );
   }
 }
