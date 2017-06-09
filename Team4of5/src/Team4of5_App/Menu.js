@@ -4,7 +4,7 @@ import BugTracking from './BugTracking/BugTracking.js';
 import Chat from './Chat/Chat.js';
 import ProjectManagement from './ProjectManagement/ProjectManagement.js';
 import Setting from './Setting/Setting.js';
-
+import Navbar from './Navbar/Nav.js';
 
 import {
     BrowserRouter as Router,
@@ -75,6 +75,8 @@ class Menu extends React.Component {
         }
 
         return (
+          <div>
+            <Navbar />
 
             <form onSubmit={this.handleSubmit}>
 
@@ -101,9 +103,10 @@ class Menu extends React.Component {
                         onClick={this.GoTo.bind(this, 'Setting')} >
                     </input>
                 </div>
-
             </form>
+            </div>
         )
+
     }
 }
 
