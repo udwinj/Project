@@ -26,15 +26,12 @@ class RouteMap extends React.Component {
         <div className = 'container'>
           <Navbar/>
           <Switch>
-           <Route exact path='/setting' component={Setting} />
-           <Route exact path='/bugtrack' component={BugTracking} />
-           <Route exact path='/chat' component={Chat} />
-            <Route exact path='/menu' component={Menu} />
+          <Route exact path='/menu' component={Menu} />
+           <Route  path='/setting' component={Setting} />
+           <Route  path='/bugtrack' component={BugTracking} />
+           <Route  path='/chat' component={Chat} />
            <Route path='/projectmanage' component={ProjectManagement} />
 
-           <Route render={function () {
-              return <p>Not Found</p>
-            }} />
           </Switch>
         </div>
       </Router>
