@@ -7,24 +7,13 @@ import * as Users from './Team4of5_Service/Users.js';
 import logo from './logo.svg';
 import './App.css';
 
-
-// class App extends Component {
-//   render() {
-//     return (
-//       <div className="App">
-//         <div className="App-header">
-//           <img src={logo} className="App-logo" alt="logo" />
-//           <h2>Welcome to React</h2>
-//         </div>
-//         <p className="App-intro">
-//           To get started, edit <code>src/App.js</code> and save to reload.
-//         </p>
-//       </div>
-//     );
-//   }
-// }
-//
-// export default App;
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect,
+  withRouter
+} from 'react-router-dom'
 
 class UserLoginSignup extends React.Component {
 
@@ -56,6 +45,7 @@ class UserLoginSignup extends React.Component {
         console.log(User);
         alert("Login Succeed!!");
           console.log('User Confirm!!');
+          //redirect to menu if login is true
           this.setState({redirectToMenu: true});
 
       }).catch((error) => {
@@ -89,8 +79,8 @@ class UserLoginSignup extends React.Component {
   }
 
   render() {
-    const { from } = { from: { pathname: '/Menu' } }
-    const { redirectToMenu } = this.state
+    const { from } = this.props.location || '/';
+    const { redirectToMenu } = this.state;
 
     // if (redirectToMenu) {
     //   console.log(from);
@@ -100,9 +90,15 @@ class UserLoginSignup extends React.Component {
     //   )
     // }
 
-    return (
-      <form onSubmit={this.handleSubmit}>
 
+    return (
+      <session>
+        {(redirectToMenu) && 
+           (
+            <Redirect to={from || '/menu'}/>
+            )
+          }
+      <form onSubmit={this.handleSubmit}>
         <button type="button"
           id="switchBtn"
           onClick={this.switchLoginSignup}>Login | SignUp</button>
@@ -127,7 +123,28 @@ class UserLoginSignup extends React.Component {
           id="submitBtn"
           value={this.state.formBtnTxt} />
       </form>
+
+
+      </session>
     );
   }
 }
 export default UserLoginSignup
+
+// class App extends Component {
+//   render() {
+//     return (
+//       <div className="App">
+//         <div className="App-header">
+//           <img src={logo} className="App-logo" alt="logo" />
+//           <h2>Welcome to React</h2>
+//         </div>
+//         <p className="App-intro">
+//           To get started, edit <code>src/App.js</code> and save to reload.
+//         </p>
+//       </div>
+//     );
+//   }
+// }
+//
+// export default App;
