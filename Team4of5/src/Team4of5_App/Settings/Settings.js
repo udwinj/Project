@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 
-class Setting extends React.Component {
+class Settings extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -15,9 +15,9 @@ class Setting extends React.Component {
            
         console.log('SeTTinggggggg!!!!!!')
         return (
-            <h1>Setting</h1>
+            <h1>Settings</h1>
         )
     }
 }
 
-export default Setting;
+export default Settings;
