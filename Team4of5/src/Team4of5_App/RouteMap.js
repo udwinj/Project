@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import BugTracking from './BugTracking/BugTracking.js';
 import Chat from './Chat/Chat.js';
 import ProjectManagement from './ProjectManagement/ProjectManagement.js';
-import Setting from './Setting/Setting.js';
+import Settings from './Settings/Settings.js';
 import Navbar from './Navbar/Nav.js';
 import Menu from './Menu.js';
 
@@ -27,7 +27,7 @@ class RouteMap extends React.Component {
           <Navbar/>
           <Switch>
           <Route exact path='/menu' component={Menu} />
-           <Route  path='/setting' component={Setting} />
+           <Route  path='/settings' component={Settings} />
            <Route  path='/bugtrack' component={BugTracking} />
            <Route  path='/chat' component={Chat} />
            <Route path='/projectmanage' component={ProjectManagement} />
