@@ -12,7 +12,6 @@ import {
   withRouter
 } from 'react-router-dom'
 
-
 class UserLoginSignup extends React.Component {
 
   constructor(props) {
@@ -53,9 +52,10 @@ class UserLoginSignup extends React.Component {
         console.log(User);
         alert("Login Succeed!!");
           console.log('User Confirm!!');
-          //handle redire
+          //handle redirect
           this.setState({redirectToMenu: true});
-
+      }).then((User) => {
+        Users.saveUserinfo();
       }).catch((error) => {
         console.log(error);
         alert(error.message);
@@ -65,6 +65,8 @@ class UserLoginSignup extends React.Component {
         .then((User) => {
           console.log(User);
           alert('Sign Up Succeed!!');
+        }).then((User) => {
+        Users.saveUserinfo();
         })
         .catch((error) => {
           console.log(error);
@@ -106,7 +108,7 @@ class UserLoginSignup extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="title">
-            <h2>Login | Sinup</h2>
+            <h2>Login | Signup</h2>
             <p>Please enter your login informations.</p>
         </div>
         <button type="button"

@@ -5,7 +5,8 @@ import * as Config from './Config.js';
 
 
 firebase.initializeApp(Config.firebase_config);
-
+var ref = firebase.app().database().ref();
+var usersRef = ref.child('users');
 
 
 export const create_user = function (user_email, user_pass) {
@@ -16,28 +17,63 @@ export const sign_in_user = function (user_email, user_pass) {
     return firebase.auth().signInWithEmailAndPassword(user_email, user_pass);
 }
 
-// this is reset password 
-//it shouldn't need any parameters if the user is logged in
+export const saveUserinfo = function () {
+    return firebase.auth().onAuthStateChanged(function(user) {
+		  if (user) {
+		    // alert("user " + user.uid + " logged in");
+		    var user_uid = user.uid;
+		    var thisUserRef = usersRef.child(user_uid);
+		          thisUserRef.update({
+			      last_login_dtm: Date.now()
+     		});
+		    } 
+        });
+}
+
+// this is reset password if email in manually given
 export const resetPwd = function(user_email){
     return firebase.auth().sendPasswordResetEmail(user_email);
 }
 
+// this function resets the password if the user is logged in
+export const resetPwdWhenLoggedOn = function(){
+       return firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+        // alert("user " + user.email + " wants to reset their passwords");
+         var user_email  = user.email;
+         var user_uid  = user.uid;
+		    var thisUserRef = usersRef.child(user_uid);
+         firebase.auth().sendPasswordResetEmail(user_email);
+        } // end if
+       }) // end function
+}
+
 // this allows a user to update their display name in the settings tab
-export const updateUserDisplayName = function(user_display_name, user_uid){
-        var thisUserRef = firebase.child(user_uid);
+export const updateUserDisplayName = function(user_display_name){
+   return firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+       // alert("user " + user.uid + " changed their display name to " + user_display_name);
+        var user_uid = user.uid;
+		var thisUserRef = usersRef.child(user_uid);
               thisUserRef.update({
-              display_name: user_display_name,  
-              last_login_dtm: Date.now(),
-        });
+              display_name: user_display_name
+                });
+        } // end if
+    }) //end function
 }
 
 // this allows a user to update their role in the settings tab
-export const updateRole = function(user_role, user_uid){
-        var thisUserRef = firebase.child(user_uid);
-              thisUserRef.update({
-              role: user_role,  
-              last_login_dtm: Date.now(),
-        });
+export const updateRole = function(user_role){
+       return firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            var user_uid = user.uid;
+            var thisUserRef = usersRef.child(user_uid);
+            thisUserRef.update({
+                role: user_role,  
+                last_login_dtm: Date.now(),
+            });
+        }
+    })
 }
 
 // this allows a user to logout
