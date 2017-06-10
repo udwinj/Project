@@ -16,42 +16,83 @@ import {
 } from 'react-router-dom';
 import PropTypes from "prop-types";
 
+
+const Home = () => (
+    <div>
+        <h2>Menu</h2>
+        <ul>
+            <li><button><Link to='/menu/BugTracking'>BugTracking</Link></button></li>
+            <li><button><Link to='/menu/Chat'>Chat</Link></button></li>
+             <li><button><Link to='/menu/ProjectManagement'>ProjectManagement</Link></button></li>
+            <li><button><Link to='/menu/Settings'>Settings</Link></button></li>
+        </ul>
+    </div>
+)
+
 class Menu extends React.Component {
     constructor(props) {
         super(props);
-        this.basePath = '/Menu/',
-            this.state = {
-                directDest: '',
-                redirect: false
-            };
-        this.props.hi
+        // this.basePath = '/Menu/',
+        //     this.state = {
+        //         directDest: '',
+        //         redirect: false
+        //     };
+        // this.props.hi
     }
 
-    componentDidMount() {
-        console.log("2222");
-    }
+    previousLocation = this.props.location
 
-    GoTo(index, event) {
-        let state = this.state;
-        state['redirect'] = true;
-        switch (index) {
-
-            case 'BugTracking':
-                state['directDest'] = 'BugTracking';
-                break;
-            case 'Chat':
-                state['directDest'] = 'Chat';
-                break;
-            case 'ProjectManagement':
-                state['directDest'] = 'ProjectManagement';
-                break;
-            case 'Settings':
-                state['directDest'] = 'Settings';
+    componentWillUpdate(nextProps) {
+        const { location } = this.props
+        // set previousLocation if props.location is not modal
+        if (
+            nextProps.history.action !== 'POP' &&
+            (!location.state || !location.state.modal)
+        ) {
+            this.previousLocation = this.props.location
         }
-        this.setState(state);
+    }
+    render() {
+        const { location } = this.props
+        const isModal = !!(
+            location.state &&
+            location.state.modal &&
+            this.previousLocation !== location // not initial render
+        )
+        return (
+            <div>
+                <Switch location={isModal ? this.previousLocation : location}>
+                    <Route exact path='/menu' component={Home} />
+                    <Route path='/menu/BugTracking' component={BugTracking} />
+                    <Route path='/menu/Chat' component={Chat} />
+                    <Route path='/menu/ProjectManagement' component={ProjectManagement} />
+                    <Route path='/menu/Settings' component={Settings} />
+                </Switch>
+            </div>
+        )
     }
 
-    render() {
+    // GoTo(index, event) {
+    //     let state = this.state;
+    //     state['redirect'] = true;
+    //     switch (index) {
+
+    //         case 'BugTracking':
+    //             state['directDest'] = 'BugTracking';
+    //             break;
+    //         case 'Chat':
+    //             state['directDest'] = 'Chat';
+    //             break;
+    //         case 'ProjectManagement':
+    //             state['directDest'] = 'ProjectManagement';
+    //             break;
+    //         case 'Settings':
+    //             state['directDest'] = 'Settings';
+    //     }
+    //     this.setState(state);
+    // }
+
+    /*render() {
         window.addEventListener("hashchange", function(e) {
   console.log("55555555555");
 })
@@ -107,7 +148,7 @@ class Menu extends React.Component {
             </div>
         )
 
-    }
+    }*/
 }
 
 
