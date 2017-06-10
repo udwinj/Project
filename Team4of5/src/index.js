@@ -17,6 +17,8 @@ import {
   withRouter
 } from 'react-router-dom';
 import RouteMap from './Team4of5_App/RouteMap.js';
+import Menu from './Team4of5_App/Menu.js';
+import UserLoginSignup from './Team4of5_App/UserLoginSignup/UserLoginSignup.js'
 
 // class UserLoginSignup extends React.Component {
 //
@@ -125,9 +127,17 @@ import RouteMap from './Team4of5_App/RouteMap.js';
 
 
 ReactDOM.render(
-<div>
-  <App />
-</div>,
+//<div>
+  //<App />
+//</div>,
+
+ <Router>
+    <div>
+      <Route path="/login" component={UserLoginSignup}/>
+      <Route path="/menu" component={Menu}/>
+      <Redirect to="/login"/>
+    </div>
+  </Router>,
 
 
   document.getElementById('root')
