@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import Navbar from '../Navbar/Nav.js';
 
 class BugTracking extends React.Component {
     constructor(props) {
@@ -9,7 +9,10 @@ class BugTracking extends React.Component {
 
     render() {
         return (
-            <h1>BugTracking</h1>
+          <div>
+    
+              <h1>BugTracking</h1>
+          </div>
         )
     }
 }

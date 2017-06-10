@@ -12,16 +12,16 @@ function Navbar () {
   return (
     <ul className='nav'>
       <li>
-        <NavLink exact activeClassName='active' to='/settings'>Settings</NavLink>
+        <NavLink exact activeClassName='active' to='/menu/Settings'>Settings</NavLink>
       </li>
       <li>
-        <NavLink activeClassName='active' to='/chat'>Chat</NavLink>
+        <NavLink activeClassName='active' to='/menu/Chat'>Chat</NavLink>
       </li>
       <li>
-        <NavLink activeClassName='active' to='/bugtrack'>Bug Tracking</NavLink>
+        <NavLink activeClassName='active' to='/menu/BugTracking'>Bug Tracking</NavLink>
       </li>
       <li>
-        <NavLink activeClassName='active' to='/projectmanage'>Project Management</NavLink>
+        <NavLink activeClassName='active' to='/menu/ProjectManagement'>Project Management</NavLink>
       </li>
       <li>
         <NavLink activeClassName='active' to='/menu'>Menu</NavLink>

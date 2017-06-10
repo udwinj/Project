@@ -60,6 +60,10 @@ class Menu extends React.Component {
             this.previousLocation !== location // not initial render
         )
         return (
+          <div>
+          <div>
+            <Navbar />
+          </div>
             <div>
                 <Switch location={isModal ? this.previousLocation : location}>
                     <Route exact path='/menu' component={Home} />
@@ -68,6 +72,7 @@ class Menu extends React.Component {
                     <Route path='/menu/ProjectManagement' component={ProjectManagement} />
                     <Route path='/menu/Settings' component={Settings} />
                 </Switch>
+            </div>
             </div>
         )
     }
