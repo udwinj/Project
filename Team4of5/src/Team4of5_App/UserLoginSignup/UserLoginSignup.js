@@ -35,6 +35,15 @@ class UserLoginSignup extends React.Component {
     this.setState(items);
   }
 
+   handlePasswordChange(event){
+    if (this.state.email != null){
+      Users.resetPwd(this.state.email)
+    }
+    else {
+    console.log("Please enter your email")
+    }
+  }
+
   handleSubmit(event) {
     if (document.getElementById("submitBtn").value == "Login") {
 
@@ -122,7 +131,7 @@ class UserLoginSignup extends React.Component {
         <div>
           <label>
             <div>
-                <a id="forgotpassword" href="#" onclick="Users.resetPwd();">Forgot Password?</a>
+                <a id="forgotpassword" href="#" onclick="handlePasswordChange(this);">Forgot Password?</a>
             </div>
           </label>
         </div>
