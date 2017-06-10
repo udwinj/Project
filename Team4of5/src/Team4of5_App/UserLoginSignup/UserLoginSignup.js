@@ -116,7 +116,7 @@ class UserLoginSignup extends React.Component {
             <div>
               Password(at least 6 digits):
                     </div>
-            <input type="text" value={this.state.first_name} onChange={this.handleChange.bind(this, 'password')} />
+            <input type="password" value={this.state.first_name} onChange={this.handleChange.bind(this, 'password')} />
           </label>
         </div>
         <input type="submit"
