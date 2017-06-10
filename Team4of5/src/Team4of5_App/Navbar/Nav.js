@@ -12,7 +12,7 @@ function Navbar () {
   return (
     <ul className='nav'>
       <li>
-        <NavLink exact activeClassName='active' to='/setting'>Setting</NavLink>
+        <NavLink exact activeClassName='active' to='/settings'>Settings</NavLink>
       </li>
       <li>
         <NavLink activeClassName='active' to='/chat'>Chat</NavLink>

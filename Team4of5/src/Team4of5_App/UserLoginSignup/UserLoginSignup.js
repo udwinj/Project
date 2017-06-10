@@ -35,6 +35,15 @@ class UserLoginSignup extends React.Component {
     this.setState(items);
   }
 
+   handlePasswordChange(event){
+    if (this.state.email != null){
+      Users.resetPwd(this.state.email)
+    }
+    else {
+    console.log("Please enter your email")
+    }
+  }
+
   handleSubmit(event) {
     if (document.getElementById("submitBtn").value == "Login") {
 
@@ -116,7 +125,14 @@ class UserLoginSignup extends React.Component {
             <div>
               Password(at least 6 digits):
                     </div>
-            <input type="text" value={this.state.first_name} onChange={this.handleChange.bind(this, 'password')} />
+            <input type="password" value={this.state.first_name} onChange={this.handleChange.bind(this, 'password')} />
+          </label>
+        </div>
+        <div>
+          <label>
+            <div>
+                <a id="forgotpassword" href="#" onclick="handlePasswordChange(this);">Forgot Password?</a>
+            </div>
           </label>
         </div>
         <input type="submit"

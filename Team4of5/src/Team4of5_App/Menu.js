@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import BugTracking from './BugTracking/BugTracking.js';
 import Chat from './Chat/Chat.js';
 import ProjectManagement from './ProjectManagement/ProjectManagement.js';
-import Setting from './Setting/Setting.js';
+import Settings from './Settings/Settings.js';
 import Navbar from './Navbar/Nav.js';
 
 import {
@@ -45,8 +45,8 @@ class Menu extends React.Component {
             case 'ProjectManagement':
                 state['directDest'] = 'ProjectManagement';
                 break;
-            case 'Setting':
-                state['directDest'] = 'Setting';
+            case 'Settings':
+                state['directDest'] = 'Settings';
         }
         this.setState(state);
     }
@@ -66,7 +66,7 @@ class Menu extends React.Component {
                         <Route path='/Menu/BugTracking' component={BugTracking} />
                         <Route path='/Menu/Chat' component={Chat} />
                         <Route path='/Menu/ProjectManagement' component={ProjectManagement} />
-                        <Route path='/Menu/Setting' component={Setting} />
+                        <Route path='/Menu/Settings' component={Settings} />
                         <Redirect from={this.basePath} to={Dest} />
                     </Switch>
                 </Router>
@@ -99,8 +99,8 @@ class Menu extends React.Component {
                     </input>
 
                     <input type="button"
-                        value={'Setting'}
-                        onClick={this.GoTo.bind(this, 'Setting')} >
+                        value={'Settings'}
+                        onClick={this.GoTo.bind(this, 'Settings')} >
                     </input>
                 </div>
             </form>
