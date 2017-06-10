@@ -119,6 +119,13 @@ class UserLoginSignup extends React.Component {
             <input type="password" value={this.state.first_name} onChange={this.handleChange.bind(this, 'password')} />
           </label>
         </div>
+        <div>
+          <label>
+            <div>
+                <a id="forgotpassword" href="#" onclick="Users.resetPwd();">Forgot Password?</a>
+            </div>
+          </label>
+        </div>
         <input type="submit"
           id="submitBtn"
           value={this.state.formBtnTxt} />
