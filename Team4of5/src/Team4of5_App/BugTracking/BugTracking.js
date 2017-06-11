@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Navbar from '../Navbar/Nav.js';
+import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
+import BugTypeTable from './BugTypes.js';
 
 class BugTracking extends React.Component {
   constructor(props){
@@ -12,17 +14,7 @@ class BugTracking extends React.Component {
   render() {
 
     return (
-      <table className="table">
-        <thead>
-          <tr>
-            <th className="td">Name</th>
-            <th className="td">Price</th>
-			<th className="td">Category</th>
-			<th className="td">Operation</th>
-          </tr>
-        </thead>
-
-      </table>
+  <BugTypeTable />
     );
   }
 }
