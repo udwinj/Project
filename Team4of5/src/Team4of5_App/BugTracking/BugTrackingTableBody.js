@@ -120,10 +120,10 @@ return (
 
         <TableHeaderColumn dataField='id' isKey={true} >ID</TableHeaderColumn>
         <TableHeaderColumn dataField='Type' dataFormat={ this.formatType } editable={ { type: 'select', options: { values: bugDataTypes }, defaultValue: 'C' } }>Type</TableHeaderColumn>
-        <TableHeaderColumn dataField='Reporter' editable={ { type: 'textarea', defaultValue: 'Default Name'} }>Reporter</TableHeaderColumn>
+        <TableHeaderColumn dataField='Reporter' >Reporter</TableHeaderColumn>
         <TableHeaderColumn dataField='Assignee'>Assignee</TableHeaderColumn>
         <TableHeaderColumn dataField='IssueDate' editable={ { type: 'datetime' }}>IssueDate</TableHeaderColumn>
-        <TableHeaderColumn dataField='Details'>Details</TableHeaderColumn>
+        <TableHeaderColumn dataField='Details' editable={ { type: 'textarea', defaultValue: 'Please write something'} }>Details</TableHeaderColumn>
         <TableHeaderColumn dataField='Status' dataFormat={ this.formatType } editable={ { type: 'select', options: { values: bugDataStatus }, defaultValue: 'C' }}>Status</TableHeaderColumn>
         <TableHeaderColumn dataField='ExpComDate' editable={ { type: 'datetime' }}>Expected Completion Date</TableHeaderColumn>
         <TableHeaderColumn dataField='ActComDate' editable={ { type: 'datetime' }}>Actual Completion Date</TableHeaderColumn>
