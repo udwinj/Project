@@ -22,14 +22,18 @@ class BugTracking extends React.Component {
         <div>
             <BugNotification />
         </div>
-
+        <br/>
+        <br/>
         <div>
             <BugTypeTable />
         </div>
-
+        <br/>
+        <br/>
         <div>
             <BugTrackTableSearch />
         </div>
+        <br/>
+        <br/>
       </div>
 
     );
