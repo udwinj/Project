@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Navbar from '../Navbar/Nav.js';
 import registerServiceWorker from '../../registerServiceWorker.js';
 import * as Users from '../../Team4of5_Service/Users.js';
 import Menu from '../Menu.js';
