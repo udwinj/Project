@@ -6,7 +6,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import BugTypeTable from './BugTypes.js';
 import BugNotification from './BugNotification.js';
 import BugTrackTableSearch from './BugTrackingToolBar.js';
-
+import BugTrackingTableBody from './BugTrackingTableBody.js';
 
 class BugTracking extends React.Component {
   constructor(props){
@@ -29,11 +29,10 @@ class BugTracking extends React.Component {
         </div>
         <br/>
         <br/>
-        <div>
-            <BugTrackTableSearch />
-        </div>
+
         <br/>
         <br/>
+            <BugTrackingTableBody />
       </div>
 
     );

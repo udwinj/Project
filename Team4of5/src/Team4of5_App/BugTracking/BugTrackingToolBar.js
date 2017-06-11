@@ -4,33 +4,25 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 class BugTrackTableSearch extends React.Component {
 
-  getValue() {
-    return ReactDOM.findDOMNode(this).value;
-  }
-
-  setValue(value) {
-    ReactDOM.findDOMNode(this).value = value;
+  handleOnKeyUp =()=>{
+    this.props.search(this.refs.seachInput.value);
   }
 
   render() {
     return (
       <div className="flakes-search">
         <input
-          ref="search-input"
-          className="flakes-search"
-          placeholder={ this.props.placeholder }
+          ref="searchInput"
+          className="search-box"
+          placeholder={ 'Enter Value' }
           defaultValue={ this.props.defaultValue }
-          onKeyUp={ this.props.search } />
+          onKeyUp={ this.handleOnKeyUp} />
 
         <div className="flakes-actions-bar">
-          <button
-            className="action button-gray smaller right"
-            defaultValue="Add Value">
+          <button className="action button-gray " defaultValue="Add Value">
             Search
             </button>
-          <button
-            className="action button-gray smaller right"
-            defaultValue="Export CSV">Export CSV</button>
+
         </div>
       </div>
     );
