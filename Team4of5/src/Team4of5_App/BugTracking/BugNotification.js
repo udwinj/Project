@@ -3,27 +3,23 @@ import ReactDOM from 'react-dom';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 
-const bugTyes = [{
+const bugNotificationTypes = [{
   id: "1",
-  name: "A",
-  description: "Bugs would cause system crash, need to fix ASAP"
+  name: "Unread Bugs",
+  number: 20
 },
 {
   id:"2",
-  name: "B",
-  description: "Bugs occur adding functions"
+  name: "Imcomplete Bugs",
+  number: 8
 },
-{
-  id:"3",
-  name: "C",
-  description: "Bugs are minor issues, not urgent"
-}];
+];
 
-export default class BugTypeTable extends React.Component {
+export default class BugNotification extends React.Component {
   render() {
     return (
       <BootstrapTable
-      data={ bugTyes }
+      data={ bugNotificationTypes }
       exportCSV = {false}
       striped={ true }
       tableHeaderClass='flakes-table'
@@ -34,8 +30,8 @@ export default class BugTypeTable extends React.Component {
       bodyContainerClass='flakes-table'
       >
         <TableHeaderColumn isKey={true} dataField='id' hidden={true}>ID</TableHeaderColumn>
-        <TableHeaderColumn dataField='name'>Type</TableHeaderColumn>
-        <TableHeaderColumn dataField='description'>Description</TableHeaderColumn>
+        <TableHeaderColumn dataField='name'>Summary</TableHeaderColumn>
+        <TableHeaderColumn dataField='number'>No.</TableHeaderColumn>
 
       </BootstrapTable>
     );
