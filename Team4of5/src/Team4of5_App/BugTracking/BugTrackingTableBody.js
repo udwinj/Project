@@ -101,7 +101,7 @@ class BugTrackingTableBody extends React.Component{
   formatType(cell) {
     return `${cell}`;
   }
-  
+
   render(){
     const selectRowProp = {
      mode: 'checkbox'
@@ -114,7 +114,7 @@ return (
         cellEdit={ cellEditProp }
         selectRow={ selectRowProp }
         exportCSV={ true }
-        pagination={ true }
+        pagination
         insertRow
         search>
 
