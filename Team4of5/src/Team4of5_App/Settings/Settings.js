@@ -13,31 +13,9 @@ import {
   withRouter
 } from 'react-router-dom'
 
-
 class Settings extends React.Component {
     constructor(props) {
         super(props);
-    }
-
-
-
-
-    render() {
-
-        console.log('SeTTinggggggg!!!!!!')
-        return (
-          <div>
-
-            <h1>Settings</h1>
-
-          </div>
-
-        )
-    }
-}
-
-export default Settings;
-=======
     
      this.state = {
       role: '',
