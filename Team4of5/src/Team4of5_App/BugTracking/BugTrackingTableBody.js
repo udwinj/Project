@@ -118,12 +118,12 @@ return (
         insertRow
         search>
 
-        <TableHeaderColumn dataField='id' isKey={true} >ID</TableHeaderColumn>
-        <TableHeaderColumn dataField='Type' dataFormat={ this.formatType } editable={ { type: 'select', options: { values: bugDataTypes }, defaultValue: 'C' } }>Type</TableHeaderColumn>
-        <TableHeaderColumn dataField='Reporter' >Reporter</TableHeaderColumn>
+        <TableHeaderColumn dataField='id' isKey={true} width='50'>ID</TableHeaderColumn>
+        <TableHeaderColumn dataField='Type' width='50' dataFormat={ this.formatType } editable={ { type: 'select', options: { values: bugDataTypes }, defaultValue: 'C' } }>Type</TableHeaderColumn>
+        <TableHeaderColumn dataField='Reporter' tdStyle={ { whiteSpace: 'nowrap' } }>Reporter</TableHeaderColumn>
         <TableHeaderColumn dataField='Assignee'>Assignee</TableHeaderColumn>
         <TableHeaderColumn dataField='IssueDate' editable={ { type: 'datetime' }}>IssueDate</TableHeaderColumn>
-        <TableHeaderColumn dataField='Details' editable={ { type: 'textarea', defaultValue: 'Please write something'} }>Details</TableHeaderColumn>
+        <TableHeaderColumn dataField='Details' editable={ { type: 'textarea', defaultValue: 'Please write something'} } tdStyle={ { whiteSpace: 'normal' } } width='250'>Details</TableHeaderColumn>
         <TableHeaderColumn dataField='Status' dataFormat={ this.formatType } editable={ { type: 'select', options: { values: bugDataStatus }, defaultValue: 'C' }}>Status</TableHeaderColumn>
         <TableHeaderColumn dataField='ExpComDate' editable={ { type: 'datetime' }}>Expected Completion Date</TableHeaderColumn>
         <TableHeaderColumn dataField='ActComDate' editable={ { type: 'datetime' }}>Actual Completion Date</TableHeaderColumn>

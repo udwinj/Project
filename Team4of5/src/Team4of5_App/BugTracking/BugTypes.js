@@ -28,7 +28,7 @@ export default class BugTypeTable extends React.Component {
       striped
       >
         <TableHeaderColumn isKey={true} dataField='id' hidden={true} >ID</TableHeaderColumn>
-        <TableHeaderColumn dataField='name' width='50'>Type</TableHeaderColumn>
+        <TableHeaderColumn dataField='name' width='30'>Type</TableHeaderColumn>
         <TableHeaderColumn dataField='description' width='80'>Description</TableHeaderColumn>
 
       </BootstrapTable>
