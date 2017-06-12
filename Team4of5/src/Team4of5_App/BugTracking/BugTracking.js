@@ -19,16 +19,18 @@ class BugTracking extends React.Component {
   render() {
 
     return (
-      <div className='container'>
+      <div className='container-fluid'>
 
-      <div className="col-md-6">
-        <div className='typeTable'>
+      <div className ='row'>
+
+        <div id='typeTable' className='col-xs-12 col-md-8'>
             <BugTypeTable />
         </div>
 
-        <div className='notification'>
+        <div id='notification' className='col-xs-6 col-md-4'>
             <BugNotification />
         </div>
+
 
       </div>
       <div>

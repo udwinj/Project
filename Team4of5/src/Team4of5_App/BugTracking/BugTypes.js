@@ -25,17 +25,11 @@ export default class BugTypeTable extends React.Component {
       <BootstrapTable
       data={ bugTyes }
       exportCSV = {false}
-      striped={ true }
-      tableHeaderClass='flakes-table'
-      tableBodyClass='flakes-table'
-      containerClass='flakes-table'
-      tableContainerClass='flakes-table'
-      headerContainerClass='flakes-table'
-      bodyContainerClass='flakes-table'
+      striped
       >
-        <TableHeaderColumn isKey={true} dataField='id' hidden={true}>ID</TableHeaderColumn>
-        <TableHeaderColumn dataField='name'>Type</TableHeaderColumn>
-        <TableHeaderColumn dataField='description'>Description</TableHeaderColumn>
+        <TableHeaderColumn isKey={true} dataField='id' hidden={true} >ID</TableHeaderColumn>
+        <TableHeaderColumn dataField='name' width='50'>Type</TableHeaderColumn>
+        <TableHeaderColumn dataField='description' width='80'>Description</TableHeaderColumn>
 
       </BootstrapTable>
     );

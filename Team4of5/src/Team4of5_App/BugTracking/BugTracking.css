@@ -1,11 +1,6 @@
-.notification {
-  background: yellow;
-  width: 60%;
-  margin-top: 50px;
-}
-
-.typeTable {
-  background: blue;
-  width: 60%;
-  margin-top: 50px;
+.react-bs-table table td,
+.react-bs-table table th {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

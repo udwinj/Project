@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 import BugTrackTableSearch from './BugTrackingToolBar.js';
-
+import { Navbar, Jumbotron, Button, Input, Nav } from 'react-bootstrap';
 // const bugData = [{
 //   id: "1",
 //   Type: "A",
