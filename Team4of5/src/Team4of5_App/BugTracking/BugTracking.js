@@ -8,6 +8,8 @@ import BugNotification from './BugNotification.js';
 import BugTrackTableSearch from './BugTrackingToolBar.js';
 import BugTrackingTableBody from './BugTrackingTableBody.js';
 
+import './BugTracking.css';
+
 class BugTracking extends React.Component {
   constructor(props){
 		super(props);
@@ -17,24 +19,27 @@ class BugTracking extends React.Component {
   render() {
 
     return (
-      <div>
+      <div className='container'>
 
-        <div>
-            <BugNotification />
-        </div>
-        <br/>
-        <br/>
-        <div>
+      <div className="col-md-6">
+        <div className='typeTable'>
             <BugTypeTable />
         </div>
-        <br/>
-        <br/>
 
-        <br/>
-        <br/>
-            <BugTrackingTableBody />
+        <div className='notification'>
+            <BugNotification />
+        </div>
+
       </div>
+      <div>
+        <br/>
+        <br/>
+        <div className='tableBody'>
+            <BugTrackingTableBody />
+        </div>
 
+      </div>
+</div>
     );
   }
 }
