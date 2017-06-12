@@ -1,1 +1,10 @@
+<<<<<<< HEAD
 
+=======
+.react-bs-table table td,
+.react-bs-table table th {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+>>>>>>> 47d92f487a1386ce4e887393cec6b37b5625844b

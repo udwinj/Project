@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 import BugTrackTableSearch from './BugTrackingToolBar.js';
-
+import { Navbar, Jumbotron, Button, Input, Nav } from 'react-bootstrap';
 // const bugData = [{
 //   id: "1",
 //   Type: "A",
@@ -101,12 +101,31 @@ class BugTrackingTableBody extends React.Component{
   formatType(cell) {
     return `${cell}`;
   }
+/**new header*/
+createCustomModalHeader(onClose, onSave) {
+  const headerStyle = {
+       fontWeight: 'bold',
+       fontSize: 'large',
+       textAlign: 'center',
+     };
+     return (
+       <div className='modal-header' style={ headerStyle }>
+         <h3>Report New Bug</h3>
+         <button className='btn btn-info' onClick={ onClose }>Report</button>
+       </div>
+     );
+   }
+
+
+
 
   render(){
     const selectRowProp = {
      mode: 'checkbox'
    };
-
+   const options = {
+         insertModalHeader: this.createCustomModalHeader
+       };
 
 return (
       <BootstrapTable
@@ -114,16 +133,17 @@ return (
         cellEdit={ cellEditProp }
         selectRow={ selectRowProp }
         exportCSV={ true }
+        options={ options }
         pagination
         insertRow
         search>
 
-        <TableHeaderColumn dataField='id' isKey={true} >ID</TableHeaderColumn>
-        <TableHeaderColumn dataField='Type' dataFormat={ this.formatType } editable={ { type: 'select', options: { values: bugDataTypes }, defaultValue: 'C' } }>Type</TableHeaderColumn>
-        <TableHeaderColumn dataField='Reporter' >Reporter</TableHeaderColumn>
+        <TableHeaderColumn dataField='id' isKey={true} width='50'>ID</TableHeaderColumn>
+        <TableHeaderColumn dataField='Type' width='50' dataFormat={ this.formatType } editable={ { type: 'select', options: { values: bugDataTypes }, defaultValue: 'C' } }>Type</TableHeaderColumn>
+        <TableHeaderColumn dataField='Reporter' tdStyle={ { whiteSpace: 'nowrap' } }>Reporter</TableHeaderColumn>
         <TableHeaderColumn dataField='Assignee'>Assignee</TableHeaderColumn>
         <TableHeaderColumn dataField='IssueDate' editable={ { type: 'datetime' }}>IssueDate</TableHeaderColumn>
-        <TableHeaderColumn dataField='Details' editable={ { type: 'textarea', defaultValue: 'Please write something'} }>Details</TableHeaderColumn>
+        <TableHeaderColumn dataField='Details' editable={ { type: 'textarea', defaultValue: 'Please write something'} } tdStyle={ { whiteSpace: 'normal' } } width='250'>Details</TableHeaderColumn>
         <TableHeaderColumn dataField='Status' dataFormat={ this.formatType } editable={ { type: 'select', options: { values: bugDataStatus }, defaultValue: 'C' }}>Status</TableHeaderColumn>
         <TableHeaderColumn dataField='ExpComDate' editable={ { type: 'datetime' }}>Expected Completion Date</TableHeaderColumn>
         <TableHeaderColumn dataField='ActComDate' editable={ { type: 'datetime' }}>Actual Completion Date</TableHeaderColumn>
