@@ -101,12 +101,31 @@ class BugTrackingTableBody extends React.Component{
   formatType(cell) {
     return `${cell}`;
   }
+/**new header*/
+createCustomModalHeader(onClose, onSave) {
+  const headerStyle = {
+       fontWeight: 'bold',
+       fontSize: 'large',
+       textAlign: 'center',
+     };
+     return (
+       <div className='modal-header' style={ headerStyle }>
+         <h3>Report New Bug</h3>
+         <button className='btn btn-info' onClick={ onClose }>Report</button>
+       </div>
+     );
+   }
+
+
+
 
   render(){
     const selectRowProp = {
      mode: 'checkbox'
    };
-
+   const options = {
+         insertModalHeader: this.createCustomModalHeader
+       };
 
 return (
       <BootstrapTable
@@ -114,6 +133,7 @@ return (
         cellEdit={ cellEditProp }
         selectRow={ selectRowProp }
         exportCSV={ true }
+        options={ options }
         pagination
         insertRow
         search>
