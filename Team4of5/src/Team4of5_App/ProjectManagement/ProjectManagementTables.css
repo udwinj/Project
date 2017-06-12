@@ -1,0 +1,30 @@
+.foo {
+    position: absolute;
+    right: 0px;
+    margin-top: 10px;
+    margin-right: 50px;
+}
+
+#parent {
+  display: flex;
+}
+#table1 {
+  width: 33%;
+  margin-top: 50px;
+  background: lightblue;
+  /* Just so it's visible */
+}
+#table2 {
+  width: 33%;
+  margin-top: 50px;
+  /* Grow to rest of container */
+  background: lightgreen;
+  /* Just so it's visible */
+}
+#table3 {
+  width: 33%;
+  margin-top: 50px;
+  /* Grow to rest of container */
+  background: lightcyan;
+  /* Just so it's visible */
+}
