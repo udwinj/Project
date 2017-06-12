@@ -10,6 +10,7 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+import { Navbar, Jumbotron, Button, Input, Nav } from 'react-bootstrap';
 import * as Users from './Team4of5_Service/Users.js';
 import {
   BrowserRouter as Router,
