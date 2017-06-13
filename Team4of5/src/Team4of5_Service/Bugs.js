@@ -21,19 +21,30 @@ export const addNewBug = function(bug_id,bug_type, bug_reporter, bug_reporter_ro
               status: status,
               expected_completion_dt: expcompdt,
               actual_completion_dt: '',
+              bug_last_edited_dtm: Date.now()
               });
 }
 
 export const updateBugStatus = function(bug_id,status){
               var thisBugRef = bugRef.child(bug_id);
               thisBugRef.update({
-              status: status
+              status: status,
+              bug_last_edited_dtm: Date.now()
               });
 }
 
 export const updateAssignee = function(bug_id,bug_assignee){
               var thisBugRef = bugRef.child(bug_id);
               thisBugRef.update({
-              assignee: bug_assignee
+              assignee: bug_assignee,
+              bug_last_edited_dtm: Date.now()
+              });
+}
+
+export const update_completion_dt = function(bug_id,actcompletiondt){
+              var thisBugRef = bugRef.child(bug_id);
+              thisBugRef.update({
+              actual_completion_dt: actcompletiondt,
+              bug_last_edited_dtm: Date.now()
               });
 }
