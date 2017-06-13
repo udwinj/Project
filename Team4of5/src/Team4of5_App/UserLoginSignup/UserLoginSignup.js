@@ -110,12 +110,9 @@ class UserLoginSignup extends React.Component {
         }
 
     return (
-      <div class="row">
-         <div class="col-sm-12 col-md-10 col-md-offset-1">
-           <div class="col-6 col-md-4">
-
+      <div className="container">
       <form onSubmit={this.handleSubmit} className="loginForm">
-          <div class="form-group">
+
         <div className="title">
             <h1>Login | Signup</h1>
             <p>Please enter your login informations.</p>
@@ -126,15 +123,15 @@ class UserLoginSignup extends React.Component {
 
         <div>
           <label>
-            <div>
+            <div id="email">
               Email:
-                    </div>
+            </div>
             <input type="text" value={this.state.email} onChange={this.handleChange.bind(this, 'email')} />
           </label>
         </div>
         <div>
           <label>
-            <div>
+            <div id="password">
               Password(at least 6 digits):
                     </div>
             <input type="password" value={this.state.first_name} onChange={this.handleChange.bind(this, 'password')} />
@@ -151,12 +148,11 @@ class UserLoginSignup extends React.Component {
         <input type="submit"
           id="submitBtn"
           value={this.state.formBtnTxt} />
-              </div>
+
       </form>
 
 </div>
-</div>
-</div>
+
 
     );
   }
