@@ -30,3 +30,10 @@ export const updateBugStatus = function(bug_id,status){
               status: status
               });
 }
+
+export const updateAssignee = function(bug_id,bug_assignee){
+              var thisBugRef = bugRef.child(bug_id);
+              thisBugRef.update({
+              assignee: bug_assignee
+              });
+}
