@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import registerServiceWorker from '../../registerServiceWorker.js';
 import * as Users from '../../Team4of5_Service/Users.js';
 import Menu from '../Menu.js';
-
+import './style.css'
 import {
   BrowserRouter as Router,
   Route,
@@ -11,6 +11,10 @@ import {
   Redirect,
   withRouter
 } from 'react-router-dom'
+
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap-theme.css';
+import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
 class UserLoginSignup extends React.Component {
 
@@ -91,7 +95,7 @@ class UserLoginSignup extends React.Component {
   render() {
     const { from } = this.props.location.state ||{ from: { pathname: '/menu' }}
     const { redirectToMenu } = this.state
-    
+
     // // if (redirectToMenu) {
     // //   console.log(from);
     // //   return (
@@ -106,26 +110,28 @@ class UserLoginSignup extends React.Component {
         }
 
     return (
-      <form onSubmit={this.handleSubmit}>
+      <div className="container">
+      <form onSubmit={this.handleSubmit} className="loginForm">
+
         <div className="title">
-            <h2>Login | Signup</h2>
+            <h1>Login | Signup</h1>
             <p>Please enter your login informations.</p>
         </div>
         <button type="button"
-          id="switchBtn"
+          id="switchBtn" className="btn btn-primary lg"
           onClick={this.switchLoginSignup}>Login | SignUp</button>
 
         <div>
           <label>
-            <div>
+            <div id="email">
               Email:
-                    </div>
+            </div>
             <input type="text" value={this.state.email} onChange={this.handleChange.bind(this, 'email')} />
           </label>
         </div>
         <div>
           <label>
-            <div>
+            <div id="password">
               Password(at least 6 digits):
                     </div>
             <input type="password" value={this.state.first_name} onChange={this.handleChange.bind(this, 'password')} />
@@ -142,7 +148,12 @@ class UserLoginSignup extends React.Component {
         <input type="submit"
           id="submitBtn"
           value={this.state.formBtnTxt} />
+
       </form>
+
+</div>
+
+
     );
   }
 }

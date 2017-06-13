@@ -1,0 +1,70 @@
+.container{
+  height: 500px;
+  position: relative;
+}
+.loginForm{
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+.title{
+  font-family: sans-serif monospace;
+  padding: 20px
+
+}
+.title >h1{
+  font-size: 30px;
+  font-weight: bold;
+}
+.title >p{
+  font-size: 15px;
+}
+#switchBtn{
+  width: 280px;
+  padding: 10px;
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+#email{
+  margin-bottom: 10px;
+  font-size: 18px;
+
+}
+#password{
+  font-size: 18px;
+  margin: 10px 0px 10px 0;
+}
+input[type="text"] {
+  display: block;
+  margin: 0;
+  width: 300px;
+  height: 41px;
+  font-family: sans-serif;
+  font-size: 18px;
+  appearance: none;
+  box-shadow: none;
+  border-radius: none;
+}
+input[type="password"]{
+  display: block;
+  margin: 0;
+  width: 300px;
+  height: 41px;
+  font-family: sans-serif;
+  font-size: 18px;
+  appearance: none;
+  box-shadow: none;
+  border-radius: none;
+}
+input[type="submit"]{
+  margin: 20px 0px 20px 80px;
+  width: 80px;
+  padding: 10px;
+  font-size: 18px;
+  text-align: center;
+}
