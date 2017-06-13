@@ -1,0 +1,21 @@
+.loginForm{
+  width: 500px;
+  margin: 100px 300px;
+  align-items: center;
+}
+
+.title{
+  font-family: sans-serif monospace;
+  padding: 20px
+
+}
+.title >h1{
+  font-size: 30px;
+  font-weight: bold;
+}
+.title >p{
+  font-size: 15px;
+}
+.title >button{
+  align-items: center;
+}
