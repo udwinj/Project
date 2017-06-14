@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import registerServiceWorker from '../../registerServiceWorker.js';
 import * as Users from '../../Team4of5_Service/Users.js';
 import Menu from '../Menu.js';
+import './UserLoginSignup.css';
 
 import {
   BrowserRouter as Router,
@@ -91,7 +92,7 @@ class UserLoginSignup extends React.Component {
   render() {
     const { from } = this.props.location.state ||{ from: { pathname: '/menu' }}
     const { redirectToMenu } = this.state
-    
+
     // // if (redirectToMenu) {
     // //   console.log(from);
     // //   return (
@@ -106,9 +107,10 @@ class UserLoginSignup extends React.Component {
         }
 
     return (
-      <form onSubmit={this.handleSubmit}>
+    <div className="submitform">
+      <form onSubmit={this.handleSubmit} >
         <div className="title">
-            <h2>Login | Signup</h2>
+            <h1>Login  |  Signup</h1>
             <p>Please enter your login informations.</p>
         </div>
         <button type="button"
@@ -117,7 +119,7 @@ class UserLoginSignup extends React.Component {
 
         <div>
           <label>
-            <div>
+            <div className="emailLabel">
               Email:
                     </div>
             <input type="text" value={this.state.email} onChange={this.handleChange.bind(this, 'email')} />
@@ -125,7 +127,7 @@ class UserLoginSignup extends React.Component {
         </div>
         <div>
           <label>
-            <div>
+            <div className="passwordLabel">
               Password(at least 6 digits):
                     </div>
             <input type="password" value={this.state.first_name} onChange={this.handleChange.bind(this, 'password')} />
@@ -143,6 +145,7 @@ class UserLoginSignup extends React.Component {
           id="submitBtn"
           value={this.state.formBtnTxt} />
       </form>
+    </div>
     );
   }
 }
