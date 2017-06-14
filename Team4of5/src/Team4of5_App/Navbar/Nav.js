@@ -11,18 +11,17 @@ import {
     NavLink
 } from 'react-router-dom';
 
-class  NavbarHeader extends React.Component {
+class  NavbarHeaderC extends React.Component {
 render(){
   return (
-    <div>
-      <Navbar collapseOnSelect>
+      <Navbar inverse>
          <Navbar.Header>
            <Navbar.Brand>
                  <a>Team 4 Of 5</a>
             </Navbar.Brand>
          </Navbar.Header>
          <Navbar.Collapse>
-        <Nav pullRight>
+        <Nav >
           <NavItem>
             <Button><NavLink activeStyle={{fontWeight: 'bold',color: 'black'}} activeClassName='active' to='/menu/Chat'>Chat</NavLink></Button>
           </NavItem>
@@ -44,9 +43,9 @@ render(){
         </Nav>
         </Navbar.Collapse>
      </Navbar>
-   </div>
+
  );
 }
 }
 
-export default NavbarHeader;
+export default NavbarHeaderC;

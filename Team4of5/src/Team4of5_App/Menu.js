@@ -4,7 +4,7 @@ import BugTracking from './BugTracking/BugTracking.js';
 import Chat from './Chat/Chat.js';
 import ProjectManagement from './ProjectManagement/ProjectManagement.js';
 import Settings from './Settings/Settings.js';
-import NavbarHeader from './Navbar/Nav.js';
+import NavbarHeaderC from './Navbar/Nav.js';
 
 import {
     BrowserRouter as Router,
@@ -61,9 +61,9 @@ class Menu extends React.Component {
         )
         return (
           <div>
-          <div>
-            <NavbarHeader />
-          </div>
+
+              <NavbarHeaderC />
+        
             <div>
                 <Switch location={isModal ? this.previousLocation : location}>
                     <Route exact path='/menu' component={Home} />
