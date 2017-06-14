@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Navbar, NavItem, Nav, Jumbotron, Button, Input} from 'react-bootstrap';
-import './style.css'
+
 import {
     BrowserRouter as Router,
     Route,
