@@ -4,6 +4,7 @@ import Navbar from '../Navbar/Nav.js';
 import registerServiceWorker from '../../registerServiceWorker.js';
 import * as Users from '../../Team4of5_Service/Users.js';
 import Menu from '../Menu.js';
+import './Settings.css';
 
 import {
   BrowserRouter as Router,
@@ -69,7 +70,7 @@ class Settings extends React.Component {
         }
 
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form className="submitform" onSubmit={this.handleSubmit}>
         <div className="title">
             <h1>Settings</h1>
             <p>Please enter any user information that you want to reset</p>
@@ -77,7 +78,7 @@ class Settings extends React.Component {
 
         <div>
           <label>
-            <div>
+            <div className="emailLabel">
               Reset Display Name
                     </div>
             <input type="text" value={this.state.displayname} onChange={this.handleChange.bind(this, 'displayname')} />
@@ -86,7 +87,7 @@ class Settings extends React.Component {
         
         <div>
           <label>
-            <div>
+            <div className="emailLabel">
               Reset Role
                     </div>
             <input type="text" value={this.state.role} onChange={this.handleChange.bind(this, 'role')} />
