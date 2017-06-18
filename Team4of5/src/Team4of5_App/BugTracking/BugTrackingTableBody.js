@@ -4,6 +4,8 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import BugTrackTableSearch from './BugTrackingToolBar.js';
 import { Navbar, Jumbotron, Button, Input, Nav } from 'react-bootstrap';
 
+import database from './database'
+
 const bugData = []
 const bugDataTypes = [ {
   value: 'A',
@@ -63,12 +65,44 @@ const cellEditProp = {
 class BugTrackingTableBody extends React.Component{
   constructor(props) {
   super(props);
-  this.formatType = this.formatType.bind(this);
-}
 
+  this.state = {
+    bugs:[]
+  };
+
+    //connect to database
+    this.bugRef = database.ref().child('bugs');
+}
+//After the connect, what the state will do--gotdata
+componentDidMount() {
+  this.bugRef.on('value', this.gotData, this.errData);
+}
+//get the data from the firebase and push them out
+  gotData = (data) => {
+      let newBug = []
+      const bugdata = data.val();
+      const keys = Object.keys(bugdata);
+
+      for (let i = 0; i < keys.length; i++) {
+        const k = keys[i];
+        newBug.push({
+          id: bugdata[k].id, Type: bugdata[k].Type, Status: bugdata[k].Status,
+          Role: bugdata[k].Role, IssueDate: bugdata[k].IssueDate,
+          Reporter: bugdata[k].Reporter, ExpComDate: bugdata[k].ExpComDate, Details: bugdata[k].Details,
+          Assignee: bugdata[k].Assignee, ActComDate: bugdata[k].ActComDate
+        });
+      }
+      this.setState({bugs: newBug});
+    }
+        errData = (err) => {
+    console.log(err);
+    }
   formatType(cell) {
     return `${cell}`;
   }
+  handleClick = (rowKey) => {
+  alert(this.refs.table.getPageByRowKey(rowKey));
+}
 /**new header*/
 createCustomModalHeader(onClose, onSave) {
   const headerStyle = {
@@ -97,7 +131,8 @@ createCustomModalHeader(onClose, onSave) {
 
 return (
       <BootstrapTable
-        data={ bugData }
+        ref='table'
+        data={ this.state.bugs }
         cellEdit={ cellEditProp }
         selectRow={ selectRowProp }
         exportCSV={ true }
