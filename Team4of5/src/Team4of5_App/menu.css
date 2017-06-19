@@ -1,0 +1,21 @@
+.container{
+  right: 0px;
+  margin-right: 50px;
+}
+
+#BugTracking, #Chat, #ProjectManagement, #Settings{
+  background: #ffffff;
+  padding: 10px 20px 10px 20px;
+  color: #3498db;
+  font-size: 20px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  margin: 20px;
+
+}
+h1{
+
+  font-family: monospace;
+  font-size: 35px;
+  font-weight: bold;
+}
