@@ -5,6 +5,9 @@ import Chat from './Chat/Chat.js';
 import ProjectManagement from './ProjectManagement/ProjectManagement.js';
 import Settings from './Settings/Settings.js';
 import NavbarHeaderC from './Navbar/Nav.js';
+import ProjectSummary from './ProjectManagement/ProjectSummary.js'
+
+import './menu.css'
 
 import {
     BrowserRouter as Router,
@@ -18,14 +21,20 @@ import PropTypes from "prop-types";
 
 
 const Home = () => (
+  <div className="container">
     <div>
-        <h2>Menu</h2>
-        <ul>
-            <li><button><Link to='/menu/BugTracking'>BugTracking</Link></button></li>
-            <li><button><Link to='/menu/Chat'>Chat</Link></button></li>
-             <li><button><Link to='/menu/ProjectManagement'>ProjectManagement</Link></button></li>
-            <li><button><Link to='/menu/Settings'>Settings</Link></button></li>
-        </ul>
+        <h1>Menu</h1>
+        <div>
+            <button id="BugTracking"><Link to='/menu/BugTracking'>BugTracking</Link></button>
+            <button id="Chat"><Link to='/menu/Chat'>Chat</Link></button>
+             <button id="ProjectManagement"><Link to='/menu/ProjectManagement'>ProjectManagement</Link></button>
+            <button id="Settings"><Link to='/menu/Settings'>Settings</Link></button>
+        </div>
+    </div>
+    <div>
+    <h1>Project Summary</h1>
+    <ProjectSummary/>
+    </div>
     </div>
 )
 
@@ -63,7 +72,7 @@ class Menu extends React.Component {
           <div>
 
               <NavbarHeaderC />
-        
+
             <div>
                 <Switch location={isModal ? this.previousLocation : location}>
                     <Route exact path='/menu' component={Home} />
