@@ -9,9 +9,15 @@
     "react": "^15.5.4",
     "react-bootstrap": "^0.31.0",
     "react-bootstrap-table": "^3.4.0",
+    "react-chat-ui": "0.0.28",
     "react-dom": "^15.5.4",
+    "react-icons": "^2.2.5",
+    "react-infinite-scroll-component": "^2.4.0",
+    "react-redux": "^5.0.5",
     "react-router": "^4.1.1",
-    "react-router-dom": "^4.1.1"
+    "react-router-dom": "^4.1.1",
+    "react-select": "^1.0.0-rc.5",
+    "redux": "^3.6.0"
   },
   "devDependencies": {
     "react-scripts": "1.0.7"

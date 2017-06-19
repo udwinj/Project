@@ -1,0 +1,26 @@
+
+
+
+
+
+
+
+
+.HistoryScroll {
+  width: 700px;
+  height: 615px;
+  overflow-y: scroll;
+  position: relative;
+}
+
+/*h4 span { 
+    font-size:16px; 
+    float:right;
+}*/
+
+#hisDateSpan{
+    font-size:16px; 
+    float:right;
+}
+
+
