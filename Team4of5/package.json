@@ -6,6 +6,7 @@
     "bootstrap": "^3.3.7",
     "firebase": "^4.0.0",
     "history": "^4.6.1",
+    "lodash": "^4.17.4",
     "react": "^15.5.4",
     "react-bootstrap": "^0.31.0",
     "react-bootstrap-table": "^3.4.0",

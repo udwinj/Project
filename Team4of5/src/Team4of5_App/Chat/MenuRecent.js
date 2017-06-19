@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Waypoint from 'react-waypoint';
 import './MenuRecent.css'
 import ChatRoom from './ChatRoom'
 import ContentSwitcher from './ContentSwitcher'

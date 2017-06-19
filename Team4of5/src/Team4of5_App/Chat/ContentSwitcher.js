@@ -8,7 +8,6 @@ import CreateProject from './CreateProject'
 import * as actions from '../App_Redux/ActionCreator'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import onClickOutside from 'react-onclickoutside';
 import createReactClass from 'create-react-class';
 import ChatRoom from './ChatRoom'
 
