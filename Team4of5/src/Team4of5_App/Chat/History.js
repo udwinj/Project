@@ -33,7 +33,7 @@ class History extends React.Component {
 
     let moreDivs = [];
     let count = 0;
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 20; i++) {
       moreDivs.push(
         <div key={'div' + count++} style={{ height: 50, background:'#00ffffff', ...style }}>
           <h4 onClick={this.switchToChat.bind(this, count)}>User{count} Last Msg
