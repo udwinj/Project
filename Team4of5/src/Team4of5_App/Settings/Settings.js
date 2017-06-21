@@ -5,6 +5,8 @@ import registerServiceWorker from '../../registerServiceWorker.js';
 import * as Users from '../../Team4of5_Service/Users.js';
 import Menu from '../Menu.js';
 import './Settings.css';
+import * as firebase from 'firebase';
+import * as Config from '../../Team4of5_Service/Config.js';
 
 import {
   BrowserRouter as Router,
@@ -14,6 +16,7 @@ import {
   withRouter
 } from 'react-router-dom'
 
+
 class Settings extends React.Component {
     constructor(props) {
         super(props);
@@ -21,11 +24,38 @@ class Settings extends React.Component {
      this.state = {
       role: '',
       displayname: '',
-      redirectToMenu: false
+      redirectToMenu: false,
+      userInfo:[],
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.userRef = firebase.database().ref().child('users');
   }
+
+  componentDidMount() {
+
+          var user = firebase.auth().currentUser;
+          var name, email, photoUrl, uid, emailVerified;
+
+            if (user != null) {
+              name = user.displayName;
+              uid = user.uid;  
+            
+
+          var thisUser = firebase.database().ref().child('users/' + uid);
+          thisUser.on('value', this.gotData, this.errData);
+        }
+
+}
+  gotData = (data) => {
+    let newUser = []
+    const userdata = data.val();
+    //const keys = Object.keys(userdata);
+
+          newUser.push(userdata.role);
+          newUser.push(userdata.display_name);
+          this.setState({userInfo: newUser});
+    }
 
 
   handleChange(name, event) {
@@ -66,11 +96,12 @@ class Settings extends React.Component {
     if (redirectToMenu) {
           return (
            <Redirect to={from}/>
+
           )
         }
 
     return (
-      <form className="submitform" onSubmit={this.handleSubmit}>
+      <form className="submitform" onSubmit={this.handleSubmit}>  
         <div className="title">
             <h1>Settings</h1>
             <p>Please enter any user information that you want to reset</p>
@@ -80,6 +111,7 @@ class Settings extends React.Component {
           <label>
             <div className="emailLabel">
               Reset Display Name
+              <small><br/>Your current display name is {this.state.userInfo[1]}</small>
                     </div>
             <input type="text" value={this.state.displayname} onChange={this.handleChange.bind(this, 'displayname')} />
           </label>
@@ -89,6 +121,7 @@ class Settings extends React.Component {
           <label>
             <div className="emailLabel">
               Reset Role
+                <small><br/>Your current role is {this.state.userInfo[0]}</small>
                     </div>
             <input type="text" value={this.state.role} onChange={this.handleChange.bind(this, 'role')} />
           </label>

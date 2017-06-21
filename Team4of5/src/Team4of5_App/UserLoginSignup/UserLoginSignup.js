@@ -111,7 +111,7 @@ class UserLoginSignup extends React.Component {
       <form onSubmit={this.handleSubmit} >
         <div className="title">
             <h1>Login  |  Signup</h1>
-            <p>Please enter your login informations.</p>
+            <p>Please enter your login information</p>
         </div>
         <button type="button"
           id="switchBtn"
@@ -128,7 +128,7 @@ class UserLoginSignup extends React.Component {
         <div>
           <label>
             <div className="passwordLabel">
-              Password(at least 6 digits):
+              Password (at least 6 digits):
                     </div>
             <input type="password" value={this.state.first_name} onChange={this.handleChange.bind(this, 'password')} />
           </label>
