@@ -12,7 +12,7 @@ class ChatRoom extends React.Component {
             
             messages: [
                 (new Message({ id: 1, message: "Hey guys!!!!!!" })),
-                (new Message({id: 2, message: "Hey! Jason here."}))
+                (new Message({id: 2, message: "Hey! Johny here."}))
             ],
             curr_user: 0
         }
@@ -38,10 +38,12 @@ class ChatRoom extends React.Component {
     }
 
     render() {
+        console.log(this.props.extraData)
         return (
+            
             <div>
                 <div>
-                    <h3>User {this.props.extraData.userId}</h3>
+                    <h3>{this.props.extraData.Title}</h3>
                 </div>
                 <div id="ChatMian">
                     <ChatFeed

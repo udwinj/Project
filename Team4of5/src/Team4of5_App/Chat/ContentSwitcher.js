@@ -37,7 +37,7 @@ class ContentSwitcher extends React.Component {
             case "GotoHistory":
                 return (<History />);
             case "GotoChatRoom":
-                return (<ChatRoom extraData={this.props.value.UserId}/>);
+                return (<ChatRoom extraData={ this.props.value}/>);
             default:
                 return (<Contact />);
         }

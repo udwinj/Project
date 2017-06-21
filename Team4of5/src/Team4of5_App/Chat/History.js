@@ -51,7 +51,7 @@ class History extends React.Component {
   }
 
   switchToChat(userId) {
-    this.props.SwitchAction({GotoContent:"GotoChatRoom", UserId:{userId}})
+    this.props.SwitchAction({GotoContent:"GotoChatRoom", UserId:userId, Title:"User"+userId})
   }
 
   //  refresh () {
