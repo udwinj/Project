@@ -1,0 +1,18 @@
+
+
+
+
+#searchUsernput{
+  padding: 5px;
+  width: 480px;
+}
+
+
+input[type="searchUsernput"]{
+  font-family: sans-serif;
+   width: 470px;
+   height: 40px;
+   display: block;
+   font-size: 15px;
+   font-weight: 300;
+}
