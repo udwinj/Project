@@ -23,7 +23,7 @@ const bugDataStatus =[{
   text: 'Completed'
 }, {
   value: 'B',
-  text: 'Inprogress'
+  text: 'In progress'
 }, {
   value: 'C',
   text: 'Unread'
