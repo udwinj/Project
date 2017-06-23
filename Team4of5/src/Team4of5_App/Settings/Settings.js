@@ -26,6 +26,7 @@ class Settings extends React.Component {
       displayname: '',
       redirectToMenu: false,
       userInfo:[],
+      formBtnTxt: 'Settings',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -75,12 +76,16 @@ class Settings extends React.Component {
 
     Users.updateUserDisplayName(this.state.displayname)
         .then((User) => {
+            //handle redirect
+             this.setState({redirectToMenu: true});
     });
     }
 
     if (this.state.role) {
         Users.updateRole(this.state.role)
         .then((User) => {
+            //handle redirect
+             this.setState({redirectToMenu: true});
     });
     };
 
@@ -96,7 +101,6 @@ class Settings extends React.Component {
     if (redirectToMenu) {
           return (
            <Redirect to={from}/>
-
           )
         }
 
@@ -135,9 +139,9 @@ class Settings extends React.Component {
             </div>
           </label>
         </div>
-        <input type="submit"
-          id="submitBtn"
-          value={this.state.formBtnTxt} />
+
+        <input type="submit" id="submitBtn" value={this.state.formBtnTxt}/>
+
       </form>
         );
     }
