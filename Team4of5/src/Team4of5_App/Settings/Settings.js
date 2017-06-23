@@ -20,7 +20,7 @@ import {
 class Settings extends React.Component {
     constructor(props) {
         super(props);
-    
+
      this.state = {
       role: '',
       displayname: '',
@@ -39,8 +39,8 @@ class Settings extends React.Component {
 
             if (user != null) {
               name = user.displayName;
-              uid = user.uid;  
-            
+              uid = user.uid;
+
 
           var thisUser = firebase.database().ref().child('users/' + uid);
           thisUser.on('value', this.gotData, this.errData);
@@ -82,7 +82,7 @@ class Settings extends React.Component {
         Users.updateRole(this.state.role)
         .then((User) => {
     });
-    };  
+    };
 
     event.preventDefault();
 
@@ -92,7 +92,7 @@ class Settings extends React.Component {
 
     const { from } = this.props.location.state ||{ from: { pathname: '/menu' }}
     const { redirectToMenu } = this.state
-    
+
     if (redirectToMenu) {
           return (
            <Redirect to={from}/>
@@ -101,7 +101,7 @@ class Settings extends React.Component {
         }
 
     return (
-      <form className="submitform" onSubmit={this.handleSubmit}>  
+      <form className="submitform" onSubmit={this.handleSubmit}>
         <div className="title">
             <h1>Settings</h1>
             <p>Please enter any user information that you want to reset</p>
@@ -116,7 +116,7 @@ class Settings extends React.Component {
             <input type="text" value={this.state.displayname} onChange={this.handleChange.bind(this, 'displayname')} />
           </label>
         </div>
-        
+
         <div>
           <label>
             <div className="emailLabel">
