@@ -23,6 +23,8 @@ import * as actions from '../App_Redux/ActionCreator'
 import { bindActionCreators } from 'redux';
 import createStore from '../App_Redux/CreateStores'
 import PropTypes from 'prop-types';
+import * as firebase from 'firebase';
+import * as Config from '../../Team4of5_Service/Config.js';
 
 const store = createStore();
 
@@ -37,9 +39,35 @@ class MenuFuncs extends React.Component {
             options: [{ value: 'Active', label: 'Active' },
                         { value: 'Hide', label: 'Hide' }],
             selectValue: 'Active',
+            userInfo:[],
         }
         this.updateValue = this.updateValue.bind(this);
+        this.userRef = firebase.database().ref().child('users');
 
+    }
+
+    componentDidMount() {
+
+          var user = firebase.auth().currentUser;
+          var name, email, photoUrl, uid, emailVerified;
+
+            if (user != null) {
+              name = user.displayName;
+              uid = user.uid;
+
+
+          var thisUser = firebase.database().ref().child('users/' + uid);
+          thisUser.on('value', this.gotData, this.errData);
+        }
+
+}
+  gotData = (data) => {
+    let newUser = []
+    const userdata = data.val();
+    //const keys = Object.keys(userdata);
+
+          newUser.push(userdata.display_name);
+          this.setState({userInfo: newUser});
     }
 
     updateValue (newValue) {
@@ -58,7 +86,7 @@ class MenuFuncs extends React.Component {
                     </Media.Left></Col>
                     <Col xs={1} md={1}>
                         <div>
-                            <p>UserName</p>
+                            <h4>{this.state.userInfo[0]}</h4>
                             <Select 
                             style={{ width: 100 }}
                             autosize
