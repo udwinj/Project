@@ -94,6 +94,19 @@ export const logoutUser = function(){
     return firebase.auth().signOut();
 }
 
+export const userExist = function(){
+    if(firebase.auth().currentUser != null){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+//Must check current user exist before calling this function!!!!!
+export const getUserData = function () {
+    let user = firebase.auth().currentUser;
+    return firebase.database().ref().child('users/' + user.uid).once('value')
+}
 
 
     // .then(function (user) {
