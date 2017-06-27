@@ -49,17 +49,29 @@ export const resetPwdWhenLoggedOn = function(){
 }
 
 // this allows a user to update their display name in the settings tab
-export const updateUserDisplayName = function(user_display_name){
-   return firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-       // alert("user " + user.uid + " changed their display name to " + user_display_name);
-        var user_uid = user.uid;
-		var thisUserRef = usersRef.child(user_uid);
-              thisUserRef.update({
-              display_name: user_display_name
-                });
-        } // end if
-    }) //end function
+export const updateSettings = function(user_display_name, user_role){
+    var user = firebase.auth().currentUser;
+    var user_uid = user.uid;
+    var thisUserRef = usersRef.child(user_uid);
+
+
+    if (user_display_name && user_role){
+        return thisUserRef.update({
+                  display_name: user_display_name,
+                                  role: user_role
+        });
+    }
+    else if (user_display_name){
+        return thisUserRef.update({
+                  display_name: user_display_name
+        });
+    }
+    else if (user_role){
+        return thisUserRef.update({
+                  role: user_role
+        });
+    }
+
 }
 
 // this allows a user to update their role in the settings tab

@@ -26,7 +26,7 @@ class Settings extends React.Component {
       displayname: '',
       redirectToMenu: false,
       userInfo:[],
-      formBtnTxt: 'Settings',
+      formBtnTxt: 'Update Settings',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -72,22 +72,17 @@ class Settings extends React.Component {
   }
 
   handleSubmit(event) {
-    if (this.state.displayname) {
+     if (this.state.displayname || this.state.role) {
 
-    Users.updateUserDisplayName(this.state.displayname)
-        .then((User) => {
-            //handle redirect
-             this.setState({redirectToMenu: true});
-    });
-    }
+    Users.updateSettings(this.state.displayname, this.state.role)
+         .then((User) => {
+    //         //handle redirect
+             this.setState({redirectToMenu: false});
+     })
+     };
 
-    if (this.state.role) {
-        Users.updateRole(this.state.role)
-        .then((User) => {
-            //handle redirect
-             this.setState({redirectToMenu: true});
-    });
-    };
+     this.state.displayname = '';
+     this.state.role = '';
 
     event.preventDefault();
 
