@@ -9,7 +9,7 @@ import BugTrackTableSearch from './BugTrackingToolBar.js';
 import BugTrackingTableBody from './BugTrackingTableBody.js';
 
 import IssueTrackerNav from './IssueTrackerNav.js';
-
+import IssueTrackerBody from './IssueTrackerBody.js';
 import './BugTracking.css';
 
 class BugTracking extends React.Component {
@@ -30,11 +30,12 @@ class BugTracking extends React.Component {
             </div>
       </div>
       <div>
-          
+
         <br/>
         <br/>
         <div className='tableBody'>
-            <BugTrackingTableBody />
+            {/* <BugTrackingTableBody /> */}
+            <IssueTrackerBody />
         </div>
 
       </div>
