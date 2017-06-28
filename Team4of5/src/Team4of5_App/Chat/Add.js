@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import * as actions from '../App_Redux/ActionCreator'
 import { bindActionCreators } from 'redux';
 import * as Users from '../../Team4of5_Service/Users.js';
+import * as Chat from '../../Team4of5_Service/Chat.js';
 
 class Add extends React.Component {
     constructor(props) {
@@ -24,18 +25,15 @@ class Add extends React.Component {
         e.preventDefault();
         if (!input.value) { return false; }
         console.log(input.value);
+        
 
-    //      Users.findUserByEmail(input.value)
-    //   .then((Result) => {
-    //     console.log(Result);;
-    //   }).then((Result) => {
-    //    console.log(Result);;
-    //   }).catch((error) => {
-    //     console.log(error);
-    //   });
 
         alert("User: "+ input.value+ " (Searching...)");
         //this._pushMessage(this.state.curr_user, input.value)
+        Chat.findUser(input.value)
+        .then((Data) =>  {       
+            alert(input.value + " Succeed!!");
+        });
         input.value = '';
     }
 
