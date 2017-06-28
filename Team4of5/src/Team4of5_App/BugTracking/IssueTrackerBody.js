@@ -3,6 +3,8 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 import { Navbar, Jumbotron, Button, Input, Nav } from 'react-bootstrap';
 import database from './database'
+import * as Bugs from '../../Team4of5_Service/Bugs.js'
+
 
 const issueData = []
 const issueStatus = [{
@@ -45,7 +47,8 @@ class IssueTrackerBody extends React.Component{
   super(props);
 
   this.state = {
-    issues:[]
+    issues:[],
+    bug_id: ''
   };
 
     //connect to database
@@ -112,14 +115,9 @@ handleModalClose(onClose) {
     onClose();
   }
 //I try to connect database and write It back
-  handleSaveBtnClick = () => {
-    const { columns, onSave } = this.props;
-    const updateIssue = {};
-    columns.forEach((column, i) => {
-      updateIssue[column.field] = this.issueRef.push[column.field].value;
-    }, this);
-    // call the onsave issue
-    onSave(updateIssue);
+  handleSaveBtnClick(){
+    this.state.bug_id = 99;
+    Bugs.addNewBug(this.state.bug_id, 'a','b','c','d','e','f','g');
 };
 
 
@@ -127,7 +125,7 @@ handleModalClose(onClose) {
     return (
         <div className='modal-footer' >
           <button className='btn btn-xs btn-info' onClick={ onClose }>Close</button>
-          <button className='btn btn-xs btn-danger' onClick={ onSave }>Report</button>
+          <button className='btn btn-xs btn-danger' onClick={this.handleSaveBtnClick}>Report</button>
         </div>
     );
 
