@@ -22,9 +22,11 @@ export const saveUserinfo = function () {
 		  if (user) {
 		    // alert("user " + user.uid + " logged in");
 		    var user_uid = user.uid;
+            var user_email = user.email;
 		    var thisUserRef = usersRef.child(user_uid);
 		          thisUserRef.update({
-			      last_login_dtm: Date.now()
+			      last_login_dtm: Date.now(),
+                  email: user_email
      		});
 		    } 
         });
@@ -74,19 +76,6 @@ export const updateSettings = function(user_display_name, user_role){
 
 }
 
-// this allows a user to update their role in the settings tab
-export const updateRole = function(user_role){
-       return firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-            var user_uid = user.uid;
-            var thisUserRef = usersRef.child(user_uid);
-            thisUserRef.update({
-                role: user_role,  
-                last_login_dtm: Date.now(),
-            });
-        }
-    })
-}
 
 // this allows a user to logout
 // it shouldn't need any parameters if the user is logged in
