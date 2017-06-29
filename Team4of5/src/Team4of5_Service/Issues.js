@@ -6,12 +6,14 @@ import * as Config from './Config.js';
 
 var ref = firebase.app().database().ref();
 var issueRef = ref.child('issues');
+var usersRef = ref.child('users');
 
 
 export const addNewIssue = function(
     completionDate, details,
     expComDate, owner, project,
        issue_status){
+
 	    issueRef.push({
               owner: owner,
               completionDate: completionDate,
