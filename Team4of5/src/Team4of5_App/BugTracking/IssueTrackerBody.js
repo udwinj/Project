@@ -72,14 +72,25 @@ componentDidMount() {
 
       for (let i = 0; i < keys.length; i++) {
         const k = keys[i];
+
+        //reformat the dates
+        var issuedate_reformat = new Date(issuedata[k].issuedate);
+        issuedate_reformat =  (issuedate_reformat.getMonth() + 1) + '/' + issuedate_reformat.getDate() + '/'+ issuedate_reformat.getFullYear();
+        
+        var completionDate_reformat = new Date(issuedata[k].completionDate);
+        completionDate_reformat =  (completionDate_reformat.getMonth() + 1) + '/' + completionDate_reformat.getDate() + '/'+ completionDate_reformat.getFullYear();
+
+
         newIssue.push({
           id: k, status: issuedata[k].status,
-          issueDate: issuedata[k].issueDate,
-          owner: issuedata[k].owner, expComDate: issuedata[k].expComDate,
+          issueDate: issuedate_reformat,
+          owner: issuedata[k].owner, 
+          expComDate: issuedata[k].expComDate,
           details: issuedata[k].details,
-         completionDate: issuedata[k].completionDate,
+         completionDate: completionDate_reformat,
          project: issuedata[k].project
         });
+
       }
       this.setState({issues: newIssue});
     }
@@ -153,10 +164,10 @@ return (
         <TableHeaderColumn dataField='id' isKey={true} width='200'>ID</TableHeaderColumn>
         <TableHeaderColumn dataField='status'  editable={ { type: 'select', options: { values: issueStatus }, defaultValue: 'C' }}>Status</TableHeaderColumn>
         <TableHeaderColumn dataField='owner' tdStyle={ { whiteSpace: 'nowrap' } }>Owner</TableHeaderColumn>
-        <TableHeaderColumn dataField='issueDate' dataFormat={ dateFormatter }>IssueDate</TableHeaderColumn>
+        <TableHeaderColumn dataField='issueDate'>IssueDate</TableHeaderColumn>
         <TableHeaderColumn dataField='expComDate' >Expected Completed in Days</TableHeaderColumn>
         <TableHeaderColumn dataField='details' editable={ { type: 'textarea', defaultValue: 'Please write something'} } tdStyle={ { whiteSpace: 'normal' } } width='250'>Details</TableHeaderColumn>
-        <TableHeaderColumn dataField='completionDate' editable={ { type: 'datetime' }} dataFormat={ dateFormatter }>Actual Completion Date</TableHeaderColumn>
+        <TableHeaderColumn dataField='completionDate' editable={ { type: 'textarea', defaultValue: 'Not yet complete'} }>Actual Completion Date</TableHeaderColumn>
         <TableHeaderColumn dataField='project' tdStyle={ { whiteSpace: 'nowrap' } }>Project</TableHeaderColumn>
 
       </BootstrapTable>
