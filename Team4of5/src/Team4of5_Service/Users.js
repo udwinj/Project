@@ -23,12 +23,21 @@ export const saveUserinfo = function () {
 		    // alert("user " + user.uid + " logged in");
 		    var user_uid = user.uid;
             var user_email = user.email;
+
+
 		    var thisUserRef = usersRef.child(user_uid);
 		          thisUserRef.update({
 			      last_login_dtm: Date.now(),
                   email: user_email
      		});
-		    } 
+            thisUserRef.on("value", function(snapshot) {
+                var displayname = snapshot.val().display_name;
+                var role = snapshot.val().role;
+                if (role == null || displayname == null){
+                    alert("Please go to the settings page to complete your profile")
+                }
+            });
+		    }
         });
 }
 
