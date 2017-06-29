@@ -10,14 +10,14 @@ var issueRef = ref.child('issues');
 
 export const addNewIssue = function(
     completionDate, details,
-    expComDate, issueDate, owner, project,
+    expComDate, owner, project,
        issue_status){
 	    issueRef.push({
               owner: owner,
               completionDate: completionDate,
               details: details,
               expComDate: expComDate,
-              issuedate: issueDate,
+              issuedate: Date.now().toDateString(),
               project: project,
               status: issue_status,
               issue_last_edited_dtm: Date.now()
