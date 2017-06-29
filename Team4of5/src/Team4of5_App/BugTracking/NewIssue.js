@@ -24,7 +24,7 @@ class NewIssue extends React.Component {
         super(props);
         this.state = {
             value: '',
-            formBtnTxt: 'Update Settings',
+            formBtnTxt: 'Add Issue',
             redirectToIssue: false,
             };
         this.handleChange = this.handleChange.bind(this);
@@ -40,20 +40,26 @@ class NewIssue extends React.Component {
     }
 
  handleSubmit(event) {
-     if (this.state.issue_id || this.state.completionDate
+     if (this.state.id || this.state.completionDate
          ||this.state.details||this.state.expComDate
          ||this.state.issueDate||this.state.owner
-         ||this.state.project||this.state.issue_status) {
-             Issues.addNewIssue(this.state.issue_id,
+         ||this.state.project||this.state.status) 
+     {
+             Issues.addNewIssue(this.state.id,
                   this.state.completionDate,this.state.details,
                   this.state.expComDate,this.state.issueDate,
                   this.state.owner,this.state.project,
-                  this.state.issue_status)
+                  this.state.status)
                   .then((Issue)=>{
                       console.log(Issue);
-                     this.setState({redirectToIssue: true});
+                     this.setState({redirectToIssue: false});
                   })
-         };
+      }
+          else {
+            alert("Please filll all fields");
+          }
+
+        
   event.preventDefault();
 }
 
