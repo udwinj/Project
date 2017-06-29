@@ -49,7 +49,7 @@ export default class BugNotification extends React.Component {
       newBug.push(unread);
       newBug.push(incomplete);
       this.setState({bugInfo: newBug});
-      alert("there are " + this.state.bugInfo[0] + " unread bugs")
+      //alert("there are " + this.state.bugInfo[0] + " unread bugs")
 
 
   }
