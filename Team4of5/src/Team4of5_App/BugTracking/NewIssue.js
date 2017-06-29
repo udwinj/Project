@@ -4,7 +4,6 @@ import registerServiceWorker from '../../registerServiceWorker.js';
 import { Navbar, Jumbotron, Button, Input, Nav } from 'react-bootstrap';
 
 //Connect Firebase
-import * as firebase from 'firebase';
 import * as Config from '../../Team4of5_Service/Config.js';
 import * as Issues from '../../Team4of5_Service/Issues.js';
 
@@ -30,7 +29,6 @@ class NewIssue extends React.Component {
         this.handleChange = this.handleChange.bind(this);
        this.handleSubmit = this.handleSubmit.bind(this);
        //connect with firebase
-       this.issueRef = firebase.database().ref().child('issues');
     }
 
     handleChange(name, event) {
@@ -40,23 +38,23 @@ class NewIssue extends React.Component {
     }
 
  handleSubmit(event) {
-     if (this.state.id || this.state.completionDate
-         ||this.state.details||this.state.expComDate
-         ||this.state.issueDate||this.state.owner
-         ||this.state.project||this.state.status) 
+     if (this.state.completionDate
+         &&this.state.details&&this.state.expComDate
+         &&this.state.issueDate&&this.state.owner
+         &&this.state.project&&this.state.status) 
      {
-             Issues.addNewIssue(this.state.id,
+             Issues.addNewIssue(
                   this.state.completionDate,this.state.details,
                   this.state.expComDate,this.state.issueDate,
                   this.state.owner,this.state.project,
                   this.state.status)
                   .then((Issue)=>{
                       console.log(Issue);
-                     this.setState({redirectToIssue: false});
+                     this.setState({redirectToIssue: true});
                   })
       }
           else {
-            alert("Please filll all fields");
+            alert("Please fill all fields");
           }
 
         
@@ -77,12 +75,6 @@ class NewIssue extends React.Component {
           <div className="title">
               <h1>Create New Issue</h1>
               <p>Please enter any issue information</p>
-          </div>
-          <div>
-              <label>
-                ID:
-                <input type="text" value={this.state.id} placeholder='id' onChange={this.handleChange.bind(this, 'id')} />
-              </label>
           </div>
         <div>
             <label>
