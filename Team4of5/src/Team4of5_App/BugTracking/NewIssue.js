@@ -40,12 +40,12 @@ class NewIssue extends React.Component {
  handleSubmit(event) {
      if (this.state.completionDate
          &&this.state.details&&this.state.expComDate
-         &&this.state.issueDate&&this.state.owner
+         &&this.state.owner
          &&this.state.project&&this.state.status) 
      {
              Issues.addNewIssue(
                   this.state.completionDate,this.state.details,
-                  this.state.expComDate,this.state.issueDate,
+                  this.state.expComDate,
                   this.state.owner,this.state.project,
                   this.state.status)
                   .then((Issue)=>{
@@ -90,14 +90,8 @@ class NewIssue extends React.Component {
         </div>
         <div>
             <label>
-              IssueDate:
-              <input type="text" value={this.state.issueDate}  onChange={this.handleChange.bind(this, 'issueDate')} />
-            </label>
-        </div>
-        <div>
-            <label>
               Expected Completed in Days:
-              <input type="text" value={this.state.expComDate} placeholder='how many days will be sovled' onChange={this.handleChange.bind(this, 'expComDate')} />
+              <input type="text" value={this.state.expComDate} placeholder='how many days will be solved' onChange={this.handleChange.bind(this, 'expComDate')} />
             </label>
         </div>
         <div>
@@ -109,7 +103,8 @@ class NewIssue extends React.Component {
         <div>
             <label>
               Actual Completion Date:
-              <input type="text" value={this.state.completionDate} placeholder='Completion Date' onChange={this.handleChange.bind(this, 'completionDate')} />
+              <div> </div>
+              <input type="date" value={this.state.completionDate} placeholder='Completion Date' onChange={this.handleChange.bind(this, 'completionDate')} />
             </label>
         </div>
         <div>
