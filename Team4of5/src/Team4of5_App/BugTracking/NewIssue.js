@@ -89,6 +89,7 @@ class NewIssue extends React.Component {
         Status
         <div> </div>
         <select value={this.state.status} onChange={this.handleChange.bind(this, 'status')}>
+            <option value=""></option>
             <option value="New">New</option>
             <option value="Open">Open</option>
             <option value="Assigned">Assigned</option>
