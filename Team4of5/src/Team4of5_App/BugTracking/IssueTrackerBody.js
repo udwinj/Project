@@ -61,7 +61,6 @@ class IssueTrackerBody extends React.Component{
     this.issueRef = firebase.database().ref().child('issues');
     //Click the save button; then the data will save to firebase
     this.handleSaveBtnClick = this.handleSaveBtnClick.bind(this);
-    this.afterInsertRow = this.afterInsertRow.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
 }
 //After the connect, what the state will do--gotdata
@@ -79,7 +78,7 @@ componentDidMount() {
       for (let i = 0; i < keys.length; i++) {
         const k = keys[i];
         newIssue.push({
-          id: issuedata[k].id, status: issuedata[k].issue_status,
+          id: k, status: issuedata[k].issue_status,
           issueDate: issuedata[k].issueDate,
           owner: issuedata[k].owner, expComDate: issuedata[k].expComDate,
           details: issuedata[k].details,
@@ -89,24 +88,6 @@ componentDidMount() {
       }
       this.setState({issues: newIssue});
     }
-
-//     //try to add Data into
-// addData =(data)=>{
-//     let startId = data.length;
-//     for (let i = 0; i < data; i++){
-//         const id = startId + i;
-//         Issues.addNewIssue(this.state.Issues[i].issue_id,
-//           this.state.Issues[i].issue_status,
-//           this.state.Issues[i].owner,
-//           this.state.Issues[i].issueDate,
-//           this.state.Issues[i].expComDate,
-//           this.state.Issues[i].details,
-//           this.state.Issues[i].completionDate,
-//           this.state.Issues[i].project);
-//
-//     }
-//     this.setState({issues: Issues})
-// }
 
 errData = (err) => {
     console.log(err);
@@ -144,11 +125,7 @@ handleModalClose(onClose) {
   }
 //I try to connect database and write It back
 
-afterInsertRow() {
-   //var x = this.state.issues.length;
-   Issues.addNewIssue();
-   return Issues;
- }
+
  handleSaveBtnClick = (columns, onSave)=>{
     const row = {};
     columns.forEach((columns, i)=>{
@@ -158,14 +135,7 @@ afterInsertRow() {
     },this);
     this.setState({issues: Issues});
  }
-//   onAfterInsertRow=(row)=> {
-//   let newRowStr = '';
-//
-//   for (const prop in row) {
-//     newRowStr += prop + ': ' + row[prop] + ' \n';
-//   }
-//   alert('The new row is:\n ' + newRowStr);
-// }
+
 
   createCustomModalFooter = (onClose, onSave) => {
     return (
@@ -183,7 +153,6 @@ afterInsertRow() {
    const options = {
          insertModalHeader: this.createCustomModalHeader,
          insertModalFooter: this.createCustomModalFooter,
-         afterInsertRow: this.afterInsertRow.bind(this),
        };
 
 
