@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from '../../registerServiceWorker.js';
-import { Navbar, Jumbotron, Button, Input, Nav } from 'react-bootstrap';
+import Navbar from '../Navbar/Nav.js';
+import IssueTrackerNav from './IssueTrackerNav.js';
 
 //Connect Firebase
 import * as Config from '../../Team4of5_Service/Config.js';
@@ -57,7 +58,7 @@ class NewIssue extends React.Component {
             alert("Please fill all fields");
           }
 
-        
+
   event.preventDefault();
 }
 
@@ -71,6 +72,8 @@ class NewIssue extends React.Component {
            )
          }
     return (
+        <div>
+        <IssueTrackerNav />
       <form className='createIssue' onSubmit={this.handleSubmit}>
           <div className="title">
               <h1>Create New Issue</h1>
@@ -117,6 +120,7 @@ class NewIssue extends React.Component {
 
         <input type="submit" id="submitBtn" value={this.state.formBtnTxt} />
       </form>
+      </div>
     );
   }
 
