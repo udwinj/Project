@@ -24,18 +24,21 @@ render(){
 
 
   return (
-      <Navbar>
-         <Navbar.Collapse>
+      <div>
+         <Navbar>
         <Nav >
           <NavItem>
-            <Button><NavLink activeClassName='active' to='/menu/BugTracking'>Issue</NavLink></Button>
+            <NavLink activeClassName='active' to='/menu/BugTracking'>Issue</NavLink>
           </NavItem>
           <NavItem>
-            <Button><NavLink activeClassName='active' to='/menu/IssueReports'>Reports</NavLink></Button>
+            <NavLink activeClassName='active' to='/menu/IssueReports'>Reports</NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink activeClassName='active' to='/menu/NewIssue'>Create New Issue</NavLink>
           </NavItem>
         </Nav>
-        </Navbar.Collapse>
-     </Navbar>
+        </Navbar>
+    </div>
  );
 }
 }
