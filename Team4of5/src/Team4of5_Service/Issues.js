@@ -13,7 +13,6 @@ export const addNewIssue = function(
     expComDate, issueDate, owner, project,
        issue_status){
         var thisIssueRef = issueRef.child(issue_id);
-        
 	    thisIssueRef.update({
               id: issue_id,
               owner: owner,

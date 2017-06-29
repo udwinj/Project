@@ -10,7 +10,7 @@ import BugTrackingTableBody from './BugTrackingTableBody.js';
 
 import IssueTrackerNav from './IssueTrackerNav.js';
 import IssueTrackerBody from './IssueTrackerBody.js';
-import './BugTracking.css';
+//import './BugTracking.css';
 
 class BugTracking extends React.Component {
   constructor(props){
