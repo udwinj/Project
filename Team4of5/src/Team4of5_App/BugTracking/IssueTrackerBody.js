@@ -2,8 +2,11 @@ import React, {Component} from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 import { Navbar, Jumbotron, Button, Input, Nav } from 'react-bootstrap';
-import database from './database'
-import * as Bugs from '../../Team4of5_Service/Bugs.js'
+
+//Connect Firebase
+import * as firebase from 'firebase';
+import * as Config from '../../Team4of5_Service/Config.js';
+import * as Issues from '../../Team4of5_Service/Issues.js';
 
 
 const issueData = []
@@ -48,14 +51,14 @@ class IssueTrackerBody extends React.Component{
 
   this.state = {
     issues:[],
-    bug_id: '',
+    issue_id: '',
     issue_date: Date.now(),
     status: ''
 
   };
 
-    //connect to database
-    this.issueRef = database.ref().child('issues');
+
+    this.issueRef = firebase.database().ref().child('issues');
     //Click the save button; then the data will save to firebase
     this.handleSaveBtnClick = this.handleSaveBtnClick.bind(this);
     this.afterInsertRow = this.afterInsertRow.bind(this);
@@ -63,11 +66,12 @@ class IssueTrackerBody extends React.Component{
 }
 //After the connect, what the state will do--gotdata
 componentDidMount() {
-  this.issueRef.on('value', this.gotData, this.errData, this.saveData);
+  this.issueRef.on('value', this.gotData, this.errData);
+
 }
 
 //get the data from the firebase and push them out
-  gotData = (data) => {
+ gotData = (data) => {
       let newIssue = []
       const issuedata = data.val();
       const keys = Object.keys(issuedata);
@@ -75,7 +79,7 @@ componentDidMount() {
       for (let i = 0; i < keys.length; i++) {
         const k = keys[i];
         newIssue.push({
-          id: issuedata[k].id, status: issuedata[k].status,
+          id: issuedata[k].id, status: issuedata[k].issue_status,
           issueDate: issuedata[k].issueDate,
           owner: issuedata[k].owner, expComDate: issuedata[k].expComDate,
           details: issuedata[k].details,
@@ -85,7 +89,26 @@ componentDidMount() {
       }
       this.setState({issues: newIssue});
     }
-        errData = (err) => {
+
+//     //try to add Data into
+// addData =(data)=>{
+//     let startId = data.length;
+//     for (let i = 0; i < data; i++){
+//         const id = startId + i;
+//         Issues.addNewIssue(this.state.Issues[i].issue_id,
+//           this.state.Issues[i].issue_status,
+//           this.state.Issues[i].owner,
+//           this.state.Issues[i].issueDate,
+//           this.state.Issues[i].expComDate,
+//           this.state.Issues[i].details,
+//           this.state.Issues[i].completionDate,
+//           this.state.Issues[i].project);
+//
+//     }
+//     this.setState({issues: Issues})
+// }
+
+errData = (err) => {
     console.log(err);
     }
 
@@ -120,45 +143,47 @@ handleModalClose(onClose) {
     onClose();
   }
 //I try to connect database and write It back
-handleSaveBtnClick(onSave){
-    onSave();
-    this.afterInsertRow()
 
-}
 afterInsertRow() {
-  var x = this.state.issues.length;
-  Bugs.addNewBug(this.state.issues[x].id,
-    this.state.issues[x].status,
-    this.state.issues[x].owner,
-    this.state.issues[x].issueDate,
-    this.state.issues[x].expComDate,
-    this.state.issues[x].details,
-    this.state.issues[x].completionDate, 
-    this.state.issues[x].project);
-  return;
-  
-}
-
+   //var x = this.state.issues.length;
+   Issues.addNewIssue();
+   return Issues;
+ }
+ handleSaveBtnClick = (columns, onSave)=>{
+    const row = {};
+    columns.forEach((columns, i)=>{
+        if(this.refs[columns.filed] != undefined &&this.refs[columns.field].value!== undefined){
+            row[columns.field] = this.refs[columns.field].value;
+        }
+    },this);
+    this.setState({issues: Issues});
+ }
+//   onAfterInsertRow=(row)=> {
+//   let newRowStr = '';
+//
+//   for (const prop in row) {
+//     newRowStr += prop + ': ' + row[prop] + ' \n';
+//   }
+//   alert('The new row is:\n ' + newRowStr);
+// }
 
   createCustomModalFooter = (onClose, onSave) => {
     return (
         <div className='modal-footer' >
           <button className='btn btn-xs btn-info' onClick={ onClose }>Close</button>
-          <button className='btn btn-xs btn-danger' onClick={ onSave }>Report</button>
+          <button className='btn btn-xs btn-success' onClick={onSave}>Report</button>
         </div>
     );
 
   }
 
 
-
-
-
   render(){
 
    const options = {
          insertModalHeader: this.createCustomModalHeader,
-         insertModalFooter: this.createCustomModalFooter
+         insertModalFooter: this.createCustomModalFooter,
+         afterInsertRow: this.afterInsertRow.bind(this),
        };
 
 
@@ -170,7 +195,7 @@ return (
         exportCSV={ true }
         options={ options }
         pagination={true}
-        insertRow
+        insertRow={true}
         search={true}>
 
         <TableHeaderColumn dataField='id' isKey={true} width='50'>ID</TableHeaderColumn>
@@ -183,7 +208,6 @@ return (
         <TableHeaderColumn dataField='project' tdStyle={ { whiteSpace: 'nowrap' } }>Project</TableHeaderColumn>
 
       </BootstrapTable>
-
     );
 
   }
