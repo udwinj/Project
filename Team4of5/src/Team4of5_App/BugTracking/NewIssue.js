@@ -85,40 +85,47 @@ class NewIssue extends React.Component {
               <p>Please enter issue information</p>
           </div>
         <div>
+        <label>
+        Status
+        <div> </div>
+        <select value={this.state.status} onChange={this.handleChange.bind(this, 'status')}>
+            <option value="New">New</option>
+            <option value="Open">Open</option>
+            <option value="Assigned">Assigned</option>
+            <option value="Verified">Verified</option>
+            <option value="Closed">Closed</option>
+          </select>
+          </label>
+        </div>
+        <div>
             <label>
-              Status:
-              <input type="text" value={this.state.status} placeholder='Status of issue' onChange={this.handleChange.bind(this, 'status')} />
+              Owner
+              <input type="text" value={this.state.owner} placeholder='The email of the issue owner' onChange={this.handleChange.bind(this, 'owner')} />
             </label>
         </div>
         <div>
             <label>
-              Owner:
-              <input type="text" value={this.state.owner} placeholder='Issue owner' onChange={this.handleChange.bind(this, 'owner')} />
-            </label>
-        </div>
-        <div>
-            <label>
-              Expected Completed in Days:
+              Expected days to complete
               <input type="text" value={this.state.expComDate} placeholder='Estimated days to solve issue' onChange={this.handleChange.bind(this, 'expComDate')} />
             </label>
         </div>
         <div>
             <label>
-              Details:
+              Details
               <input type="text" value={this.state.details} placeholder='Issue details' onChange={this.handleChange.bind(this, 'details')} />
             </label>
         </div>
         <div>
             <label>
-              Actual Completion Date:
+              Actual completion date
               <div> </div>
               <input type="date" value={this.state.completionDate} onChange={this.handleChange.bind(this, 'completionDate')} />
             </label>
         </div>
         <div>
             <label>
-              Project:
-              <input type="text" value={this.state.project} placeholder='Enter project associated with this issue'  onChange={this.handleChange.bind(this, 'project')} />
+              Project
+              <input type="text" value={this.state.project} placeholder='Enter project ID associated with this issue'  onChange={this.handleChange.bind(this, 'project')} />
             </label>
         </div>
 
