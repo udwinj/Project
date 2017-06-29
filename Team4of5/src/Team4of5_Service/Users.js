@@ -41,6 +41,7 @@ export const saveUserinfo = function () {
         });
 }
 
+
 // this is reset password if email in manually given
 export const resetPwd = function(user_email){
     return firebase.auth().sendPasswordResetEmail(user_email);
