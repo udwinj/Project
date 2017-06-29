@@ -78,7 +78,7 @@ componentDidMount() {
       for (let i = 0; i < keys.length; i++) {
         const k = keys[i];
         newIssue.push({
-          id: k, status: issuedata[k].issue_status,
+          id: k, status: issuedata[k].status,
           issueDate: issuedata[k].issueDate,
           owner: issuedata[k].owner, expComDate: issuedata[k].expComDate,
           details: issuedata[k].details,
@@ -167,7 +167,7 @@ return (
         insertRow={true}
         search={true}>
 
-        <TableHeaderColumn dataField='id' isKey={true} width='50'>ID</TableHeaderColumn>
+        <TableHeaderColumn dataField='id' isKey={true} width='200'>ID</TableHeaderColumn>
         <TableHeaderColumn dataField='status'  editable={ { type: 'select', options: { values: issueStatus }, defaultValue: 'C' }}>Status</TableHeaderColumn>
         <TableHeaderColumn dataField='owner' tdStyle={ { whiteSpace: 'nowrap' } }>Owner</TableHeaderColumn>
         <TableHeaderColumn dataField='issueDate' dataFormat={ dateFormatter }>IssueDate</TableHeaderColumn>
