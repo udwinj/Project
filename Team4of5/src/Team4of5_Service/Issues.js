@@ -17,7 +17,7 @@ export const addNewIssue = function(
               completionDate: completionDate,
               details: details,
               expComDate: expComDate,
-              issuedate: Date.now().toDateString(),
+              issuedate: Date.now(),
               project: project,
               status: issue_status,
               issue_last_edited_dtm: Date.now()

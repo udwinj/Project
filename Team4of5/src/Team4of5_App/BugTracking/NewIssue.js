@@ -39,15 +39,20 @@ class NewIssue extends React.Component {
     }
 
  handleSubmit(event) {
-     if (this.state.completionDate
-         &&this.state.details&&this.state.expComDate
+     if (this.state.details&&this.state.expComDate
          &&this.state.owner
          &&this.state.project&&this.state.status) 
      {
+      if(!this.state.completionDate){
+        this.state.completionDate = 'null'
+      }
+
              Issues.addNewIssue(
-                  this.state.completionDate,this.state.details,
+                  this.state.completionDate,
+                  this.state.details,
                   this.state.expComDate,
-                  this.state.owner,this.state.project,
+                  this.state.owner,
+                  this.state.project,
                   this.state.status)
                   .then((Issue)=>{
                       console.log(Issue);
@@ -55,7 +60,7 @@ class NewIssue extends React.Component {
                   })
       }
           else {
-            alert("Please fill all fields");
+            alert("Please fill all fields except the completion date");
           }
 
 
@@ -77,43 +82,43 @@ class NewIssue extends React.Component {
       <form className='createIssue' onSubmit={this.handleSubmit}>
           <div className="title">
               <h1>Create New Issue</h1>
-              <p>Please enter any issue information</p>
+              <p>Please enter issue information</p>
           </div>
         <div>
             <label>
               Status:
-              <input type="text" value={this.state.status} placeholder='Enter Status' onChange={this.handleChange.bind(this, 'status')} />
+              <input type="text" value={this.state.status} placeholder='Status of issue' onChange={this.handleChange.bind(this, 'status')} />
             </label>
         </div>
         <div>
             <label>
               Owner:
-              <input type="text" value={this.state.owner} placeholder='Who do you want to own this issue' onChange={this.handleChange.bind(this, 'owner')} />
+              <input type="text" value={this.state.owner} placeholder='Issue owner' onChange={this.handleChange.bind(this, 'owner')} />
             </label>
         </div>
         <div>
             <label>
               Expected Completed in Days:
-              <input type="text" value={this.state.expComDate} placeholder='how many days will be solved' onChange={this.handleChange.bind(this, 'expComDate')} />
+              <input type="text" value={this.state.expComDate} placeholder='Estimated days to solve issue' onChange={this.handleChange.bind(this, 'expComDate')} />
             </label>
         </div>
         <div>
             <label>
               Details:
-              <input type="text" value={this.state.details} placeholder='Issue Details' onChange={this.handleChange.bind(this, 'details')} />
+              <input type="text" value={this.state.details} placeholder='Issue details' onChange={this.handleChange.bind(this, 'details')} />
             </label>
         </div>
         <div>
             <label>
               Actual Completion Date:
               <div> </div>
-              <input type="date" value={this.state.completionDate} placeholder='Completion Date' onChange={this.handleChange.bind(this, 'completionDate')} />
+              <input type="date" value={this.state.completionDate} onChange={this.handleChange.bind(this, 'completionDate')} />
             </label>
         </div>
         <div>
             <label>
               Project:
-              <input type="text" value={this.state.project} placeholder='Enter Project'  onChange={this.handleChange.bind(this, 'project')} />
+              <input type="text" value={this.state.project} placeholder='Enter project associated with this issue'  onChange={this.handleChange.bind(this, 'project')} />
             </label>
         </div>
 
