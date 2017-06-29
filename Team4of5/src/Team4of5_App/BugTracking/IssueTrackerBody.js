@@ -48,13 +48,18 @@ class IssueTrackerBody extends React.Component{
 
   this.state = {
     issues:[],
-    bug_id: ''
+    bug_id: '',
+    issue_date: Date.now(),
+    status: ''
+
   };
 
     //connect to database
     this.issueRef = database.ref().child('issues');
     //Click the save button; then the data will save to firebase
     this.handleSaveBtnClick = this.handleSaveBtnClick.bind(this);
+    this.afterInsertRow = this.afterInsertRow.bind(this);
+    this.handleModalClose = this.handleModalClose.bind(this);
 }
 //After the connect, what the state will do--gotdata
 componentDidMount() {
@@ -115,29 +120,45 @@ handleModalClose(onClose) {
     onClose();
   }
 //I try to connect database and write It back
-  handleSaveBtnClick(){
-    this.state.bug_id = 99;
-    Bugs.addNewBug(this.state.bug_id, 'a','b','c','d','e','f','g');
-};
+handleSaveBtnClick(onSave){
+    onSave();
+    this.afterInsertRow()
+
+}
+afterInsertRow() {
+  var x = this.state.issues.length;
+  Bugs.addNewBug(this.state.issues[x].id,
+    this.state.issues[x].status,
+    this.state.issues[x].owner,
+    this.state.issues[x].issueDate,
+    this.state.issues[x].expComDate,
+    this.state.issues[x].details,
+    this.state.issues[x].completionDate, 
+    this.state.issues[x].project);
+  return;
+  
+}
 
 
   createCustomModalFooter = (onClose, onSave) => {
     return (
         <div className='modal-footer' >
           <button className='btn btn-xs btn-info' onClick={ onClose }>Close</button>
-          <button className='btn btn-xs btn-danger' onClick={this.handleSaveBtnClick}>Report</button>
+          <button className='btn btn-xs btn-danger' onClick={ onSave }>Report</button>
         </div>
     );
 
   }
 
 
+
+
+
   render(){
 
    const options = {
          insertModalHeader: this.createCustomModalHeader,
-         insertModalFooter: this.createCustomModalFooter,
-        //  afterInsertRow: this.onAfterInsertRow
+         insertModalFooter: this.createCustomModalFooter
        };
 
 
@@ -162,6 +183,7 @@ return (
         <TableHeaderColumn dataField='project' tdStyle={ { whiteSpace: 'nowrap' } }>Project</TableHeaderColumn>
 
       </BootstrapTable>
+
     );
 
   }
