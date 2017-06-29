@@ -122,8 +122,13 @@ class Settings extends React.Component {
               Reset Role
                 <small><br/>Your current role is {this.state.userInfo[0]}</small>
                     </div>
-            <input type="text" value={this.state.role} onChange={this.handleChange.bind(this, 'role')} />
-          </label>
+                <select value={this.state.role} onChange={this.handleChange.bind(this, 'role')}>
+                <option value=""></option>
+                <option value="Customer">Customer</option>
+                <option value="Administrator">Administrator</option>
+                <option value="Project Contributor">Project Contributor</option>
+              </select>
+              </label>
         </div>
         <div>
           <label>
