@@ -9,8 +9,10 @@ class IssueReports extends React.Component {
   render() {
     return (
     <div>
+        <div>
             <IssueTrackerNav />
-            
+        </div>
+
       <div>
             <IssueReportStaff />
       </div>
