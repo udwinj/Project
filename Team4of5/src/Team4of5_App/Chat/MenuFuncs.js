@@ -23,6 +23,7 @@ import * as actions from '../App_Redux/ActionCreator'
 import { bindActionCreators } from 'redux';
 import createStore from '../App_Redux/CreateStores'
 import PropTypes from 'prop-types';
+import * as User from '../../Team4of5_Service/Users.js';
 
 const store = createStore();
 
@@ -35,18 +36,51 @@ class MenuFuncs extends React.Component {
         super(props);
         this.state = {
             options: [{ value: 'Active', label: 'Active' },
-                        { value: 'Hide', label: 'Hide' }],
+            { value: 'Hide', label: 'Hide' }],
             selectValue: 'Active',
+            userInfo: [],
         }
         this.updateValue = this.updateValue.bind(this);
-
+        this.getData = this.getData.bind(this);
     }
 
-    updateValue (newValue) {
-		this.setState({
-			selectValue: newValue
-		});
-	}
+    componentDidMount() {
+        let self = this;
+        console.log("User.userExist: "+ User.userExist());
+        if(User.userExist() == true){
+            User.getUserData().then(function (data) {
+                //Update UI, 
+                // const userdata = data.val();
+                // console.log("get data");
+                // console.log(userdata);
+                // //  getData(data).bind(this);
+
+                // let newUser = [];
+                // newUser.push(userdata.display_name);
+                // self.setState({ userInfo: newUser });
+                self.getData(data);
+            }, function (err) {
+                //Error occur
+                console.log("Promise Error");
+                console.log(err);
+            })
+        }
+
+    }
+    getData(data) {
+        let newUser = []
+        const userdata = data.val();
+        //const keys = Object.keys(userdata);
+
+        newUser.push(userdata.display_name);
+        this.setState({ userInfo: newUser });
+    }
+
+    updateValue(newValue) {
+        this.setState({
+            selectValue: newValue
+        });
+    }
 
     render() {
         console.log("CCCCCHHHAATTT!!!")
@@ -58,10 +92,10 @@ class MenuFuncs extends React.Component {
                     </Media.Left></Col>
                     <Col xs={1} md={1}>
                         <div>
-                            <p>UserName</p>
-                            <Select 
-                            style={{ width: 100 }}
-                            autosize
+                            <h4>{this.state.userInfo[0]}</h4>
+                            <Select
+                                style={{ width: 100 }}
+                                autosize
                                 ref="stateSelect"
                                 autofocus
                                 options={this.state.options}

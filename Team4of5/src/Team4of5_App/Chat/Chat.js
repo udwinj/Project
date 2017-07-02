@@ -12,12 +12,14 @@ import Add from './Add';
 import CreateProject from './CreateProject';
 import { Provider } from 'react-redux'
 import createStore from '../App_Redux/CreateStores'
+import * as Messaging from '../../Team4of5_Service/CloudMessaging.js';
 
 const store = createStore();
 
 class ChatMenu extends React.Component {
     constructor(props) {
         super(props);
+        //Messaging.requestMsgPermission();
     }
 
     render() {

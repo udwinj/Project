@@ -22,13 +22,25 @@ export const saveUserinfo = function () {
 		  if (user) {
 		    // alert("user " + user.uid + " logged in");
 		    var user_uid = user.uid;
+            var user_email = user.email;
+
+
 		    var thisUserRef = usersRef.child(user_uid);
 		          thisUserRef.update({
-			      last_login_dtm: Date.now()
+			      last_login_dtm: Date.now(),
+                  email: user_email
      		});
-		    } 
+            thisUserRef.on("value", function(snapshot) {
+                var displayname = snapshot.val().display_name;
+                var role = snapshot.val().role;
+                if (role == null || displayname == null){
+                    alert("Please go to the settings page to complete your profile")
+                }
+            });
+		    }
         });
 }
+
 
 // this is reset password if email in manually given
 export const resetPwd = function(user_email){
@@ -49,32 +61,31 @@ export const resetPwdWhenLoggedOn = function(){
 }
 
 // this allows a user to update their display name in the settings tab
-export const updateUserDisplayName = function(user_display_name){
-   return firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-       // alert("user " + user.uid + " changed their display name to " + user_display_name);
-        var user_uid = user.uid;
-		var thisUserRef = usersRef.child(user_uid);
-              thisUserRef.update({
-              display_name: user_display_name
-                });
-        } // end if
-    }) //end function
+export const updateSettings = function(user_display_name, user_role){
+    var user = firebase.auth().currentUser;
+    var user_uid = user.uid;
+    var thisUserRef = usersRef.child(user_uid);
+
+
+    if (user_display_name && user_role){
+        return thisUserRef.update({
+                  display_name: user_display_name,
+                                  role: user_role
+        });
+    }
+    else if (user_display_name){
+        return thisUserRef.update({
+                  display_name: user_display_name
+        });
+    }
+    else if (user_role){
+        return thisUserRef.update({
+                  role: user_role
+        });
+    }
+
 }
 
-// this allows a user to update their role in the settings tab
-export const updateRole = function(user_role){
-       return firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-            var user_uid = user.uid;
-            var thisUserRef = usersRef.child(user_uid);
-            thisUserRef.update({
-                role: user_role,  
-                last_login_dtm: Date.now(),
-            });
-        }
-    })
-}
 
 // this allows a user to logout
 // it shouldn't need any parameters if the user is logged in
@@ -82,6 +93,19 @@ export const logoutUser = function(){
     return firebase.auth().signOut();
 }
 
+export const userExist = function(){
+    if(firebase.auth().currentUser != null){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+//Must check current user exist before calling this function!!!!!
+export const getUserData = function () {
+    let user = firebase.auth().currentUser;
+    return firebase.database().ref().child('users/' + user.uid).once('value')
+}
 
 
     // .then(function (user) {

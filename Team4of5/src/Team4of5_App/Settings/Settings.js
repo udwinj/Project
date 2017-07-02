@@ -20,12 +20,13 @@ import {
 class Settings extends React.Component {
     constructor(props) {
         super(props);
-    
+
      this.state = {
       role: '',
       displayname: '',
       redirectToMenu: false,
       userInfo:[],
+      formBtnTxt: 'Update Settings',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -39,8 +40,8 @@ class Settings extends React.Component {
 
             if (user != null) {
               name = user.displayName;
-              uid = user.uid;  
-            
+              uid = user.uid;
+
 
           var thisUser = firebase.database().ref().child('users/' + uid);
           thisUser.on('value', this.gotData, this.errData);
@@ -71,18 +72,17 @@ class Settings extends React.Component {
   }
 
   handleSubmit(event) {
-    if (this.state.displayname) {
+     if (this.state.displayname || this.state.role) {
 
-    Users.updateUserDisplayName(this.state.displayname)
-        .then((User) => {
-    });
-    }
+    Users.updateSettings(this.state.displayname, this.state.role)
+         .then((User) => {
+    //         //handle redirect
+             this.setState({redirectToMenu: false});
+     })
+     };
 
-    if (this.state.role) {
-        Users.updateRole(this.state.role)
-        .then((User) => {
-    });
-    };  
+     this.state.displayname = '';
+     this.state.role = '';
 
     event.preventDefault();
 
@@ -92,16 +92,15 @@ class Settings extends React.Component {
 
     const { from } = this.props.location.state ||{ from: { pathname: '/menu' }}
     const { redirectToMenu } = this.state
-    
+
     if (redirectToMenu) {
           return (
            <Redirect to={from}/>
-
           )
         }
 
     return (
-      <form className="submitform" onSubmit={this.handleSubmit}>  
+      <form className="submitform" onSubmit={this.handleSubmit}>
         <div className="title">
             <h1>Settings</h1>
             <p>Please enter any user information that you want to reset</p>
@@ -116,15 +115,20 @@ class Settings extends React.Component {
             <input type="text" value={this.state.displayname} onChange={this.handleChange.bind(this, 'displayname')} />
           </label>
         </div>
-        
+
         <div>
           <label>
             <div className="emailLabel">
               Reset Role
                 <small><br/>Your current role is {this.state.userInfo[0]}</small>
                     </div>
-            <input type="text" value={this.state.role} onChange={this.handleChange.bind(this, 'role')} />
-          </label>
+                <select value={this.state.role} onChange={this.handleChange.bind(this, 'role')}>
+                <option value=""></option>
+                <option value="Customer">Customer</option>
+                <option value="Administrator">Administrator</option>
+                <option value="Project Contributor">Project Contributor</option>
+              </select>
+              </label>
         </div>
         <div>
           <label>
@@ -135,9 +139,9 @@ class Settings extends React.Component {
             </div>
           </label>
         </div>
-        <input type="submit"
-          id="submitBtn"
-          value={this.state.formBtnTxt} />
+
+        <input type="submit" id="submitBtn" value={this.state.formBtnTxt}/>
+
       </form>
         );
     }
