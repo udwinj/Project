@@ -7,6 +7,9 @@ import * as Config from './Config.js';
 firebase.initializeApp(Config.firebase_config);
 var ref = firebase.app().database().ref();
 var usersRef = ref.child('users');
+var issueRef = ref.child('issues');
+
+const issueStatus = ['New', 'Open', 'Assiged', 'Fixed', 'Verified', 'Closed'];
 
 
 export const create_user = function (user_email, user_pass) {
@@ -107,29 +110,44 @@ export const getUserData = function () {
     return firebase.database().ref().child('users/' + user.uid).once('value')
 }
 
+export const getAllUserData = function () {
+var userArray = [];
+var x = 0;
 
-    // .then(function (user) {
-    //     // user signed in
-    //     return null;
-    // }).catch(function (error) {
-    //     console.log(error);
-    //     //var errorCode = error.code;
-    //     //var errorMessage = error.message;
-    //     console.log(error.message);
-    //     return error.message;
-    // });
+var query = issueRef.orderByKey();
+query.once("value")
+  .then(function(snapshot) {
+    snapshot.forEach(function(childSnapshot) {
+      var key = childSnapshot.key;
+      var owner = childSnapshot.val().owner;
+      var status = childSnapshot.val().status;
+      var exists = 0
+      var new_cnt = 0
 
-    // firebase.auth().onAuthStateChanged(function (user) {
-    //     if (user) {
-    //         console.log("user " + user.uid + " logged in");
-    //         let user_uid = user.uid;
-    //         let thisUserRef = firebase.app().database().ref().child('users').child(user_uid);
+    for (var i = 0; i < userArray.length; i++) {
+        var datum = userArray[i];
+        if(datum.key == owner && datum.value == status){
+            exists = 1;
+            new_cnt = datum.cnt +1 ;
+            userArray[i].cnt = new_cnt;
+        } //if
+    } //for
+    if (exists == 0){
+        userArray.push({key: owner, value: status, cnt: 1});
+    } //if
 
-    //         thisUserRef.update({
-    //             display_name: user.displayName,
-    //             last_login_dtm: Date.now(),
-    //         });
-    //         return;
-    //     }
-    // });
-    // return;
+}); //childsnapshots
+        for (var i = 0; i < userArray.length; i++) {
+        var datum = userArray[i];
+        alert([datum.key, datum.value, datum.cnt])
+        }
+        return userArray;
+
+}); //snapshot
+
+
+
+      return userArray;
+}
+
+
