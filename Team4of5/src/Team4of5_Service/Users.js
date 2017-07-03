@@ -123,43 +123,11 @@ export const getCurrentUser = function () {
 }
 
 export const getAllUserData = function () {
-    var userArray = [];
-    var x = 0;
-
-    var query = issueRef.orderByKey();
-    query.once("value")
-        .then(function (snapshot) {
-            snapshot.forEach(function (childSnapshot) {
-                var key = childSnapshot.key;
-                var owner = childSnapshot.val().owner;
-                var status = childSnapshot.val().status;
-                var exists = 0
-                var new_cnt = 0
-
-                for (var i = 0; i < userArray.length; i++) {
-                    var datum = userArray[i];
-                    if (datum.key == owner && datum.value == status) {
-                        exists = 1;
-                        new_cnt = datum.cnt + 1;
-                        userArray[i].cnt = new_cnt;
-                    } //if
-                } //for
-                if (exists == 0) {
-                    userArray.push({ key: owner, value: status, cnt: 1 });
-                } //if
-
-            }); //childsnapshots
-            for (var i = 0; i < userArray.length; i++) {
-                var datum = userArray[i];
-                alert([datum.key, datum.value, datum.cnt])
-            }
-            return userArray;
-
-        }); //snapshot
 
 
+    return issueRef.orderByKey().once("value");
 
-    return userArray;
+
 }
 
 

@@ -68,17 +68,60 @@ class IssueReportStaff extends React.Component {
 }
 
  componentDidMount() {
-          this.state.reportIssue = User.getAllUserData();
-          alert(this.state.reportIssue);
+          let self = this;
+
+          User.getAllUserData().then(function (data) {
+                //Update UI, 
+                // const userdata = data.val();
+                // console.log("get data");
+                // console.log(userdata);
+                // //  getData(data).bind(this);
+
+                // let newUser = [];
+                // newUser.push(userdata.display_name);
+                // self.setState({ userInfo: newUser });
+                self.getData(data);
+            }, function (err) {
+                //Error occur
+                console.log("Promise Error");
+                console.log(err);
+            })
+
     }
 
     getData(data) {
-        let newUser = []
-        const userdata = data.val();
-        //const keys = Object.keys(userdata);
+        const issuedata = data.val();
+        const keys = Object.keys(issuedata);
 
-        newUser.push(userdata.display_name);
-        this.setState({ userInfo: newUser });
+        var userArray = [];
+        var x = 0;
+
+        for (let i = 0; i < keys.length; i++) {
+          const k = keys[i];
+          var owner = issuedata[k].owner
+          var status = issuedata[k].status
+          var exists = 0
+          var new_cnt = 0
+
+        for (var m = 0; m < userArray.length; m++) {
+          var datum = userArray[m];
+          if (datum.key == owner && datum.value == status) {
+            exists = 1;
+            new_cnt = datum.cnt + 1;
+            userArray[m].cnt = new_cnt;
+          } //if
+        } // for 
+        if (exists == 0) {
+          userArray.push({ key: owner, value: status, cnt: 1 });
+        } //if
+      }
+
+        for (var i = 0; i < userArray.length; i++) {
+            var datum = userArray[i];
+            //alert([datum.key, datum.value, datum.cnt])
+        } //for 
+        this.setState({reportIssue: userArray});
+
     }
 
 
@@ -138,7 +181,7 @@ class IssueReportStaff extends React.Component {
           return (
                <fieldset className="step-4">
                     <div className="heading">
-                         <h3>Issue Report Per Staff</h3>
+                         <h3>Issue Count per Staff</h3>
                     </div>
                     <div className=" padd-lr">
                          <table cellSpacing="50" id="mytable">
