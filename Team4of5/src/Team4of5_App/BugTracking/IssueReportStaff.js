@@ -1,94 +1,14 @@
-// import React from 'react';
-// import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-//
-// const staffIssueSummary=[
-//     {
-//       id: 1,
-//       staffName: "Admin",
-//       new: 20,
-//       open: 11,
-//       assigned: 12,
-//       fixed: 22,
-//       verified: 17,
-//       closed:11,
-//     },
-//     {
-//         id: 2,
-//         staffName: "Jim",
-//         new: 11,
-//         open: 12,
-//         assigned: 21,
-//         fixed: 31,
-//         verified: 10,
-//         closed:11,
-//     },
-//     {
-//         id: 3,
-//         staffName: "Bill",
-//         new: 20,
-//         open: 11,
-//         assigned: 12,
-//         fixed: 22,
-//         verified: 19,
-//         closed:11,
-//     },
-//     {
-//         id: 4,
-//         staffName: "Clarie",
-//         new: 20,
-//         open: 11,
-//         assigned: 12,
-//         fixed: 22,
-//         verified: 21,
-//         closed:11,
-//     },
-//     {
-//         id: 5,
-//         staffName: "Kara",
-//         new: 20,
-//         open: 11,
-//         assigned: 12,
-//         fixed: 22,
-//         verified: 19,
-//         closed:11,
-//     },
-// ]
-//
-// class IssueReportStaff extends React.Component {
-//   render() {
-//     return (
-//
-//
-//       <div>
-//           <BootstrapTable
-//           data={ staffIssueSummary }
-//           exportCSV = {false}
-//           striped
-//           >
-//             <TableHeaderColumn isKey={true} dataField='id' hidden={true} >ID</TableHeaderColumn>
-//             <TableHeaderColumn dataField='staffName' width='30'>Staff</TableHeaderColumn>
-//             <TableHeaderColumn dataField='new' width='30'>New</TableHeaderColumn>
-//             <TableHeaderColumn dataField='open' width='30'>Open</TableHeaderColumn>
-//             <TableHeaderColumn dataField='assigned' width='30'>Assigned</TableHeaderColumn>
-//             <TableHeaderColumn dataField='fixed' width='30'>Fixed</TableHeaderColumn>
-//             <TableHeaderColumn dataField='verified' width='30'>Verified</TableHeaderColumn>
-//             <TableHeaderColumn dataField='closed' width='30'>Closed</TableHeaderColumn>
-//           </BootstrapTable>
-//       </div>
-//
-//     );
-//   }
-// }
-// export default IssueReportStaff;
 import React, {Component} from 'react';
 import './IssueTracker.css';
+import * as User from '../../Team4of5_Service/Users.js';
 
 class IssueReportStaff extends React.Component {
      constructor(props){
           super(props);
      this.state = {
+      reportIssue: [],  
           data: [
-              {'id':1,1:'staffName',2:'new',3:'open',4:'assigned',5:'fixed',6:'verified',7:'closed'},
+              {'id':1,1:'Bug Owner',2:'New',3:'Open',4:'Assigned',5:'Fixed',6:'Verified',7:'Closed'},
               {
                    id: 2,
                    staffName: "Admin",
@@ -144,8 +64,23 @@ class IssueReportStaff extends React.Component {
      };
       this.staffIssueForm = this.staffIssueForm.bind(this);
       this.appendColumn = this.appendColumn.bind(this);
-     //  this.editColumn = this.editColumn.bind(this);
+      this.getData = this.getData.bind(this);
 }
+
+ componentDidMount() {
+          this.state.reportIssue = User.getAllUserData();
+          alert(this.state.reportIssue);
+    }
+
+    getData(data) {
+        let newUser = []
+        const userdata = data.val();
+        //const keys = Object.keys(userdata);
+
+        newUser.push(userdata.display_name);
+        this.setState({ userInfo: newUser });
+    }
+
 
      staffIssueForm(id,value){
           console.log(this.props,'issues reports with staff');
@@ -156,7 +91,7 @@ class IssueReportStaff extends React.Component {
 
      // append column to the HTML table
       appendColumn() {
-               let obj =  this.state.data.map((p) => {
+               let obj =  this.state.dataf.map((p) => {
                     let size = Object.keys(p).length;
                     p[size+1] = '-';
                     return p;
@@ -187,10 +122,11 @@ class IssueReportStaff extends React.Component {
           }
            }
 
+
      render(){
 
           let list = this.state.data.map(p =>{
-               return (
+               return (          
                     <tr className="grey2" key={p.id}>
                          {Object.keys(p).filter(k => k !== 'id').map(k => {
                                return (<td className="grey1" key={p.id+''+k}><div suppressContentEditableWarning="true" contentEditable="true"
