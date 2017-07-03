@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import * as actions from '../App_Redux/ActionCreator'
 import { bindActionCreators } from 'redux';
 import * as Users from '../../Team4of5_Service/Users.js';
-import * as Chat from '../../Team4of5_Service/Chat.js';
+import * as ChatService from '../../Team4of5_Service/Chat.js';
 
 class Add extends React.Component {
     constructor(props) {
@@ -25,15 +25,25 @@ class Add extends React.Component {
         e.preventDefault();
         if (!input.value) { return false; }
         console.log(input.value);
-        
 
 
-        alert("User: "+ input.value+ " (Searching...)");
+
+        alert("User: " + input.value + " (Searching...)");
         //this._pushMessage(this.state.curr_user, input.value)
-        Chat.findUser(input.value)
-        .then((Data) =>  {       
-            alert(input.value + " Succeed!!");
-        });
+        ChatService.findUser(input.value)
+            .then((data) => {
+                // alert(input.value + " Succeed!!");
+                //alert(data.email + " with the name " + data.display_name)
+
+                //return snapshot.val().email;
+                return ChatService.addContact(data, "Individual")
+
+            }).then(function () {
+                alert("Successfully added!!!")
+            }).catch(function (err) {
+                //console.log("error occur!!" + err)
+                alert(err)
+            });
         input.value = '';
     }
 
@@ -47,7 +57,7 @@ class Add extends React.Component {
                 <div id="ChatInput">
                     <form onSubmit={this._onMessageSubmit.bind(this)}>
                         <input type="chatInput" ref="message" placeholder="Search..." className="message-input" />
-                </form>
+                    </form>
                 </div>
             </div>
 

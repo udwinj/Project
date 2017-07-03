@@ -19,7 +19,7 @@ const store = createStore();
 class ChatMenu extends React.Component {
     constructor(props) {
         super(props);
-        //Messaging.requestMsgPermission();
+        Messaging.requestMsgPermission();
     }
 
     render() {

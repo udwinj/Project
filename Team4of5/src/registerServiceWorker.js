@@ -7,18 +7,31 @@
 
 // To learn more about the benefits of this model, read https://goo.gl/KwvDNy.
 // This link also includes instructions on opting out of this behavior.
+import * as firebase from 'firebase';
 
 export default function register() {
-  if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+  //process.env.NODE_ENV === 'production'
+  if (process.env.NODE_ENV === 'development' && 'serviceWorker' in navigator) {
+     console.log('public url:' + process.env.PUBLIC_URL);
     window.addEventListener('load', () => {
+      navigator.serviceWorker.register(`${process.env.PUBLIC_URL}/firebase-messaging-sw.js`).then(function (register) {
+        console.log('register1:' + register);
+      }).catch(function (err) {
+        console.log('err1:' + err);
+      });
+      console.log('register1');
+      //navigator.serviceWorker.register('./firebase-messaging-sw.js');
       const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
       navigator.serviceWorker
         .register(swUrl)
         .then(registration => {
+          console.log('register2');
           registration.onupdatefound = () => {
             const installingWorker = registration.installing;
+            console.log('register3');
             installingWorker.onstatechange = () => {
               if (installingWorker.state === 'installed') {
+                console.log('register4');
                 if (navigator.serviceWorker.controller) {
                   // At this point, the old content will have been purged and
                   // the fresh content will have been added to the cache.
@@ -49,3 +62,4 @@ export function unregister() {
     });
   }
 }
+
