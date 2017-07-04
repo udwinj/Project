@@ -269,6 +269,7 @@ class IssueReportStaff extends React.Component {
 
           return (
           <div>
+            <h1> Issue Reports </h1>
                <fieldset className="step-4">
                     <div className="heading">
                          <h3>Issue Status by Owner</h3>
