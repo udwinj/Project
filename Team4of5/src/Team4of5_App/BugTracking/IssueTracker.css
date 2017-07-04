@@ -11,6 +11,12 @@
   font-size: 50px;
   font-weight: bold;
 }
+.title h3{
+  text-align: center;
+  font-family: monospace;
+  font-size: 20px;
+  font-weight: bold;
+}
 .title p{
   text-align: center;
   font-family: sans-serif;

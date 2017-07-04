@@ -17,10 +17,6 @@ class IssueReports extends React.Component {
             <IssueReportStaff />
       </div>
       <br/>
-      <br/>
-      <div>
-            <IssueReportProject />
-      </div>
       </div>
     );
   }
