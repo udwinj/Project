@@ -25,12 +25,10 @@ class BugTracking extends React.Component {
         <IssueTrackerNav />
       <div className ='row'>
 
-            <div id='notification' className='col-xs-6 col-md-4'>
-                <BugNotification />
-            </div>
+
       </div>
       <div>
-
+        <h1>All Issues</h1>
         <br/>
         <br/>
         <div className='tableBody'>
