@@ -7,59 +7,7 @@ class IssueReportStaff extends React.Component {
           super(props);
      this.state = {
       reportIssue: [],  
-          data: [
-              {'id':1,1:'Bug Owner',2:'New',3:'Open',4:'Assigned',5:'Fixed',6:'Verified',7:'Closed'},
-              {
-                   id: 2,
-                   staffName: "Admin",
-                   new: 20,
-                   open: 11,
-                   assigned: 12,
-                   fixed: 22,
-                   verified: 17,
-                   closed:11,
-                 },
-                 {
-                     id: 3,
-                     staffName: "Jim",
-                     new: 11,
-                     open: 12,
-                     assigned: 21,
-                     fixed: 31,
-                     verified: 10,
-                     closed:11,
-                 },
-                 {
-                     id: 4,
-                     staffName: "Bill",
-                     new: 20,
-                     open: 11,
-                     assigned: 12,
-                     fixed: 22,
-                     verified: 19,
-                     closed:11,
-                 },
-                 {
-                     id: 5,
-                     staffName: "Clarie",
-                     new: 20,
-                     open: 11,
-                     assigned: 12,
-                     fixed: 22,
-                     verified: 21,
-                     closed:11,
-                 },
-                 {
-                     id: 6,
-                     staffName: "Kara",
-                     new: 20,
-                     open: 11,
-                     assigned: 12,
-                     fixed: 22,
-                     verified: 19,
-                     closed:11,
-                 }
-     ],
+          data: [],
      errorInput:''
      };
       this.staffIssueForm = this.staffIssueForm.bind(this);
@@ -71,15 +19,7 @@ class IssueReportStaff extends React.Component {
           let self = this;
 
           User.getAllUserData().then(function (data) {
-                //Update UI, 
-                // const userdata = data.val();
-                // console.log("get data");
-                // console.log(userdata);
-                // //  getData(data).bind(this);
 
-                // let newUser = [];
-                // newUser.push(userdata.display_name);
-                // self.setState({ userInfo: newUser });
                 self.getData(data);
             }, function (err) {
                 //Error occur
@@ -93,7 +33,7 @@ class IssueReportStaff extends React.Component {
         const issuedata = data.val();
         const keys = Object.keys(issuedata);
 
-        var userArray = [];
+        var userArray = [{1:'Bug Owner',2:'New',3:'Open',4:'Assigned',6:'Verified',7:'Closed'}];
         var x = 0;
 
         for (let i = 0; i < keys.length; i++) {
@@ -105,22 +45,83 @@ class IssueReportStaff extends React.Component {
 
         for (var m = 0; m < userArray.length; m++) {
           var datum = userArray[m];
-          if (datum.key == owner && datum.value == status) {
-            exists = 1;
-            new_cnt = datum.cnt + 1;
-            userArray[m].cnt = new_cnt;
-          } //if
+          if (datum.key == owner) {
+              exists = 1
+
+            if (status == 'Open'){
+            if (userArray[m].open_cnt){
+              userArray[m].open_cnt = userArray[m].open_cnt + 1;
+            }
+            else {
+              userArray[m].open_cnt  = 1
+            }
+          }
+
+          if (status == 'Verified'){
+            if (userArray[m].ver_cnt){
+              userArray[m].ver_cnt = userArray[m].ver_cnt + 1;
+            }
+            else {
+              userArray[m].ver_cnt  = 1
+            }
+          }
+
+          if (status == 'Assigned'){
+            if (userArray[m].assign_cnt){
+              userArray[m].assign_cnt = userArray[m].assign_cnt + 1;
+            }
+            else {
+              userArray[m].assign_cnt  = 1
+            }
+          }
+
+          if (status == 'New'){
+            if (userArray[m].new_cnt){
+              userArray[m].new_cnt = userArray[m].new_cnt + 1;
+            }
+            else {
+              userArray[m].new_cnt  = 1
+            }
+          }
+
+
+          if (status == 'Closed'){
+            if (userArray[m].closed_cnt){
+              userArray[m].closed_cnt = userArray[m].closed_cnt + 1;
+            }
+            else {
+              userArray[m].closed_cnt  = 1
+            }
+          }
+
+        } //if
         } // for 
         if (exists == 0) {
-          userArray.push({ key: owner, value: status, cnt: 1 });
+          if (status == 'Open'){
+            userArray.push({ key: owner, open_cnt: 1, ver_cnt: 0, assign_cnt: 0, new_cnt: 0, closed_cnt: 0});
+          }
+          else if (status == 'Verified'){
+            userArray.push({ key: owner, open_cnt: 0, ver_cnt: 1, assign_cnt: 0, new_cnt: 0, closed_cnt: 0});
+          }
+          else if (status == 'Assigned'){
+            userArray.push({ key: owner, open_cnt: 0, ver_cnt: 0, assign_cnt: 1, new_cnt: 0, closed_cnt: 0});
+          }
+          else if (status == 'New'){
+            userArray.push({ key: owner, open_cnt: 0, ver_cnt: 0, assign_cnt: 0, new_cnt: 1, closed_cnt: 0});
+          }          
+          else if (status == 'Closed'){
+            userArray.push({ key: owner, open_cnt: 0, ver_cnt: 0, assign_cnt: 0, new_cnt: 0, closed_cnt: 1});
+          }
+
         } //if
       }
 
-        for (var i = 0; i < userArray.length; i++) {
-            var datum = userArray[i];
-            //alert([datum.key, datum.value, datum.cnt])
-        } //for 
-        this.setState({reportIssue: userArray});
+        // for (var i = 0; i < userArray.length; i++) {
+        //     var datum = userArray[i];
+        //     alert([datum.key, datum.ver_cnt, datum.open_cnt])
+        // } //for 
+        this.setState({data: userArray});
+
 
     }
 
