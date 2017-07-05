@@ -28,7 +28,7 @@ render(){
          <Navbar>
         <Nav >
           <NavItem>
-            <NavLink activeClassName='active' to='/menu/BugTracking'>Issue</NavLink>
+            <NavLink activeClassName='active' to='/menu/IssueTracker'>Issue</NavLink>
           </NavItem>
           <NavItem>
             <NavLink activeClassName='active' to='/menu/IssueReports'>Reports</NavLink>
