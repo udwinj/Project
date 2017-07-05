@@ -124,13 +124,14 @@ return (
         <TableHeaderColumn dataField='status'
             editable={ { type: 'select', options: { values: issueStatus },
             defaultValue: 'C' }}
+            dataSort={true}
             >Status</TableHeaderColumn>
-        <TableHeaderColumn dataField='owner' tdStyle={ { whiteSpace: 'nowrap' } }>Owner</TableHeaderColumn>
-        <TableHeaderColumn dataField='issueDate'>IssueDate</TableHeaderColumn>
-        <TableHeaderColumn dataField='expComDate' >Expected Completed in Days</TableHeaderColumn>
-        <TableHeaderColumn dataField='details' editable={ { type: 'textarea', defaultValue: 'Please write something'} } tdStyle={ { whiteSpace: 'normal' } } width='250'>Details</TableHeaderColumn>
-        <TableHeaderColumn dataField='completionDate' editable={ { type: 'textarea', defaultValue: 'Not yet complete'} }>Actual Completion Date</TableHeaderColumn>
-        <TableHeaderColumn dataField='project' tdStyle={ { whiteSpace: 'nowrap' } }>Project</TableHeaderColumn>
+        <TableHeaderColumn dataField='owner' dataSort={true} tdStyle={ { whiteSpace: 'nowrap' } }>Owner</TableHeaderColumn>
+        <TableHeaderColumn dataField='issueDate' dataSort={true}>IssueDate</TableHeaderColumn>
+        <TableHeaderColumn dataField='expComDate' dataSort={true}>Expected Completed in Days</TableHeaderColumn>
+        <TableHeaderColumn dataField='details' filter={ { type: 'TextFilter'} } editable={ { type: 'textarea', defaultValue: 'Please write something'} } tdStyle={ { whiteSpace: 'normal' } } width='250'>Details</TableHeaderColumn>
+        <TableHeaderColumn dataField='completionDate' dataSort={true} editable={ { type: 'textarea', defaultValue: 'Not yet complete'} }>Actual Completion Date</TableHeaderColumn>
+        <TableHeaderColumn dataField='project' filter={ { type: 'TextFilter'} } tdStyle={ { whiteSpace: 'nowrap' } }>Project</TableHeaderColumn>
 
       </BootstrapTable>
     );
