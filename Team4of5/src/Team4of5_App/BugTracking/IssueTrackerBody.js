@@ -7,7 +7,7 @@ import { Navbar, Jumbotron, Button, Input, Nav } from 'react-bootstrap';
 import * as firebase from 'firebase';
 import * as Config from '../../Team4of5_Service/Config.js';
 import * as Issues from '../../Team4of5_Service/Issues.js';
-
+import IssueUpdate from './IssueUpdate.js';
 
 const issueData = []
 const issueStatus = [{
@@ -33,12 +33,6 @@ const issueStatus = [{
 }]
 
 
-const cellEditProp = {
-  mode: 'click',
-  blurToSave: true
-};
-
-
 class IssueTrackerBody extends React.Component{
   constructor(props) {
   super(props);
@@ -47,9 +41,7 @@ class IssueTrackerBody extends React.Component{
     issues:[]
   };
 
-
     this.issueRef = firebase.database().ref().child('issues');
-    //Click the save button; then the data will save to firebase
 
 }
 //After the connect, what the state will do--gotdata
@@ -94,24 +86,24 @@ errData = (err) => {
     console.log(err);
     }
 
-  formatType(cell) {
+formatType(cell) {
     return `${cell}`;
   }
-  handleClick = (rowKey) => {
+
+handleClick = (rowKey) => {
   alert(this.refs.table.getPageByRowKey(rowKey));
 }
-
-
 
 
 render(){
 
 return (
+
+    <div>
+
       <BootstrapTable
         ref='table'
-        remote={ false }
         data={ this.state.issues }
-        cellEdit={ cellEditProp }
         exportCSV={ true }
         pagination={true}
         insertRow={false}
@@ -129,11 +121,15 @@ return (
         <TableHeaderColumn dataField='owner' dataSort={true} tdStyle={ { whiteSpace: 'nowrap' } }>Owner</TableHeaderColumn>
         <TableHeaderColumn dataField='issueDate' dataSort={true}>IssueDate</TableHeaderColumn>
         <TableHeaderColumn dataField='expComDate' dataSort={true}>Expected Completed in Days</TableHeaderColumn>
-        <TableHeaderColumn dataField='details' filter={ { type: 'TextFilter'} } editable={ { type: 'textarea', defaultValue: 'Please write something'} } tdStyle={ { whiteSpace: 'normal' } } width='250'>Details</TableHeaderColumn>
-        <TableHeaderColumn dataField='completionDate' dataSort={true} editable={ { type: 'textarea', defaultValue: 'Not yet complete'} }>Actual Completion Date</TableHeaderColumn>
+        <TableHeaderColumn dataField='details' filter={ { type: 'TextFilter'} } tdStyle={ { whiteSpace: 'normal' } } width='250'>Details</TableHeaderColumn>
+        <TableHeaderColumn dataField='completionDate' dataSort={true} >Actual Completion Date</TableHeaderColumn>
         <TableHeaderColumn dataField='project' filter={ { type: 'TextFilter'} } tdStyle={ { whiteSpace: 'nowrap' } }>Project</TableHeaderColumn>
 
       </BootstrapTable>
+      <div>
+          <IssueUpdate />
+      </div>
+      </div>
     );
 
   }
