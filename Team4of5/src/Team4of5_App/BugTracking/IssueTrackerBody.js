@@ -32,12 +32,6 @@ const issueStatus = [{
   text: 'Closed'
 }]
 
-//th
-function dateFormatter(cell, row) {
-  cell = new Date();
-  return `${('0' + cell.getDate()).slice(-2)}/${('0' + (cell.getMonth() + 1)).slice(-2)}/${cell.getFullYear()}`;
-}
-
 
 const cellEditProp = {
   mode: 'click',
@@ -76,7 +70,7 @@ componentDidMount() {
         //reformat the dates
         var issuedate_reformat = new Date(issuedata[k].issuedate);
         issuedate_reformat =  (issuedate_reformat.getMonth() + 1) + '/' + issuedate_reformat.getDate() + '/'+ issuedate_reformat.getFullYear();
-        
+
         var completionDate_reformat = new Date(issuedata[k].completionDate);
         completionDate_reformat =  (completionDate_reformat.getMonth() + 1) + '/' + completionDate_reformat.getDate() + '/'+ completionDate_reformat.getFullYear();
 
@@ -84,7 +78,7 @@ componentDidMount() {
         newIssue.push({
           id: k, status: issuedata[k].status,
           issueDate: issuedate_reformat,
-          owner: issuedata[k].owner, 
+          owner: issuedata[k].owner,
           expComDate: issuedata[k].expComDate,
           details: issuedata[k].details,
          completionDate: completionDate_reformat,
@@ -94,10 +88,6 @@ componentDidMount() {
       }
       this.setState({issues: newIssue});
     }
-
-
-
-
 
 
 errData = (err) => {
@@ -112,57 +102,29 @@ errData = (err) => {
 }
 
 
-/** +New insertRow Header*/
-createCustomModalHeader(onClose, onSave) {
-
-  const headerStyle = {
-       fontWeight: 'bold',
-       fontSize: 'large',
-       textAlign: 'center',
-     };
-return (
-       <div className='modal-header' style={ headerStyle }>
-         <h3>Report New Issue</h3>
-       </div>
-     );
-   }
-
-/** +New insertRow Footer*/
-handleModalClose(onClose) {
-    // Custom your onCloseModal event here,
-    // it's not necessary to implement this function if you have no any process before modal close
-    console.log('Close without saving the data');
-    onClose();
-  }
-//I try to connect database and write It back
 
 
-  createCustomModalFooter = (onClose, onSave) => {
-    return (
-        <div className='modal-footer' >
-          <button className='btn btn-xs btn-info' onClick={ onClose }>Close</button>
-          <button className='btn btn-xs btn-success' onClick={onSave}>Report</button>
-        </div>
-    );
-
-  }
-
-
-  render(){
+render(){
 
 return (
       <BootstrapTable
         ref='table'
-        remote={ true }
+        remote={ false }
         data={ this.state.issues }
         cellEdit={ cellEditProp }
         exportCSV={ true }
         pagination={true}
         insertRow={false}
-        search={true}>
+        search={true}
+        strictSearch={ false }
+        multiColumnSearch={ true }
+        >
 
         <TableHeaderColumn dataField='id' isKey={true} width='200'>ID</TableHeaderColumn>
-        <TableHeaderColumn dataField='status'  editable={ { type: 'select', options: { values: issueStatus }, defaultValue: 'C' }}>Status</TableHeaderColumn>
+        <TableHeaderColumn dataField='status'
+            editable={ { type: 'select', options: { values: issueStatus },
+            defaultValue: 'C' }}
+            >Status</TableHeaderColumn>
         <TableHeaderColumn dataField='owner' tdStyle={ { whiteSpace: 'nowrap' } }>Owner</TableHeaderColumn>
         <TableHeaderColumn dataField='issueDate'>IssueDate</TableHeaderColumn>
         <TableHeaderColumn dataField='expComDate' >Expected Completed in Days</TableHeaderColumn>
