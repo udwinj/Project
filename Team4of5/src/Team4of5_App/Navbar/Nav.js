@@ -77,7 +77,7 @@ class NavbarHeaderC extends React.Component {
               <Button><NavLink activeStyle={{ fontWeight: 'bold', color: 'black' }} exact activeClassName='active' to='/menu/Settings'>Settings</NavLink></Button>
             </NavItem>
             <NavItem>
-              <Button><NavLink activeStyle={{ fontWeight: 'bold', color: 'black' }} activeClassName='active' to='/menu/BugTracking'>Issue Tracker</NavLink></Button>
+              <Button><NavLink activeStyle={{ fontWeight: 'bold', color: 'black' }} activeClassName='active' to='/menu/IssueTracker'>Issue Tracker</NavLink></Button>
             </NavItem>
             <NavItem>
               <Button><NavLink activeStyle={{ fontWeight: 'bold', color: 'black' }} activeClassName='active' to='/menu/ProjectManagement'>Project Management</NavLink></Button>
