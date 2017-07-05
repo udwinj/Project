@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import BugTracking from './BugTracking/BugTracking.js';
+import IssueTracker from './BugTracking/IssueTracker.js';
 import IssueReports from './BugTracking/IssueReports.js';
 import NewIssue from './BugTracking/NewIssue.js';
 import Chat from './Chat/Chat.js';
@@ -27,7 +27,7 @@ const Home = () => (
     <div>
         <h1>Menu</h1>
         <div>
-            <button id="BugTracking"><Link to='/menu/BugTracking'>IssueTracker</Link></button>
+            <button id="IssueTracker"><Link to='/menu/IssueTracker'>IssueTracker</Link></button>
             <button id="Chat"><Link to='/menu/Chat'>Chat</Link></button>
              <button id="ProjectManagement"><Link to='/menu/ProjectManagement'>ProjectManagement</Link></button>
             <button id="Settings"><Link to='/menu/Settings'>Settings</Link></button>
@@ -78,7 +78,7 @@ class Menu extends React.Component {
             <div>
                 <Switch location={isModal ? this.previousLocation : location}>
                     <Route exact path='/menu' component={Home} />
-                    <Route path='/menu/BugTracking' component={BugTracking} />
+                    <Route path='/menu/IssueTracker' component={IssueTracker} />
                     <Route path='/menu/IssueReports' component={IssueReports} />
                     <Route path='/menu/NewIssue' component={NewIssue} />
                     <Route path='/menu/Chat' component={Chat} />
