@@ -65,7 +65,7 @@ class NavbarHeaderC extends React.Component {
       <Navbar inverse>
         <Navbar.Header>
           <Navbar.Brand>
-            <a>Team 4 Of 5</a>
+            <a>Team 4 of 5</a>
           </Navbar.Brand>
         </Navbar.Header>
         <Navbar.Collapse>
@@ -86,7 +86,7 @@ class NavbarHeaderC extends React.Component {
               <Button><NavLink activeStyle={{ fontWeight: 'bold', color: 'black' }} activeClassName='active' to='/menu'>Menu</NavLink></Button>
             </NavItem>
             <NavItem>
-              <Button><NavLink activeStyle={{ fontWeight: 'bold', color: 'black' }} activeClassName='active' to='/login'>LogOut</NavLink></Button>
+              <Button><NavLink activeStyle={{ fontWeight: 'bold', color: 'black' }} activeClassName='active' to='/login'>Logout</NavLink></Button>
             </NavItem>
             <NavItem>Welcome, {this.state.userInfo[1]}</NavItem>
           </Nav>
