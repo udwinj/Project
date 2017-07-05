@@ -32,13 +32,14 @@ handleChange(name, event) {
      if (this.state.completionDate||this.state.status)
      {
              Issues.issueUpdate(
-                  this.state.completionDate,this.state.status)
+                  this.state.issue_id, this.state.completionDate,this.state.status)
                   .then((Issue)=>{
                       console.log(Issue);
                   })
       }
       this.state.completionDate = '';
       this.state.status = '';
+      this.state.issue_id = '';
 
   event.preventDefault();
 }
