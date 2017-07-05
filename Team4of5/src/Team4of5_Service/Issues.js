@@ -50,23 +50,22 @@ export const update_completion_dt = function(issue_id,completionDate){
               });
 }
 // this allows a user to update their display name in the settings tab
-export const issueUpdate = function (completionDate, status) {
-    var ref = firebase.app().database().ref();
-    var issueRef = ref.child('issues');
-    var issue_id = issue_id;
+export const issueUpdate = function (issueID, completionDate, status) {
+
+    var issue_id = issueID;
     var thisIssueRef = issueRef.child(issue_id);
 
 
     if (completionDate  &&  status) {
         return thisIssueRef.update({
-            completiondate: completionDate,
+            completionDate: completionDate,
              status: status,
               issue_last_edited_dtm: Date.now()
         });
     }
     else if (completionDate) {
         return thisIssueRef.update({
-            completiondate: completionDate,
+            completionDate: completionDate,
             issue_last_edited_dtm: Date.now()
         });
     }
