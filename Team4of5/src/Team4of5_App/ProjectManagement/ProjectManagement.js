@@ -4,6 +4,7 @@ import ProjectManagementTable from './ProjectManagementTable.js';
 import './ProjectManagementTables.css';
 import * as Users from '../../Team4of5_Service/Users.js';
 import { Board } from 'react-trello'
+import ReactModal from 'react-modal';
 
 
 const data = {
@@ -69,26 +70,61 @@ const shouldReceiveNewData = (nextData) => {
     console.log(nextData)
 }
 
+function WarningBanner(props) {
 
-
-//onDataChange={} handleDragStart={} handleDragEnd={handleDragEnd()}
+  return (
+    <div className="warning">
+      This Card is {props.warn}
+    </div>
+  );
+}
 
 class ProjectManagement extends React.Component {
 
+    constructor() {
+        super();
+        this.state = {
+            showModal: false,
+            modalID: null
+        };
 
+        this.handleOpenModal = this.handleOpenModal.bind(this);
+        this.handleCloseModal = this.handleCloseModal.bind(this);
+    }
 
+    handleOpenModal(cardId) {
+        console.log(cardId);
+        this.setState({ showModal: true });
+        this.setState({modalID: cardId});
+    }
 
+    handleCloseModal() {
+        this.setState({ showModal: false });
+    }
 
     render() {
-        return <Board
-            data={data}
-            draggable={true}
-            onDataChange={shouldReceiveNewData}
-            handleDragStart={handleDragStart}
-            handleDragEnd={handleDragEnd}
-            tagStyle={{ fontSize: '80%' }}
-        />
+        return (
+            <div>
+                <Board
+                    data={data}
+                    draggable={true}
+                    onDataChange={shouldReceiveNewData}
+                    handleDragStart={handleDragStart}
+                    handleDragEnd={handleDragEnd}
+                    tagStyle={{ fontSize: '80%' }}
+                    onCardClick={(cardId,title, metadata) => this.handleOpenModal(cardId)}
+                />
+                <ReactModal
+                    isOpen={this.state.showModal}
+                    contentLabel="Minimal Modal Example"
+                >
+                    <WarningBanner warn={this.state.modalID} />
+                    <button onClick={this.handleCloseModal}>Close</button>
+                </ReactModal>
+            </div>);
     }
 }
+
+//this.handleToggleClick()
 
 export default ProjectManagement;
