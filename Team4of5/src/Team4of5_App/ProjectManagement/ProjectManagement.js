@@ -7,6 +7,10 @@ import { Board } from 'react-trello'
 import ReactModal from 'react-modal';
 
 
+
+
+
+
 const data = {
     lanes: [
         {
@@ -52,6 +56,22 @@ const data = {
     ]
 }
 
+
+let eventBus = undefined
+
+let setEventBus = (handle) => {
+    eventBus = handle
+}
+
+const completeMilkEvent = () => {
+    eventBus.publish({ type: 'ADD_CARD', laneId: 'COMPLETED', card: { id: "Milk", title: "Buy Milk", label: "15 mins", description: "Use Headspace app" } })
+    eventBus.publish({ type: 'REMOVE_CARD', laneId: 'PLANNED', cardId: "Milk" })
+}
+
+const addBlockedEvent = () => {
+    eventBus.publish({ type: 'ADD_CARD', laneId: 'lane4', card: { id: "Ec2Error", title: "EC2 Instance Down", label: "30 mins", description: "Main EC2 instance down" } })
+}
+
 const handleDragStart = (cardId, laneId) => {
     console.log('drag started')
     console.log(`cardId: ${cardId}`)
@@ -70,13 +90,39 @@ const shouldReceiveNewData = (nextData) => {
     console.log(nextData)
 }
 
-function WarningBanner(props) {
+function GetCardInfo(props) {
 
-  return (
-    <div className="warning">
-      This Card is {props.warn}
-    </div>
-  );
+    return (
+        <div className="warning">
+            This Card is {props.warn}
+            <form>
+                <div>
+                <label>
+                    Description:<input type="text" />
+                </label>
+                </div>
+                <div> 
+                <label>
+                    Label:<input type="text" />
+                </label>
+                </div>
+                <div>
+                <label>
+                    Assignment:<input type="text" />
+                </label>
+                </div>
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+    );
+}
+function MakeNewCard(props) {
+
+    return (
+        <div className="warning">
+            This Card is {props.warn}
+        </div>
+    );
 }
 
 class ProjectManagement extends React.Component {
@@ -95,7 +141,7 @@ class ProjectManagement extends React.Component {
     handleOpenModal(cardId) {
         console.log(cardId);
         this.setState({ showModal: true });
-        this.setState({modalID: cardId});
+        this.setState({ modalID: cardId });
     }
 
     handleCloseModal() {
@@ -105,6 +151,8 @@ class ProjectManagement extends React.Component {
     render() {
         return (
             <div>
+                <button onClick={completeMilkEvent} style={{ margin: 5 }}>Complete Buy Milk</button>
+                <button onClick={() => { this.handleOpenModal(0) }} style={{ margin: 5 }}>Add Blocked</button>
                 <Board
                     data={data}
                     draggable={true}
@@ -112,14 +160,18 @@ class ProjectManagement extends React.Component {
                     handleDragStart={handleDragStart}
                     handleDragEnd={handleDragEnd}
                     tagStyle={{ fontSize: '80%' }}
-                    onCardClick={(cardId,title, metadata) => this.handleOpenModal(cardId)}
+                    onCardClick={(cardId, title, metadata) => this.handleOpenModal(cardId)}
+                    eventBusHandle={setEventBus}
                 />
                 <ReactModal
                     isOpen={this.state.showModal}
                     contentLabel="Minimal Modal Example"
+                    className="Modal"
+                    overlayClassName="Overlay"
                 >
-                    <WarningBanner warn={this.state.modalID} />
-                    <button onClick={this.handleCloseModal}>Close</button>
+                    <GetCardInfo warn={this.state.modalID} />
+                    <button onClick={this.handleCloseModal}>Save</button>
+                    <button onClick={this.handleCloseModal}>Cancel</button>
                 </ReactModal>
             </div>);
     }
