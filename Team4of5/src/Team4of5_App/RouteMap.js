@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import BugTracking from './BugTracking/BugTracking.js';
+import IssueTracker from './BugTracking/IssueTracker.js';
 import IssueReports from './BugTracking/IssueReports.js';
 import Chat from './Chat/Chat.js';
 import ProjectManagement from './ProjectManagement/ProjectManagement.js';
@@ -29,7 +29,7 @@ class RouteMap extends React.Component {
           <Switch>
           <Route exact path='/menu' component={Menu} />
            <Route  path='/settings' component={Settings} />
-           <Route  path='/bugtrack' component={BugTracking} />
+           <Route  path='/issueTracker' component={IssueTracker} />
            <Route  path='/issueReports' component={IssueReports} />
            <Route  path='/chat' component={Chat} />
            <Route path='/projectmanage' component={ProjectManagement} />
