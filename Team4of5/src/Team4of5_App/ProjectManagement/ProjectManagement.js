@@ -158,7 +158,7 @@ function GetCardInfo(props) {
                             <option value="next">Next</option>
                             <option selected value="inProgress">In Progress</option>
                             <option value="staged">staged</option>
-                            <option value="qa">QA'd</option>
+                            <option value="qa">QA</option>
                             <option value="live">Live</option>
                         </select>
                     </div>
