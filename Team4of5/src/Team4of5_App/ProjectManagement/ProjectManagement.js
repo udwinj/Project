@@ -5,16 +5,22 @@ import './ProjectManagementTables.css';
 import * as Users from '../../Team4of5_Service/Users.js';
 import { Board } from 'react-trello'
 import ReactModal from 'react-modal';
+import { forms } from 'pure-css';
 
 
 
+//Connect Firebase
+import * as firebase from 'firebase';
+import * as Config from '../../Team4of5_Service/Config.js';
+import * as Issues from '../../Team4of5_Service/Issues.js';
 
+const issueData = []
 
 
 const data = {
     lanes: [
         {
-            id: 'lane1',
+            id: 'Backlog',
             title: 'Backlog',
             label: '2/2',
             cards: [{
@@ -24,34 +30,54 @@ const data = {
             { id: 'Card2', title: 'Card2', description: 'As a user, I can set myself as away to snooze notifications related to chat.', tags: [{ title: 'Chat', color: 'black', bgcolor: 'yellow' }] }]
         },
         {
-            id: 'lane2',
+            id: 'Next',
             title: 'Next (Ready for Development)',
             label: '0/0',
-            cards: []
+            cards: [{
+                id: 'Card1', title: 'Card1', description: 'As an administrator, I can login, add projects, & manage other users.',
+                tags: [{ title: 'Login and User Roles', color: 'white', bgcolor: 'green' }]
+            },
+            { id: 'Card2', title: 'Card2', description: 'As a user, I can set myself as away to snooze notifications related to chat.', tags: [{ title: 'Chat', color: 'black', bgcolor: 'yellow' }] }]
         },
         {
-            id: 'lane3',
-            title: 'Next (Ready for Development)',
+            id: 'InProgress',
+            title: 'In Progress',
             label: '0/0',
-            cards: []
+            cards: [{
+                id: 'Card1', title: 'Card1', description: 'As an administrator, I can login, add projects, & manage other users.',
+                tags: [{ title: 'Login and User Roles', color: 'white', bgcolor: 'green' }]
+            },
+            { id: 'Card2', title: 'Card2', description: 'As a user, I can set myself as away to snooze notifications related to chat.', tags: [{ title: 'Chat', color: 'black', bgcolor: 'yellow' }] }]
         },
         {
-            id: 'lane4',
+            id: 'Staged',
             title: 'Staged',
             label: '0/0',
-            cards: []
+            cards: [{
+                id: 'Card1', title: 'Card1', description: 'As an administrator, I can login, add projects, & manage other users.',
+                tags: [{ title: 'Login and User Roles', color: 'white', bgcolor: 'green' }]
+            },
+            { id: 'Card2', title: 'Card2', description: 'As a user, I can set myself as away to snooze notifications related to chat.', tags: [{ title: 'Chat', color: 'black', bgcolor: 'yellow' }] }]
         },
         {
-            id: 'lane5',
+            id: 'QA',
             title: 'QAed',
             label: '0/0',
-            cards: []
+            cards: [{
+                id: 'Card1', title: 'Card1', description: 'As an administrator, I can login, add projects, & manage other users.',
+                tags: [{ title: 'Login and User Roles', color: 'white', bgcolor: 'green' }]
+            },
+            { id: 'Card2', title: 'Card2', description: 'As a user, I can set myself as away to snooze notifications related to chat.', tags: [{ title: 'Chat', color: 'black', bgcolor: 'yellow' }] }]
         },
         {
-            id: 'lane6',
+            id: 'Live',
             title: 'Live',
             label: '0/0',
-            cards: []
+            cards: [{
+                id: 'Card1', title: 'Card1', description: 'As an administrator, I can login, add projects, & manage other users.',
+                tags: [{ title: 'Login and User Roles', color: 'white', bgcolor: 'green' }]
+            },
+            { id: 'Card2', title: 'Card2', description: 'As a user, I can set myself as away to snooze notifications related to chat.', tags: [{ title: 'Chat', color: 'black', bgcolor: 'yellow' }] }]
         }
     ]
 }
@@ -95,23 +121,53 @@ function GetCardInfo(props) {
     return (
         <div className="warning">
             This Card is {props.warn}
-            <form>
-                <div>
-                <label>
-                    Description:<input type="text" />
-                </label>
-                </div>
-                <div> 
-                <label>
-                    Label:<input type="text" />
-                </label>
-                </div>
-                <div>
-                <label>
-                    Assignment:<input type="text" />
-                </label>
-                </div>
-                <input type="submit" value="Submit" />
+
+            <form className="pure-form pure-form-aligned">
+                <fieldset>
+                    <div className="pure-control-group">
+                        <label for="descrip">Description:</label>
+                        <input id="descrip" type="text" placeholder="Username" />
+                    </div>
+                    <div className="pure-control-group">
+                        <label for="label"> Label: </label>
+                        <select id="label">
+                            <option selected value="login">Login & User Roles</option>
+                            <option value="chat">Chat</option>
+                            <option value="homepage">Homepage</option>
+                            <option value="defect">Defect</option>
+                            <option value="kanban">Kanban Board</option>
+                            <option value="issue">Issue Tracking</option>
+                            <option value="multitenant">Multi-Tenant Management</option>
+                        </select>
+                    </div>
+                    <div className="pure-control-group">
+                        <label for="assign">Assignment:</label>
+                        <select id="assign">
+                            <option selected value="kevin">Kevin</option>
+                            <option value="alisa">Alisa</option>
+                            <option value="kyle">Kyle</option>
+                            <option value="yin">Yin</option>
+                            <option value="joel">Joel</option>
+                        </select>
+
+                    </div>
+                    <div className="pure-control-group">
+                        <label for="stage">Stage:</label>
+                        <select id="stage">
+                            <option value="backlog">Backlog</option>
+                            <option value="next">Next</option>
+                            <option selected value="inProgress">In Progress</option>
+                            <option value="staged">staged</option>
+                            <option value="qa">QA'd</option>
+                            <option value="live">Live</option>
+                        </select>
+                    </div>
+                    <div class="pure-controls">
+
+                        <input className="pure-button pure-button-primary" type="submit" value="Submit" />
+                    </div>
+                    
+                </fieldset>
             </form>
         </div>
     );
@@ -136,7 +192,58 @@ class ProjectManagement extends React.Component {
 
         this.handleOpenModal = this.handleOpenModal.bind(this);
         this.handleCloseModal = this.handleCloseModal.bind(this);
+
+        this.issueRef = firebase.database().ref().child('project');
+
     }
+    //After the connect, what the state will do--gotdata
+    componentDidMount() {
+        this.issueRef.on('value', this.gotData, this.errData);
+
+    }
+
+    //get the data from the firebase and push them out
+    gotData = (fire_data) => {
+        let newIssue = []
+        const issuedata = fire_data.val();
+        const keys = Object.keys(issuedata);
+        /*
+                for (let i = 0; i < keys.length; i++) {
+                    const k = keys[i];
+        
+                    newIssue.push({
+                        id: k, status: issuedata[k].status,
+                        issueDate: issuedate_reformat,
+                        owner: issuedata[k].owner,
+                        expComDate: issuedata[k].expComDate,
+                        details: issuedata[k].details,
+                        completionDate: completionDate_reformat,
+                        project: issuedata[k].project
+                    });
+        
+                    {
+                        
+                    id: 'Staged',
+                    title: 'Staged',
+                    label: '0/0',
+                    cards: [{
+                        id: 'Card1', title: 'Card1', description: 'As an administrator, I can login, add projects, & manage other users.',
+                        tags: [{ title: 'Login and User Roles', color: 'white', bgcolor: 'green' }]
+                    },
+                    { id: 'Card2', title: 'Card2', description: 'As a user, I can set myself as away to snooze notifications related to chat.', tags: [{ title: 'Chat', color: 'black', bgcolor: 'yellow' }] }]
+                },
+                
+        
+                }
+                this.setState({ issues: newIssue });
+                */
+    }
+
+
+    errData = (err) => {
+        console.log(err);
+    }
+
 
     handleOpenModal(cardId) {
         console.log(cardId);
