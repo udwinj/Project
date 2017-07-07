@@ -162,7 +162,7 @@ function GetCardInfo(props) {
                             <option value="live">Live</option>
                         </select>
                     </div>
-                    <div class="pure-controls">
+                    <div className="pure-controls">
 
                         <input className="pure-button pure-button-primary" type="submit" value="Submit" />
                     </div>
