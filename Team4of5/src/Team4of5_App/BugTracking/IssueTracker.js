@@ -5,7 +5,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 import IssueTrackerNav from './IssueTrackerNav.js';
 import IssueTrackerBody from './IssueTrackerBody.js';
-
+import IssueType from './IssueType.js';
 
 class IssueTracker extends React.Component {
   constructor(props){
@@ -19,10 +19,10 @@ class IssueTracker extends React.Component {
       <div className='container-fluid'>
         <IssueTrackerNav />
       <div className ='row'>
-
-
+        <IssueType />
       </div>
       <div>
+
         <h1>All Issues Summary</h1>
         <br/>
         <br/>
