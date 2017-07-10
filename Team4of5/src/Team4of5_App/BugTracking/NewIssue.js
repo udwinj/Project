@@ -41,7 +41,8 @@ class NewIssue extends React.Component {
  handleSubmit(event) {
      if (this.state.details&&this.state.expComDate
          &&this.state.owner
-         &&this.state.project&&this.state.status) 
+         &&this.state.project&&this.state.status
+         &&this.state.type&&this.state.priority&&this.state.serverity)
      {
       if(!this.state.completionDate){
         this.state.completionDate = 'null'
@@ -53,7 +54,10 @@ class NewIssue extends React.Component {
                   this.state.expComDate,
                   this.state.owner,
                   this.state.project,
-                  this.state.status)
+                  this.state.status,
+                  this.state.type,
+                  this.state.priority,
+                  this.state.serverity)
                   .then((Issue)=>{
                       console.log(Issue);
                      this.setState({redirectToIssue: true});
@@ -115,6 +119,49 @@ class NewIssue extends React.Component {
               Details
               <input type="text" value={this.state.details} placeholder='Issue details' onChange={this.handleChange.bind(this, 'details')} />
             </label>
+        </div>
+        <div>
+        <label>
+        Type
+        <div> </div>
+        <select value={this.state.type} onChange={this.handleChange.bind(this, 'type')}>
+            <option value=""></option>
+            <option value="Blocker">Blocker</option>
+            <option value="Critical">Critical</option>
+            <option value="Major">Major</option>
+            <option value="Minor">Minor</option>
+            <option value="Trivial">Trivial</option>
+          </select>
+          </label>
+        </div>
+        <div>
+        <label>
+        Priority
+        <div> </div>
+        <select value={this.state.priority} onChange={this.handleChange.bind(this, 'priority')}>
+            <option value=""></option>
+            <option value="Immediate">Immediate</option>
+            <option value="Hight">Hight</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+            <option value="Verified">Verified</option>
+            <option value="Fix if time">Fix if time</option>
+          </select>
+          </label>
+        </div>
+        <div>
+        <label>
+        Severity
+        <div> </div>
+        <select value={this.state.serverity} onChange={this.handleChange.bind(this, 'serverity')}>
+            <option value=""></option>
+            <option value="Critical">Critical</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+            <option value="None">None</option>
+          </select>
+          </label>
         </div>
         <div>
             <label>

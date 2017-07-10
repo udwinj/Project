@@ -6,6 +6,9 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import IssueTrackerNav from './IssueTrackerNav.js';
 import IssueTrackerBody from './IssueTrackerBody.js';
 import IssueType from './IssueType.js';
+import IssuePriority from './IssuePriority.js';
+import IssueSeverity from './IssueSeverity.js';
+
 
 class IssueTracker extends React.Component {
   constructor(props){
@@ -20,6 +23,10 @@ class IssueTracker extends React.Component {
         <IssueTrackerNav />
       <div className ='row'>
         <IssueType />
+      </div>
+      <div>
+          <IssueSeverity />
+          <IssuePriority />
       </div>
       <div>
 
