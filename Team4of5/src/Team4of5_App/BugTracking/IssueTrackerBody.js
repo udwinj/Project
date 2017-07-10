@@ -126,7 +126,7 @@ componentDidMount() {
           id: k, status: issuedata[k].status,
           type:issuedata[k].type,
           priority:issuedata[k].priority,
-          serverity: issuedata[k].serverity,
+          severity: issuedata[k].severity,
           issueDate: issuedate_reformat,
           owner: issuedata[k].owner,
           expComDate: issuedata[k].expComDate,
@@ -186,7 +186,7 @@ return (
             defaultValue: 'A' }}
             dataSort={true}
             >Priority</TableHeaderColumn>
-        <TableHeaderColumn dataField='serverity'
+        <TableHeaderColumn dataField='severity'
             editable={ { type: 'select', options: { values: issueSeverity },
             defaultValue: 'A' }}
             dataSort={true}

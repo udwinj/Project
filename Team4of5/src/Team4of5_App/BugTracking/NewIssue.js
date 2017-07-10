@@ -42,7 +42,7 @@ class NewIssue extends React.Component {
      if (this.state.details&&this.state.expComDate
          &&this.state.owner
          &&this.state.project&&this.state.status
-         &&this.state.type&&this.state.priority&&this.state.serverity)
+         &&this.state.type&&this.state.priority&&this.state.severity)
      {
       if(!this.state.completionDate){
         this.state.completionDate = 'null'
@@ -57,7 +57,7 @@ class NewIssue extends React.Component {
                   this.state.status,
                   this.state.type,
                   this.state.priority,
-                  this.state.serverity)
+                  this.state.severity)
                   .then((Issue)=>{
                       console.log(Issue);
                      this.setState({redirectToIssue: true});
@@ -153,7 +153,7 @@ class NewIssue extends React.Component {
         <label>
         Severity
         <div> </div>
-        <select value={this.state.serverity} onChange={this.handleChange.bind(this, 'serverity')}>
+        <select value={this.state.severity} onChange={this.handleChange.bind(this, 'severity')}>
             <option value=""></option>
             <option value="Critical">Critical</option>
             <option value="High">High</option>
