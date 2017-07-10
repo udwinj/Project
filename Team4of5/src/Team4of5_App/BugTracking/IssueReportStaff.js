@@ -6,7 +6,7 @@ class IssueReportStaff extends React.Component {
      constructor(props){
           super(props);
      this.state = {
-      reportIssue: [],  
+      reportIssue: [],
           data: [],
           projdata: [],
      errorInput:''
@@ -34,7 +34,7 @@ class IssueReportStaff extends React.Component {
         const issuedata = data.val();
         const keys = Object.keys(issuedata);
 
-        var userArray = [{1:'Bug Owner',2:'New',3:'Open',4:'Assigned',6:'Verified',7:'Closed'}];
+        var userArray = [{1:'Bug Owner',2:'New',3:'Open',4:'Assigned',5:'Verified',6:'Closed'}];
         var projectArray = [{1:'Bug Owner',2:'New',3:'Open',4:'Assigned',6:'Verified',7:'Closed'}];
         var x = 0;
 
@@ -46,7 +46,7 @@ class IssueReportStaff extends React.Component {
           var exists = 0
           var new_cnt = 0
 
-        for (var m = 0; m < userArray.length; m++) {
+        for (var m = 1; m < userArray.length; m++) {
           var datum = userArray[m];
           if (datum.key == owner) {
               exists = 1
@@ -98,7 +98,7 @@ class IssueReportStaff extends React.Component {
           }
 
         } //if
-        } // for 
+        } // for
         if (exists == 0) {
           if (status == 'Open'){
             userArray.push({ key: owner, open_cnt: 1, ver_cnt: 0, assign_cnt: 0, new_cnt: 0, closed_cnt: 0});
@@ -111,14 +111,14 @@ class IssueReportStaff extends React.Component {
           }
           else if (status == 'New'){
             userArray.push({ key: owner, open_cnt: 0, ver_cnt: 0, assign_cnt: 0, new_cnt: 1, closed_cnt: 0});
-          }          
+          }
           else if (status == 'Closed'){
             userArray.push({ key: owner, open_cnt: 0, ver_cnt: 0, assign_cnt: 0, new_cnt: 0, closed_cnt: 1});
           }
 
         } //if
         exists = 0
-        for (var p = 0; p < projectArray.length; p++) {
+        for (var p = 1; p < projectArray.length; p++) {
           var datum = projectArray[p];
           if (datum.key == project) {
               exists = 1
@@ -170,7 +170,7 @@ class IssueReportStaff extends React.Component {
           }
 
         } //if
-        } // for 
+        } // for
         if (exists == 0) {
           if (status == 'Open'){
             projectArray.push({ key: project, open_cnt: 1, ver_cnt: 0, assign_cnt: 0, new_cnt: 0, closed_cnt: 0});
@@ -183,7 +183,7 @@ class IssueReportStaff extends React.Component {
           }
           else if (status == 'New'){
             projectArray.push({ key: project, open_cnt: 0, ver_cnt: 0, assign_cnt: 0, new_cnt: 1, closed_cnt: 0});
-          }          
+          }
           else if (status == 'Closed'){
             projectArray.push({ key: project, open_cnt: 0, ver_cnt: 0, assign_cnt: 0, new_cnt: 0, closed_cnt: 1});
           }
@@ -194,7 +194,7 @@ class IssueReportStaff extends React.Component {
         // for (var i = 0; i < userArray.length; i++) {
         //     var datum = userArray[i];
         //     alert([datum.key, datum.ver_cnt, datum.open_cnt])
-        // } //for 
+        // } //for
         this.setState({data: userArray});
         this.setState({projdata: projectArray})
 
@@ -246,7 +246,7 @@ class IssueReportStaff extends React.Component {
      render(){
 
           let list = this.state.data.map(p =>{
-               return (          
+               return (
                     <tr className="grey2" key={p.id}>
                          {Object.keys(p).filter(k => k !== 'id').map(k => {
                                return (<td className="grey1" key={p.id+''+k}><div suppressContentEditableWarning="true" contentEditable="true"
@@ -257,7 +257,7 @@ class IssueReportStaff extends React.Component {
           });
 
           let listproj = this.state.projdata.map(p =>{
-               return (          
+               return (
                     <tr className="grey2" key={p.id}>
                          {Object.keys(p).filter(k => k !== 'id').map(k => {
                                return (<td className="grey1" key={p.id+''+k}><div suppressContentEditableWarning="true" contentEditable="true"
