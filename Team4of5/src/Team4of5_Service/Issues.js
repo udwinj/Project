@@ -56,8 +56,13 @@ export const update_completion_dt = function(issue_id,completionDate){
 export const issueUpdate = function (issueID, completionDate, status,priority,severity) {
 
     var issue_id = issueID;
+    var exists = false
+    
+    issueRef.child(issue_id).once('value', function(snapshot) {
+      exists = (snapshot.val() !== null);
+    });
+    if (exists){
     var thisIssueRef = issueRef.child(issue_id);
-
 
     if (completionDate  &&  status && priority && severity) {
         return thisIssueRef.update({
@@ -92,5 +97,8 @@ export const issueUpdate = function (issueID, completionDate, status,priority,se
              issue_last_edited_dtm: Date.now()
         });
     }
-
+}
+else {
+  alert("Issue not found; please enter a valid issue ID")
+}
 }
