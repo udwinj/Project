@@ -29,14 +29,16 @@ handleChange(name, event) {
     }
 
  handleSubmit(event) {
-     if (this.state.completionDate||this.state.status)
+     if (this.state.completionDate||this.state.status||this.state.priority||this.state.severity)
      {
              Issues.issueUpdate(
-                  this.state.issue_id, this.state.completionDate,this.state.status)
+                  this.state.issue_id, this.state.completionDate,this.state.status,this.state.priority,this.state.severity)
                   .then((Issue)=>{
                       console.log(Issue);
                   })
       }
+      this.state.priority = '';
+      this.state.severity = '';
       this.state.completionDate = '';
       this.state.status = '';
       this.state.issue_id = '';
@@ -70,7 +72,35 @@ handleChange(name, event) {
           </select>
           </label>
         </div>
-
+        <div>
+        <label>
+        Priority
+        <div> </div>
+        <select value={this.state.priority} onChange={this.handleChange.bind(this, 'priority')}>
+            <option value=""></option>
+            <option value="Immediate">Immediate</option>
+            <option value="Hight">Hight</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+            <option value="Verified">Verified</option>
+            <option value="Fix if time">Fix if time</option>
+          </select>
+          </label>
+        </div>
+        <div>
+        <label>
+        Severity
+        <div> </div>
+        <select value={this.state.severity} onChange={this.handleChange.bind(this, 'severity')}>
+            <option value=""></option>
+            <option value="Critical">Critical</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+            <option value="None">None</option>
+          </select>
+          </label>
+        </div>
         <div>
             <label>
               Actual completion date

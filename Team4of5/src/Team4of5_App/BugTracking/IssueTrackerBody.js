@@ -190,7 +190,7 @@ return (
             editable={ { type: 'select', options: { values: issueSeverity },
             defaultValue: 'A' }}
             dataSort={true}
-            >Serverity</TableHeaderColumn>
+            >Severity</TableHeaderColumn>
         <TableHeaderColumn dataField='owner' dataSort={true} tdStyle={ { whiteSpace: 'nowrap' } }>Owner</TableHeaderColumn>
         <TableHeaderColumn dataField='issueDate' dataSort={true}>IssueDate</TableHeaderColumn>
         <TableHeaderColumn dataField='expComDate' dataSort={true}>Expected Completed in Days</TableHeaderColumn>
