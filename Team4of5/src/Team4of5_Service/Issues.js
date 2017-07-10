@@ -12,7 +12,7 @@ var usersRef = ref.child('users');
 export const addNewIssue = function(
     completionDate, details,
     expComDate, owner, project,
-       issue_status, type, priority, serverity){
+       issue_status, type, priority, severity){
 
 	    issueRef.push({
               owner: owner,
@@ -24,7 +24,7 @@ export const addNewIssue = function(
               project: project,
               status: issue_status,
               priority:priority,
-              serverity:serverity,
+              severity:severity,
               issue_last_edited_dtm: Date.now()
               });
 }
