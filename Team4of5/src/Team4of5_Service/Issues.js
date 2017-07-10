@@ -53,16 +53,18 @@ export const update_completion_dt = function(issue_id,completionDate){
               });
 }
 // this allows a user to update their display name in the settings tab
-export const issueUpdate = function (issueID, completionDate, status) {
+export const issueUpdate = function (issueID, completionDate, status,priority,severity) {
 
     var issue_id = issueID;
     var thisIssueRef = issueRef.child(issue_id);
 
 
-    if (completionDate  &&  status) {
+    if (completionDate  &&  status && priority && severity) {
         return thisIssueRef.update({
             completionDate: completionDate,
              status: status,
+             priority:priority,
+             severity:severity,
               issue_last_edited_dtm: Date.now()
         });
     }
@@ -75,6 +77,18 @@ export const issueUpdate = function (issueID, completionDate, status) {
     else if (status) {
         return thisIssueRef.update({
              status: status,
+             issue_last_edited_dtm: Date.now()
+        });
+    }
+    else if(priority){
+        return thisIssueRef.update({
+             priority: priority,
+             issue_last_edited_dtm: Date.now()
+        });
+    }
+    else if(severity){
+        return thisIssueRef.update({
+             severity: severity,
              issue_last_edited_dtm: Date.now()
         });
     }
