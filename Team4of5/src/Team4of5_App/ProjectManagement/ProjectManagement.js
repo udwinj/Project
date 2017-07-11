@@ -143,8 +143,14 @@ const completeMilkEvent = () => {
 }
 
 const addCard = (laneID, id, title, description) => {
+    ChatProj.addNewCard(laneID, id, title, description)
     eventBus.publish({ type: 'ADD_CARD', laneId: laneID, card: { id: id, title: title, label: "30 mins", description: description } });
 }
+
+const renderCard = (laneID, id, title, description) => {
+    eventBus.publish({ type: 'ADD_CARD', laneId: laneID, card: { id: id, title: title, label: "30 mins", description: description } });
+}
+
 
 
 const handleDragStart = (cardId, laneId) => {
@@ -260,13 +266,6 @@ class GetCardInfo extends React.Component {
 }
 
 
-
-
-
-function MakeNewCard(props) {
-    addCard;
-}
-
 class ProjectManagement extends React.Component {
 
     constructor(props) {
@@ -337,15 +336,14 @@ class ProjectManagement extends React.Component {
         console.log(this.state.lanes);
         console.log("Next my card");
         console.log(this.state.lanes[1].cards[0].id);
-        console.log("Length NExt");
+        console.log("Length Next");
         console.log(this.state.lanes.length);
 
         for (let i = 0; i < this.state.lanes.length; i++) {
             for (let j = 0; j < this.state.lanes[i].cards.length; j++) {
-                addCard(this.state.lanes[i].id, this.state.lanes[i].cards[j].id, this.state.lanes[i].cards[j].title, this.state.lanes[i].cards[j].description);
+                renderCard(this.state.lanes[i].id, this.state.lanes[i].cards[j].id, this.state.lanes[i].cards[j].title, this.state.lanes[i].cards[j].description);
             }
         }
-        ChatProj.addNewCard();
 
         // var count = projArray[0].count;
         // for (let i = 0; i < count; i++) {
