@@ -345,6 +345,7 @@ class ProjectManagement extends React.Component {
                 addCard(this.state.lanes[i].id, this.state.lanes[i].cards[j].id, this.state.lanes[i].cards[j].title, this.state.lanes[i].cards[j].description);
             }
         }
+        ChatProj.addNewCard();
 
         // var count = projArray[0].count;
         // for (let i = 0; i < count; i++) {
