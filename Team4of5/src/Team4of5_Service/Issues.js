@@ -57,14 +57,24 @@ export const issueUpdate = function (issueID, completionDate, status,priority,se
 
     var issue_id = issueID;
     var exists = false
-    
+    var comp, pri, stat, sev;
+
     issueRef.child(issue_id).once('value', function(snapshot) {
       exists = (snapshot.val() !== null);
+      comp = snapshot.val().completionDate;
+      stat = snapshot.val().status;
+      pri  = snapshot.val().priority;
+      sev = snapshot.val().severity;
     });
+    completionDate = completionDate ? completionDate : comp;
+    status = status ? status : stat;
+    priority = priority ? priority : pri;
+    severity = severity ? severity : sev;
+
     if (exists){
     var thisIssueRef = issueRef.child(issue_id);
 
-    if (completionDate  &&  status && priority && severity) {
+    if (completionDate  ||  status || priority || severity) {
         return thisIssueRef.update({
             completionDate: completionDate,
              status: status,
@@ -73,30 +83,7 @@ export const issueUpdate = function (issueID, completionDate, status,priority,se
               issue_last_edited_dtm: Date.now()
         });
     }
-    else if (completionDate) {
-        return thisIssueRef.update({
-            completionDate: completionDate,
-            issue_last_edited_dtm: Date.now()
-        });
-    }
-    else if (status) {
-        return thisIssueRef.update({
-             status: status,
-             issue_last_edited_dtm: Date.now()
-        });
-    }
-    else if(priority){
-        return thisIssueRef.update({
-             priority: priority,
-             issue_last_edited_dtm: Date.now()
-        });
-    }
-    else if(severity){
-        return thisIssueRef.update({
-             severity: severity,
-             issue_last_edited_dtm: Date.now()
-        });
-    }
+
 }
 else {
   alert("Issue not found; please enter a valid issue ID")

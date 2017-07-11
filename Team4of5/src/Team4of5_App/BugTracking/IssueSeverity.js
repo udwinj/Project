@@ -24,7 +24,7 @@ const IssueSeverityData=[
     {
         id:5,
         name:"None",
-        type: "The issue is at the level of serverity.",
+        type: "The issue is at the level of severity.",
     },
 ]
 
