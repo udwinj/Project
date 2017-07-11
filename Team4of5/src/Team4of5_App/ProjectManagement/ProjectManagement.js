@@ -90,10 +90,7 @@ var mydata = {
             id: 'Backlog',
             title: 'Backlog',
             label: '2/2',
-            cards: [{
-                id: '', title: '', description: '',
-                tags: [{ title: '', color: '', bgcolor: '' }]
-            }]
+            cards: []
         },
         {
             id: 'Next',
@@ -105,46 +102,30 @@ var mydata = {
             id: 'InProgress',
             title: 'In Progress',
             label: '0/0',
-            cards: [{
-                id: 'Card1', title: 'Card1', description: 'As an administrator, I can login, add projects, & manage other users.',
-                tags: [{ title: 'Login and User Roles', color: 'white', bgcolor: 'green' }]
-            },
-            { id: 'Card2', title: 'Card2', description: 'As a user, I can set myself as away to snooze notifications related to chat.', tags: [{ title: 'Chat', color: 'black', bgcolor: 'yellow' }] }]
+            cards: []
         },
         {
             id: 'Staged',
             title: 'Staged',
             label: '0/0',
-            cards: [{
-                id: 'Card1', title: 'Card1', description: 'As an administrator, I can login, add projects, & manage other users.',
-                tags: [{ title: 'Login and User Roles', color: 'white', bgcolor: 'green' }]
-            },
-            { id: 'Card2', title: 'Card2', description: 'As a user, I can set myself as away to snooze notifications related to chat.', tags: [{ title: 'Chat', color: 'black', bgcolor: 'yellow' }] }]
+            cards: []
         },
         {
             id: 'QA',
             title: 'QAed',
             label: '0/0',
-            cards: [{
-                id: 'Card1', title: 'Card1', description: 'As an administrator, I can login, add projects, & manage other users.',
-                tags: [{ title: 'Login and User Roles', color: 'white', bgcolor: 'green' }]
-            },
-            { id: 'Card2', title: 'Card2', description: 'As a user, I can set myself as away to snooze notifications related to chat.', tags: [{ title: 'Chat', color: 'black', bgcolor: 'yellow' }] }]
+            cards: []
         },
         {
             id: 'Live',
             title: 'Live',
             label: '0/0',
-            cards: [{
-                id: 'Card1', title: 'Card1', description: 'As an administrator, I can login, add projects, & manage other users.',
-                tags: [{ title: 'Login and User Roles', color: 'white', bgcolor: 'green' }]
-            },
-            { id: 'Card2', title: 'Card2', description: 'As a user, I can set myself as away to snooze notifications related to chat.', tags: [{ title: 'Chat', color: 'black', bgcolor: 'yellow' }] }]
+            cards: []
         }
     ]
 }
 
-var div_style = { 
+var div_style = {
     background: '#23719F'
 }
 
@@ -165,6 +146,7 @@ const addCard = (laneID, id, title, description) => {
     eventBus.publish({ type: 'ADD_CARD', laneId: laneID, card: { id: id, title: title, label: "30 mins", description: description } });
 }
 
+
 const handleDragStart = (cardId, laneId) => {
     console.log('drag started')
     console.log(`cardId: ${cardId}`)
@@ -181,6 +163,7 @@ const handleDragEnd = (cardId, sourceLaneId, targetLaneId) => {
 const shouldReceiveNewData = (nextData) => {
     console.log('data has changed')
     console.log(nextData)
+    console.log(mydata)
 }
 
 
@@ -216,7 +199,7 @@ class GetCardInfo extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        this.props.handleSaveModal(this.state.stage, 5, "title", this.state.description);
+        this.props.handleSaveModal(this.state.stage, "5", "title", this.state.description);
     }
 
     render() {
@@ -292,7 +275,8 @@ class ProjectManagement extends React.Component {
             showModal: false,
             modalID: null,
             projects: "",
-            lanes: []
+            lanes: [],
+            projArray: []
         };
 
         this.getData = this.getData.bind(this);
@@ -313,11 +297,11 @@ class ProjectManagement extends React.Component {
             self.getData(data);
             console.log(self.state.projects);
             mydata.lanes = self.state.lanes;
-            console.log("Setting Data here");
+            console.log("Showing Data here");
             console.log(mydata);
-            console.log("Setting True Data here");
+            console.log("Showing True Data here");
             console.log(true_data);
-            
+
         },
             function (err) {
                 //Error occur
@@ -337,8 +321,8 @@ class ProjectManagement extends React.Component {
         const keys = Object.keys(projdata);
         //console.log("key next");
         //console.log(keys);
-       // const keys_backlog = Object.keys(projdata[keys].data.Backlog);
-       //console.log("key_backlog next");
+        // const keys_backlog = Object.keys(projdata[keys].data.Backlog);
+        //console.log("key_backlog next");
         //console.log(keys);
 
         projArray.push(projdata[keys].data.lanes);
@@ -351,7 +335,16 @@ class ProjectManagement extends React.Component {
         this.state.lanes = projArray[0];
         console.log("Next lanes");
         console.log(this.state.lanes);
-        console.log(this.state.lanes[1]);
+        console.log("Next my card");
+        console.log(this.state.lanes[1].cards[0].id);
+        console.log("Length NExt");
+        console.log(this.state.lanes.length);
+
+        for (let i = 0; i < this.state.lanes.length; i++) {
+            for (let j = 0; j < this.state.lanes[i].cards.length; j++) {
+                addCard(this.state.lanes[i].id, this.state.lanes[i].cards[j].id, this.state.lanes[i].cards[j].title, this.state.lanes[i].cards[j].description);
+            }
+        }
 
         // var count = projArray[0].count;
         // for (let i = 0; i < count; i++) {
@@ -408,7 +401,7 @@ class ProjectManagement extends React.Component {
         return (
             <div>
                 <div style={div_style}>
-                <button onClick={() => { this.handleOpenModal(0) }} style={{ margin: 5 }}>Add New Card</button>
+                    <button onClick={() => { this.handleOpenModal(0) }} style={{ margin: 5 }}>Add New Card</button>
                 </div>
                 <Board
                     data={mydata}
