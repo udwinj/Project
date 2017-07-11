@@ -86,7 +86,12 @@ const issueSeverity = [{
   value: 'None',
   text: 'None'
 }]
+const issueFilterStyle = {
+  width:150,
+  height:20,
+  fontSize: 12,
 
+};
 
 class IssueTrackerBody extends React.Component{
   constructor(props) {
@@ -158,7 +163,13 @@ render(){
 return (
 
     <div>
+        <div>
+            <h3>Update Issue</h3>
+            <IssueUpdate />
+        </div>
+        <div>
 
+    <h3>Issue Summary</h3>
       <BootstrapTable
         ref='table'
         data={ this.state.issues }
@@ -194,14 +205,12 @@ return (
         <TableHeaderColumn dataField='owner' dataSort={true} tdStyle={ { whiteSpace: 'nowrap' } }>Owner</TableHeaderColumn>
         <TableHeaderColumn dataField='issueDate' dataSort={true}>IssueDate</TableHeaderColumn>
         <TableHeaderColumn dataField='expComDate' dataSort={true}>Expected Completed in Days</TableHeaderColumn>
-        <TableHeaderColumn dataField='details' filter={ { type: 'TextFilter'} } tdStyle={ { whiteSpace: 'normal' } } width='250'>Details</TableHeaderColumn>
+        <TableHeaderColumn dataField='details' filter={ { type: 'TextFilter', style: issueFilterStyle} } tdStyle={ { whiteSpace: 'normal' } } width='250'>Details</TableHeaderColumn>
         <TableHeaderColumn dataField='completionDate' dataSort={true} >Actual Completion Date</TableHeaderColumn>
-        <TableHeaderColumn dataField='project' filter={ { type: 'TextFilter'} } tdStyle={ { whiteSpace: 'nowrap' } }>Project</TableHeaderColumn>
+        <TableHeaderColumn dataField='project' filter={ { type: 'TextFilter', style: issueFilterStyle} } tdStyle={ { whiteSpace: 'nowrap' } } width='200'>Project</TableHeaderColumn>
 
       </BootstrapTable>
-      <div>
-          <IssueUpdate />
-      </div>
+</div>
       </div>
     );
 

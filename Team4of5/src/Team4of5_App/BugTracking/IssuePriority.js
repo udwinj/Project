@@ -39,7 +39,7 @@ export default class IssuePriority extends React.Component {
       hover={ true }
       >
         <TableHeaderColumn isKey={true} dataField='id' hidden={true}>ID</TableHeaderColumn>
-        <TableHeaderColumn dataField='name' tdStyle={ { whiteSpace: 'normal' } ,{width:150}}>Issue Priority</TableHeaderColumn>
+        <TableHeaderColumn dataField='name' width='150px' >Issue Priority</TableHeaderColumn>
         <TableHeaderColumn dataField='type' tdStyle={ { whiteSpace: 'normal' } }>Details</TableHeaderColumn>
 
       </BootstrapTable>

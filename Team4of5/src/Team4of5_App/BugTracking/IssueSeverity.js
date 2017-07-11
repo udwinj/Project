@@ -40,7 +40,7 @@ export default class IssueSeverity extends React.Component {
 
       >
         <TableHeaderColumn isKey={true} dataField='id' hidden={true}>ID</TableHeaderColumn>
-        <TableHeaderColumn dataField='name' tdStyle={ { whiteSpace: 'normal' } ,{width:150}}>Issue Severity</TableHeaderColumn>
+        <TableHeaderColumn dataField='name' width='150px'>Issue Severity</TableHeaderColumn>
         <TableHeaderColumn dataField='type' tdStyle={ { whiteSpace: 'normal' } }>Details</TableHeaderColumn>
 
       </BootstrapTable>

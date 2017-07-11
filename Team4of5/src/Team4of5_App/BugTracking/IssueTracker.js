@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Navbar from '../Navbar/Nav.js';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import './IssueTracker.css';
 
 import IssueTrackerNav from './IssueTrackerNav.js';
 import IssueTrackerBody from './IssueTrackerBody.js';
@@ -21,18 +22,19 @@ class IssueTracker extends React.Component {
     return (
       <div className='container-fluid'>
         <IssueTrackerNav />
-      <div className ='row'>
+      <div className ='type'>
         <IssueType />
       </div>
-      <div>
-          <IssueSeverity />
-          <IssuePriority />
+      <div className ='sp'>
+          <div className='sp-item'>
+                <IssueSeverity />
+          </div>
+        <div className='sp-item'>
+             <IssuePriority />
+        </div>
+
       </div>
       <div>
-
-        <h1>All Issues Summary</h1>
-        <br/>
-        <br/>
         <div className='tableBody'>
             {/* <BugTrackingTableBody /> */}
             <IssueTrackerBody />
