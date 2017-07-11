@@ -8,24 +8,9 @@ import 'react-select/dist/react-select.css';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
+import * as ChatService from '../../Team4of5_Service/Chat.js';
 
-//Dummy data
-let Users = [
-    { value: 'User1', label: 'User1' },
-    { value: 'User2', label: 'User2' },
-    { value: 'User3', label: 'User3' },
-    { value: 'User4', label: 'User4' },
-    { value: 'User5', label: 'User5' },
-    { value: 'User6', label: 'User6' },
-    { value: 'User7', label: 'User7' },
-    { value: 'User8', label: 'User8' },
-    { value: 'User9', label: 'User9' },
-    { value: 'User10', label: 'User10' },
-    { value: 'User11', label: 'User11' },
-    { value: 'User12', label: 'User12' },
-    { value: 'User13', label: 'User13' },
-    { value: 'User14', label: 'User14' }
-];
+
 
 
 const style = {
@@ -47,14 +32,42 @@ class CreateProject extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            options: Users,
+            options: [],
             value: []
         }
         this.handleSelectChange = this.handleSelectChange.bind(this);
         this.handleConfirm = this.handleConfirm.bind(this);
+        this.getData = this.getData.bind(this);
     }
 
+    componentDidMount() {
+        //
+        let self = this;
+        ChatService.getUserContacts().then(function (data) {
+            self.getData(data);
+        }).catch(function (err) {
+            console.log("Error:" + err)
+        })
+    }
 
+    getData(data) {
+        let moreDivs = [];
+        for (let index in data) {
+            let element = data[index];
+            console.log(index);
+            console.log(element);
+            //Only "indivdual" type can be added into a project
+            if (element.type == "Individual") {
+                moreDivs.push(
+                    {value: element.name, label: element.name, extraData: element, Uuid:index}
+                );
+            }
+
+        }
+        //setTimeout(() => {
+        this.setState({ options: this.state.options.concat(moreDivs) });
+        //}, 500);
+    }
 
     handleSelectChange(value) {
         console.log('You\'ve selected:', value);
@@ -62,21 +75,32 @@ class CreateProject extends React.Component {
     }
 
     handleConfirm() {
-        if (this.refs.message.value == "") {
+        console.log(this.refs)
+         console.log(this.ref)
+         let title = this.refs.message.value ;
+        if (title == "") {
             alert("Please input your project name!");
         } else if (this.state.value == "") {
             alert("Please choose your members!");
         } else {
-            
-            let users=""
-            for(let i=0; i<this.state.value.length; i++){
-                console.log(this.state.value[i].value);
-                users = users.concat(this.state.value[i].value+" ")
+            let memUids = [];
+            let users = ""
+            for (let i = 0; i < this.state.value.length; i++) {
+                users = users.concat(this.state.value[i].value + " ")
+                memUids.push(this.state.value[i].Uuid);
             }
+            console.log(title)
+            ChatService.createProject(memUids, title).then(function(data){
+                alert("Project name: " + title + "\n Project Members: " + users
+                +"\n Successfully added!");
+            }).catch(function(err){
+                alert("Error: "+ err);
+            })
 
-            alert("Project name: "+this.refs.message.value+"\n Project Members: "+users);
+
+            
             this.refs.message.value = "";
-            this.setState({value:[]})
+            this.setState({ value: [] })
         }
     }
 

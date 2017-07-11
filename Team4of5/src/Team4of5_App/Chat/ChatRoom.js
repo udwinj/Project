@@ -19,35 +19,48 @@ class ChatRoom extends React.Component {
             ],
             curr_user: 0
         }
+        console.log("Initialize: " + UserService.getCurrentUser().uid)
     }
 
     componentDidMount() {
 
-        let contactData = this.props.extraData.ContactData;
         let self = this;
-        let memberList = [];
-        memberList.push({ uid: this.props.extraData.ContactUid, name: contactData.name, status: 'online' });
-        ChatService.getChatroomMsg(memberList, contactData.chatroomUid).then(function (messages) {
-            console.log(messages)
+        let contactData = { uid: this.props.extraData.ContactUid, data: this.props.extraData.ContactData };
+        console.log(this.props.extraData);
+        console.log(contactData);
+        // if (contactData.type == 'Project') {
 
-            for (let index in messages) {
-                self.addMsgToRoom(messages[index]);
 
-            }
-        }).catch(function (err) {
-            alert("Error occur" + err)
-        })
+
+        // } else {
+        ChatService.getChatroomMsg(contactData, this.props.extraData.ContactData.chatroomUid).
+            then(function (messages) {
+                console.log(messages)
+
+                for (let index in messages) {
+                    self.addMsgToRoom(messages[index]);
+                }
+            }).catch(function (err) {
+                alert("Error occur" + err)
+            })
+        // }
+
         let isInit = true;
         ChatService.listenChatRoomChange(this.props.extraData.ContactData.chatroomUid).on('child_added', function (data) {
             console.log('Listen msg changing:');
+            console.log(data.val());
             // console.log(data.val().senderUid);
             // console.log(data.key);
-            if (isInit) {
-                isInit = false;
-            } else if (UserService.getCurrentUser().uid != data.val().senderUid) {
+            
+            if (self.state.messages.length == 0 &&
+                UserService.getCurrentUser().uid != data.val().senderUid) {
+                self.addMsgToRoom(data.val())
+            } else if (isInit == false && UserService.getCurrentUser().uid != data.val().senderUid) {
                 self.addMsgToRoom(data.val())
             }
-
+            if (isInit) {
+                isInit = false;
+            }
             //console.log(data.val());
             //return resolve(data.val());
         })
@@ -56,13 +69,21 @@ class ChatRoom extends React.Component {
         let prevState = this.state
         let recipient;
         let msg = msgData.content
-        if (ChatService.checkSenderIsCurrentUser(msgData.senderUid)) {
-            recipient = 0
+        if (ChatService.checkSenderIsCurrentUser(msgData.senderUid) == false &&
+            this.props.extraData.ContactData.type == "Project") {
+            msg = msgData.senderName + ":" + msgData.content
+            recipient = msgData.senderUid
+        } else if (ChatService.checkSenderIsCurrentUser(msgData.senderUid) == false) {
+            recipient = msgData.senderUid;
         } else {
-            recipient = 1
-            //TODO, if it is project, need to add name
-            //msg = msgData.senderName+":"+ msgData.content
+            recipient = 0;
         }
+        // else {
+        //     recipient = "uuidtest"
+        //     //TODO, if it is project, need to add name
+        //     //msg = msgData.senderName+":"+ msgData.content
+        // }
+        console.log(msgData.senderUid)
         prevState.messages.push(new Message({ id: recipient, message: msg }));
         this.setState(this.state)
     }

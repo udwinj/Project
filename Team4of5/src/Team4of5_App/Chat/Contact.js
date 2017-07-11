@@ -52,41 +52,11 @@ class Contact extends React.Component {
         let countProject = 0;
         let countContact = 0;
 
-        for (let i = 0; i < 5; i++) {
-            projectData.push(
-                //onClick={this.switchToChat.bind(this, countProject, "Project" + countProject)} 
-                <div key={'div' + countProject++} style={{ height: 50, marginBottom: 20, background: '#00ffffff', ...style }}>
-                    <Row style={{ marginLeft: 0 }}>
-                        
-                        <Media.Left>
-                            <TiGroup size={48} />
-                        </Media.Left>
-                        <Media.Body>
-                            <h4>Project{countProject}</h4>
-                        </Media.Body>
-                    </Row>
-                </div>
-            );
-        }
-
-        // for (let i = 0; i < 20; i++) {
-        //     contactData.push(
-        //         <div key={'div' + countContact++} style={{ height: 50, marginBottom: 20, background: '#00ffffff', ...style }}>
-        //             <Row onClick={this.switchToChat.bind(this, countContact, "Name" + countContact)} style={{ marginLeft: 0 }}>
-        //                 <Media.Left>
-        //                     <FaChild size={48} />
-        //                 </Media.Left>
-        //                 <Media.Body>
-        //                     <h4>Name{countContact}</h4>
-        //                 </Media.Body>
-        //             </Row>
-        //         </div>
-        //     );
-        // }
-
         this.state = {
             projectData: projectData,
-            contactData: contactData
+            contactData: contactData,
+            hasMoreI: true,
+            hasMoreP: true
         };
         //this.refresh = this.refresh.bind(this);
     }
@@ -107,12 +77,20 @@ class Contact extends React.Component {
 
     getData(data) {
         let moreDivs = [];
+        let moreProject = [];
+        let temp = [];
         for (let index in data) {
+            if(index == 'status') continue;
             let element = data[index];
             console.log(index);
             console.log(element);
-            moreDivs.push(
-                <div key={'div'+index} style={{ height: 50, marginBottom: 20, background: '#00ffffff', ...style }}>
+            if (element.type == 'Individual') {
+                temp = moreDivs
+            } else {
+                temp = moreProject
+            }
+            temp.push(
+                <div key={'div' + index} style={{ height: 50, marginBottom: 20, background: '#00ffffff', ...style }}>
                     <Row onClick={this.switchToChat.bind(this, index, element)} style={{ marginLeft: 0 }}>
                         <Media.Left>
                             <FaChild size={48} />
@@ -122,10 +100,17 @@ class Contact extends React.Component {
                         </Media.Body>
                     </Row>
                 </div>
-            );
+            )
+
         }
         //setTimeout(() => {
-            this.setState({ contactData: this.state.contactData.concat(moreDivs) });
+        this.setState({
+            contactData: this.state.contactData.concat(moreDivs),
+            projectData: this.state.projectData.concat(moreProject),
+            hasMoreI: false,
+            hasMoreP: false
+        },
+        );
         //}, 500);
     }
 
@@ -165,7 +150,7 @@ class Contact extends React.Component {
                 //         </div>
                 //onClick={this.switchToChat.bind(this, count, "Name" + count)}
                 <div key={'div' + count++} style={{ height: 50, marginBottom: 20, background: '#00ffffff', ...style }}>
-                    <Row  style={{ marginLeft: 0 }}>
+                    <Row style={{ marginLeft: 0 }}>
                         <Media.Left>
                             <FaChild size={48} />
                         </Media.Left>
@@ -195,8 +180,8 @@ class Contact extends React.Component {
                                     pullDownToRefreshContent={<h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>}
                                     releaseToRefreshContent={<h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>}
                                     refreshFunction={this.refresh}*/
-                                    next={this.generateProject.bind(this)}
-                                    hasMore={true}
+                                    //next={this.generateProject.bind(this)}
+                                    hasMore={this.state.hasMoreP}
                                     height={530}
                                     loader={<h4>Loading...</h4>}>
                                     {this.state.projectData}
@@ -212,7 +197,7 @@ class Contact extends React.Component {
                                     releaseToRefreshContent={<h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>}
                                     refreshFunction={this.refresh}*/
                                     //next={this.generateContact.bind(this)}
-                                    hasMore={true}
+                                    hasMore={this.state.hasMoreI}
                                     height={530}
                                     loader={<h4>Loading...</h4>}>
                                     {this.state.contactData}

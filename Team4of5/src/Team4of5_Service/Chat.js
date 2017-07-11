@@ -7,10 +7,46 @@ let ref = firebase.app().database().ref();
 let usersRef = ref.child('users');
 let contactRef = ref.child('chatContact');
 let chatroomRef = ref.child('chatRoom');
+let projectRef = ref.child('chatProject');
+
+//Project related
 
 
-export const checkSenderIsCurrentUser = function(senderUid){
-    return (senderUid==firebase.auth().currentUser.uid)
+export const createProject = function (memberUids, projectName) {
+    return new Promise(function (resolve, reject) {
+        try {
+            let pUid = Tools.guid();
+            let thisProjectRef = projectRef.child(pUid);
+            let pMembersUpdate = {}
+
+            //1. update name
+            pMembersUpdate['name'] = projectName;
+            thisProjectRef.update(pMembersUpdate);
+
+            //auto included the current user into the project
+            memberUids.push(firebase.auth().currentUser.uid);
+            //No need to save name there, users may update their display names
+            pMembersUpdate = {
+                members: memberUids
+            }
+            //2. update members
+            thisProjectRef.update(pMembersUpdate);
+
+            //3. update project to each individual
+            let pChatRoomUid = Tools.guid();
+            memberUids.forEach(function (Uuid) {
+                addProjectToContact(pUid, Uuid, projectName, pChatRoomUid)
+            }, this);
+            return resolve();
+        } catch (err) {
+            return reject(err);
+        }
+    });
+}
+
+//Chatroom related
+export const checkSenderIsCurrentUser = function (senderUid) {
+    return (senderUid == firebase.auth().currentUser.uid)
 }
 
 export const listenChatRoomChange = function (chatRoomUid) {
@@ -43,10 +79,9 @@ export const pushMsg = function (msg, chatRoomUid) {
 
 
 //Pass the members other than the current user
-export const getChatroomMsg = function (memberList, chatRoomUid) {
+export const getChatroomMsg = function (contact, chatRoomUid) {
     return new Promise(function (resolve, reject) {
         try {
-
             let thisContactRef = chatroomRef.child(chatRoomUid);
 
             thisContactRef.once('value').then(function (data) {
@@ -62,13 +97,37 @@ export const getChatroomMsg = function (memberList, chatRoomUid) {
                         name: firebase.auth().currentUser.displayName,
                         status: 'online'
                     }
-
-                    for (let index in memberList) {
-                        membersUpdate['/members/' + memberList[index].uid] = {
-                            name: memberList[index].name,
-                            status: memberList[index].status
+                    // contactData = [{ uid: this.props.extraData.ContactUid, data: this.props.extraData.ContactData }];
+                    console.log("0:")
+                    if (contact.data.type == 'Project') {
+                        console.log("0-1")
+                        projectRef.child(contact.uid).child('members').once('value').then(function (Uuids) {
+                            console.log("1:")
+                            for (let i = 0; i < Uuids.val().length; i++) {
+                                console.log("2:")
+                                if (Uuids.val()[i] != currentUserUid) {
+                                    usersRef.child(Uuids.val()[i]).once('value').then(function (data) {
+                                        console.log("3:")
+                                        membersUpdate['/members/' + Uuids.val()[i]] = {
+                                            name: data.val().display_name,
+                                            status: 'online'
+                                        }
+                                        thisContactRef.update(membersUpdate);
+                                    }).catch(function (err) {
+                                        return reject(err);
+                                    })
+                                }
+                            }
+                        }).catch(function (err) {
+                            return reject(err);
+                        })
+                    } else {
+                        membersUpdate['/members/' + contact.uid] = {
+                            name: contact.data.name,
+                            status: 'online'
                         }
                     }
+                    console.log("4")
                     thisContactRef.update(membersUpdate);
                     return resolve('');
                 } else {
@@ -90,13 +149,23 @@ export const getChatroomMsg = function (memberList, chatRoomUid) {
     });
 }
 
-export const updateChatMsg = function () {
 
+const addProjectToContact = function (projectUid, userUid, projectName, pRoomUid) {
+
+    contactRef.child(userUid).update({
+        [projectUid]: {
+            type: 'Project',
+            name: projectName,
+            chatroomUid: pRoomUid,
+        }
+
+    });
 }
 
 export const addContact = function (contactUid, type) {
     return new Promise(function (resolve, reject) {
         let user = firebase.auth().currentUser;
+        if (contactUid == user.uid) return reject("You cannot add yourself!!!")
 
         contactRef.child(user.uid).child(contactUid).once('value').then(function (data) {
             console.log(data.val());

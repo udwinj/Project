@@ -12,7 +12,7 @@ var usersRef = ref.child('users');
 export const addNewIssue = function(
     completionDate, details,
     expComDate, owner, project,
-       issue_status){
+       issue_status, type, priority, severity){
 
 	    issueRef.push({
               owner: owner,
@@ -20,8 +20,11 @@ export const addNewIssue = function(
               details: details,
               expComDate: expComDate,
               issuedate: Date.now(),
+              type: type,
               project: project,
               status: issue_status,
+              priority:priority,
+              severity:severity,
               issue_last_edited_dtm: Date.now()
               });
 }
@@ -50,16 +53,23 @@ export const update_completion_dt = function(issue_id,completionDate){
               });
 }
 // this allows a user to update their display name in the settings tab
-export const issueUpdate = function (issueID, completionDate, status) {
+export const issueUpdate = function (issueID, completionDate, status,priority,severity) {
 
     var issue_id = issueID;
+    var exists = false
+    
+    issueRef.child(issue_id).once('value', function(snapshot) {
+      exists = (snapshot.val() !== null);
+    });
+    if (exists){
     var thisIssueRef = issueRef.child(issue_id);
 
-
-    if (completionDate  &&  status) {
+    if (completionDate  &&  status && priority && severity) {
         return thisIssueRef.update({
             completionDate: completionDate,
              status: status,
+             priority:priority,
+             severity:severity,
               issue_last_edited_dtm: Date.now()
         });
     }
@@ -75,5 +85,20 @@ export const issueUpdate = function (issueID, completionDate, status) {
              issue_last_edited_dtm: Date.now()
         });
     }
-
+    else if(priority){
+        return thisIssueRef.update({
+             priority: priority,
+             issue_last_edited_dtm: Date.now()
+        });
+    }
+    else if(severity){
+        return thisIssueRef.update({
+             severity: severity,
+             issue_last_edited_dtm: Date.now()
+        });
+    }
+}
+else {
+  alert("Issue not found; please enter a valid issue ID")
+}
 }

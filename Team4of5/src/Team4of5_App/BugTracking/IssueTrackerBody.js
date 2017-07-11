@@ -31,6 +31,61 @@ const issueStatus = [{
   value: 'Closed',
   text: 'Closed'
 }]
+const issueType = [{
+  value: 'Blocker',
+  text: 'Blocker'
+}, {
+  value: 'Critical',
+  text: 'Critical'
+}, {
+  value: 'Major',
+  text: 'Major'
+}, {
+  value: 'Minor',
+  text: 'Minor'
+},
+{
+  value: 'Trivial',
+  text: 'Trivial'
+}]
+const issuePriority = [{
+  value: 'Immediate',
+  text: 'Immediate'
+}, {
+  value: 'High',
+  text: 'High'
+}, {
+  value: 'Medium',
+  text: 'Medium'
+}, {
+  value: 'Low',
+  text: 'Low'
+},
+{
+  value: 'Verified',
+  text: 'Verified'
+},
+{
+  value: 'Fix if time',
+  text: 'Fix if time'
+}]
+const issueSeverity = [{
+  value: 'Critical',
+  text: 'Critical'
+}, {
+  value: 'High',
+  text: 'High'
+}, {
+  value: 'Medium',
+  text: 'Medium'
+}, {
+  value: 'Low',
+  text: 'Low'
+},
+{
+  value: 'None',
+  text: 'None'
+}]
 
 
 class IssueTrackerBody extends React.Component{
@@ -69,6 +124,9 @@ componentDidMount() {
 
         newIssue.push({
           id: k, status: issuedata[k].status,
+          type:issuedata[k].type,
+          priority:issuedata[k].priority,
+          severity: issuedata[k].severity,
           issueDate: issuedate_reformat,
           owner: issuedata[k].owner,
           expComDate: issuedata[k].expComDate,
@@ -118,6 +176,21 @@ return (
             defaultValue: 'C' }}
             dataSort={true}
             >Status</TableHeaderColumn>
+        <TableHeaderColumn dataField='type'
+            editable={ { type: 'select', options: { values: issueType },
+            defaultValue: 'A' }}
+            dataSort={true}
+            >Type</TableHeaderColumn>
+        <TableHeaderColumn dataField='priority'
+            editable={ { type: 'select', options: { values: issuePriority },
+            defaultValue: 'A' }}
+            dataSort={true}
+            >Priority</TableHeaderColumn>
+        <TableHeaderColumn dataField='severity'
+            editable={ { type: 'select', options: { values: issueSeverity },
+            defaultValue: 'A' }}
+            dataSort={true}
+            >Severity</TableHeaderColumn>
         <TableHeaderColumn dataField='owner' dataSort={true} tdStyle={ { whiteSpace: 'nowrap' } }>Owner</TableHeaderColumn>
         <TableHeaderColumn dataField='issueDate' dataSort={true}>IssueDate</TableHeaderColumn>
         <TableHeaderColumn dataField='expComDate' dataSort={true}>Expected Completed in Days</TableHeaderColumn>
