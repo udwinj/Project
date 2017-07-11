@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 //Connect Firebase
 import * as Config from '../../Team4of5_Service/Config.js';
 import * as Issues from '../../Team4of5_Service/Issues.js';
-
+import { forms } from 'pure-css';
 
 //import css
 import './IssueTracker.css'
@@ -48,19 +48,23 @@ handleChange(name, event) {
 
  render() {
         return (
-    <div>
+    <div className="wrap">
 
-      <form className='updateIssue' onSubmit={this.handleSubmit}>
-        <div>
-            <div>
+      <form className='pure-form pure-form-stacked' onSubmit={this.handleSubmit}>
+<fieldset>
+        <div className='pure-g'>
+            <div id='issueID' className="pure-u-1 pure-u-md-1-3">
                 <label>
                   ID
-                  <input type="text" value={this.state.issue_id} placeholder='enter ID' onChange={this.handleChange.bind(this, 'issue_id')} />
-                </label>
+                  </label>
+                  <input type="text" value={this.state.issue_id} placeholder='enter ID' onChange={this.handleChange.bind(this, 'issue_id')} required/>
+
             </div>
-        <div>
+
+        <div className="pure-u-1 pure-u-md-1-3">
         <label>
         Status
+         </label>
 
         <select value={this.state.status} onChange={this.handleChange.bind(this, 'status')}>
             <option value=""></option>
@@ -70,12 +74,13 @@ handleChange(name, event) {
             <option value="Verified">Verified</option>
             <option value="Closed">Closed</option>
           </select>
-          </label>
+
         </div>
-        <div>
+        <div className="pure-u-1 pure-u-md-1-3">
         <label>
         Priority
-        <div> </div>
+         </label>
+
         <select value={this.state.priority} onChange={this.handleChange.bind(this, 'priority')}>
             <option value=""></option>
             <option value="Immediate">Immediate</option>
@@ -85,12 +90,12 @@ handleChange(name, event) {
             <option value="Verified">Verified</option>
             <option value="Fix if time">Fix if time</option>
           </select>
-          </label>
+
         </div>
-        <div>
+        <div className="pure-u-1 pure-u-md-1-3">
         <label>
         Severity
-        <div> </div>
+          </label>
         <select value={this.state.severity} onChange={this.handleChange.bind(this, 'severity')}>
             <option value=""></option>
             <option value="Critical">Critical</option>
@@ -99,17 +104,20 @@ handleChange(name, event) {
             <option value="Low">Low</option>
             <option value="None">None</option>
           </select>
-          </label>
+
         </div>
-        <div>
+        <div className="pure-u-1 pure-u-md-1-3">
             <label>
               Actual completion date
-              <div> </div>
+              </label>
+
               <input type="date" value={this.state.completionDate} onChange={this.handleChange.bind(this, 'completionDate')} />
-            </label>
+
         </div>
+
 </div>
-        <input type="submit" id="updateBtn" value={this.state.formBtnTxt} />
+        <input type="submit" id="updateBtn" className='button-secondary pure-button'value={this.state.formBtnTxt} />
+</fieldset>
       </form>
       </div>
     );
