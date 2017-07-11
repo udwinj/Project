@@ -121,10 +121,10 @@ componentDidMount() {
 
         //reformat the dates
         var issuedate_reformat = new Date(issuedata[k].issuedate);
-        issuedate_reformat =  (issuedate_reformat.getMonth() + 1) + '/' + issuedate_reformat.getDate() + '/'+ issuedate_reformat.getFullYear();
+        issuedate_reformat =  (issuedate_reformat.getMonth() + 1) + '/' + (issuedate_reformat.getDate() +1) + '/'+ issuedate_reformat.getFullYear();
 
         var completionDate_reformat = new Date(issuedata[k].completionDate);
-        completionDate_reformat =  (completionDate_reformat.getMonth() + 1) + '/' + completionDate_reformat.getDate() + '/'+ completionDate_reformat.getFullYear();
+        completionDate_reformat =  (completionDate_reformat.getMonth() + 1) + '/' + (completionDate_reformat.getDate()+1) + '/'+ completionDate_reformat.getFullYear();
 
 
         newIssue.push({
