@@ -84,7 +84,7 @@ handleChange(name, event) {
         <select value={this.state.priority} onChange={this.handleChange.bind(this, 'priority')}>
             <option value=""></option>
             <option value="Immediate">Immediate</option>
-            <option value="High">Hight</option>
+            <option value="High">High</option>
             <option value="Medium">Medium</option>
             <option value="Low">Low</option>
             <option value="Verified">Verified</option>
