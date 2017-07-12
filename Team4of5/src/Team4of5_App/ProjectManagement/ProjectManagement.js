@@ -76,7 +76,7 @@ const completeMilkEvent = () => {
 }
 
 const addCard = (laneID, id, title, description) => {
-    ChatProj.addNewCard(laneID, id, title, description)
+    ChatProj.addNewCard(laneID, id, title, description);
     eventBus.publish({ type: 'ADD_CARD', laneId: laneID, card: { id: id, title: "", label: title, description: description } });
 }
 
@@ -85,8 +85,12 @@ const renderCard = (laneID, id, title, description) => {
 }
 
 const deleteCard = (laneID, id, title, description) => {
-    ChatProj.removeCard(laneID, id, title, description)
+    ChatProj.removeCard(laneID, id);
     eventBus.publish({ type: 'REMOVE_CARD', laneId: laneID, card: { id: id, title: "", label: title, description: description } });
+}
+
+const updateLaneCard = (cardId, sourceLaneId, targetLaneId) => {
+    ChatProj.updateCard(cardId, sourceLaneId, targetLaneId);
 }
 
 
@@ -102,6 +106,7 @@ const handleDragEnd = (cardId, sourceLaneId, targetLaneId) => {
     console.log(`cardId: ${cardId}`)
     console.log(`sourceLaneId: ${sourceLaneId}`)
     console.log(`targetLaneId: ${targetLaneId}`)
+    updateLaneCard(cardId, sourceLaneId, targetLaneId);
 }
 
 const shouldReceiveNewData = (nextData) => {
