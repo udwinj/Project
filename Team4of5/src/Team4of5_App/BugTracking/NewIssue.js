@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import registerServiceWorker from '../../registerServiceWorker.js';
 import Navbar from '../Navbar/Nav.js';
 import IssueTrackerNav from './IssueTrackerNav.js';
+import IssueTracker from './IssueTracker.js';
+import Menu from '../Menu.js';
 
 //Connect Firebase
 import * as Config from '../../Team4of5_Service/Config.js';
@@ -14,7 +16,7 @@ import {
   Link,
   Redirect,
   withRouter
-} from 'react-router-dom'
+} from 'react-router-dom';
 
 //import css
 import './IssueTracker.css'
@@ -39,6 +41,7 @@ class NewIssue extends React.Component {
     }
 
  handleSubmit(event) {
+
      if (this.state.details&&this.state.expComDate
          &&this.state.owner
          &&this.state.project&&this.state.status
@@ -58,21 +61,28 @@ class NewIssue extends React.Component {
                   this.state.type,
                   this.state.priority,
                   this.state.severity)
-                  .then((Issue)=>{
-                      console.log(Issue);
+                  {
+                      console.log('Issue!');
                      this.setState({redirectToIssue: true});
-                  })
+                  }
       }
           else {
             alert("Please fill all fields except the completion date");
           }
-
-
-  event.preventDefault();
+        this.state.completionDate='';
+        this.state.details='';
+        this.state.expComDate='';
+        this.state.owner='';
+        this.state.project='';
+        this.state.status='';
+        this.state.type='';
+        this.state.priority='';
+        this.state.severity='';
+event.preventDefault();
 }
 
  render() {
-     const { from } = this.props.location.state ||{ from: { pathname: '/menu/BugTracking' }}
+     const { from } = this.props.location.state ||{ from: { pathname: '/menu/IssueTracker' }}
      const { redirectToIssue } = this.state
 
      if (redirectToIssue) {
