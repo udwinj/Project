@@ -272,7 +272,7 @@ class ProjectManagement extends React.Component {
         //console.log("key_backlog next");
         //console.log(keys);
 
-        projArray.push(projdata[keys].data.lanes);
+        projArray.push(projdata[keys[0]].data.lanes);
 
         //console.log("Next count:");
         //console.log(projArray[0].count);

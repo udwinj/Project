@@ -52,7 +52,7 @@ export const addNewCard = function (laneID, id, title, description) {
         var lanes = [];
         var cards = [];
         const keys = Object.keys(projdata);
-        projArray.push(projdata[keys].data.lanes);
+        projArray.push(projdata[keys[0]].data.lanes);
         lanes = projArray[0];
         cards = lanes[card_lane].cards;
         cards.push({ id: id, title: title, description: description });
@@ -112,7 +112,7 @@ export const removeCard = function (laneID, id) {
         var lanes = [];
         var cards = [];
         const keys = Object.keys(projdata);
-        projArray.push(projdata[keys].data.lanes);
+        projArray.push(projdata[keys[0]].data.lanes);
         lanes = projArray[0];
         //cards = lanes[card_lane].cards;
         //cards.push({ id: id, title: title, description: description });
@@ -191,7 +191,7 @@ export const updateCard = function (id, laneID, targetLaneId) {
         var lanes = [];
         var cards = [];
         const keys = Object.keys(projdata);
-        projArray.push(projdata[keys].data.lanes);
+        projArray.push(projdata[keys[0]].data.lanes);
         lanes = projArray[0];
         //cards = lanes[card_lane].cards;
         //cards.push({ id: id, title: title, description: description });
