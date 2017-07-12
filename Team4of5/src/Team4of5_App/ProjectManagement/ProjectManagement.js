@@ -7,6 +7,7 @@ import { Board } from 'react-trello'
 import ReactModal from 'react-modal';
 import { forms } from 'pure-css';
 import * as ChatProj from '../../Team4of5_Service/ChatProject.js';
+import * as Tools from '../Tools.js';
 
 
 
@@ -16,110 +17,42 @@ import * as firebase from 'firebase';
 import * as Config from '../../Team4of5_Service/Config.js';
 import * as Issues from '../../Team4of5_Service/Issues.js';
 
-
-
-
-const true_data = {
-    lanes: [
-        {
-            id: 'Backlog',
-            title: 'Backlog',
-            label: '2/2',
-            cards: [{
-                id: 'Card1', title: 'Card1', description: 'As an administrator, I can login, add projects, & manage other users.',
-                tags: [{ title: 'Login and User Roles', color: 'white', bgcolor: 'green' }]
-            },
-            { id: 'Card2', title: 'Card2', description: 'As a user, I can set myself as away to snooze notifications related to chat.', tags: [{ title: 'Chat', color: 'black', bgcolor: 'yellow' }] }]
-        },
-        {
-            id: 'Next',
-            title: 'Next (Ready for Development)',
-            label: '0/0',
-            cards: [{
-                id: 'Card1', title: 'Card1', description: 'As an administrator, I can login, add projects, & manage other users.',
-                tags: [{ title: 'Login and User Roles', color: 'white', bgcolor: 'green' }]
-            },
-            { id: 'Card2', title: 'Card2', description: 'As a user, I can set myself as away to snooze notifications related to chat.', tags: [{ title: 'Chat', color: 'black', bgcolor: 'yellow' }] }]
-        },
-        {
-            id: 'InProgress',
-            title: 'In Progress',
-            label: '0/0',
-            cards: [{
-                id: 'Card1', title: 'Card1', description: 'As an administrator, I can login, add projects, & manage other users.',
-                tags: [{ title: 'Login and User Roles', color: 'white', bgcolor: 'green' }]
-            },
-            { id: 'Card2', title: 'Card2', description: 'As a user, I can set myself as away to snooze notifications related to chat.', tags: [{ title: 'Chat', color: 'black', bgcolor: 'yellow' }] }]
-        },
-        {
-            id: 'Staged',
-            title: 'Staged',
-            label: '0/0',
-            cards: [{
-                id: 'Card1', title: 'Card1', description: 'As an administrator, I can login, add projects, & manage other users.',
-                tags: [{ title: 'Login and User Roles', color: 'white', bgcolor: 'green' }]
-            },
-            { id: 'Card2', title: 'Card2', description: 'As a user, I can set myself as away to snooze notifications related to chat.', tags: [{ title: 'Chat', color: 'black', bgcolor: 'yellow' }] }]
-        },
-        {
-            id: 'QA',
-            title: 'QAed',
-            label: '0/0',
-            cards: [{
-                id: 'Card1', title: 'Card1', description: 'As an administrator, I can login, add projects, & manage other users.',
-                tags: [{ title: 'Login and User Roles', color: 'white', bgcolor: 'green' }]
-            },
-            { id: 'Card2', title: 'Card2', description: 'As a user, I can set myself as away to snooze notifications related to chat.', tags: [{ title: 'Chat', color: 'black', bgcolor: 'yellow' }] }]
-        },
-        {
-            id: 'Live',
-            title: 'Live',
-            label: '0/0',
-            cards: [{
-                id: 'Card1', title: 'Card1', description: 'As an administrator, I can login, add projects, & manage other users.',
-                tags: [{ title: 'Login and User Roles', color: 'white', bgcolor: 'green' }]
-            },
-            { id: 'Card2', title: 'Card2', description: 'As a user, I can set myself as away to snooze notifications related to chat.', tags: [{ title: 'Chat', color: 'black', bgcolor: 'yellow' }] }]
-        }
-    ]
-}
-
 var mydata = {
     lanes: [
         {
             id: 'Backlog',
             title: 'Backlog',
-            label: '2/2',
+            label: '',
             cards: []
         },
         {
             id: 'Next',
             title: 'Next (Ready for Development)',
-            label: '0/0',
+            label: '',
             cards: []
         },
         {
             id: 'InProgress',
             title: 'In Progress',
-            label: '0/0',
+            label: '',
             cards: []
         },
         {
             id: 'Staged',
             title: 'Staged',
-            label: '0/0',
+            label: '',
             cards: []
         },
         {
             id: 'QA',
             title: 'QAed',
-            label: '0/0',
+            label: '',
             cards: []
         },
         {
             id: 'Live',
             title: 'Live',
-            label: '0/0',
+            label: '',
             cards: []
         }
     ]
@@ -144,11 +77,16 @@ const completeMilkEvent = () => {
 
 const addCard = (laneID, id, title, description) => {
     ChatProj.addNewCard(laneID, id, title, description)
-    eventBus.publish({ type: 'ADD_CARD', laneId: laneID, card: { id: id, title: title, label: "30 mins", description: description } });
+    eventBus.publish({ type: 'ADD_CARD', laneId: laneID, card: { id: id, title: "", label: title, description: description } });
 }
 
 const renderCard = (laneID, id, title, description) => {
-    eventBus.publish({ type: 'ADD_CARD', laneId: laneID, card: { id: id, title: title, label: "30 mins", description: description } });
+    eventBus.publish({ type: 'ADD_CARD', laneId: laneID, card: { id: id, title: "", label: title, description: description } });
+}
+
+const deleteCard = (laneID, id, title, description) => {
+    ChatProj.removeCard(laneID, id, title, description)
+    eventBus.publish({ type: 'REMOVE_CARD', laneId: laneID, card: { id: id, title: "", label: title, description: description } });
 }
 
 
@@ -185,18 +123,21 @@ class GetCardInfo extends React.Component {
         this.state = {
             description: '',
             label: '',
-            assignment: '',
+            assignment: 'Kevin',
             stage: 'Backlog'
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     handleChange(event) {
         const target = event.target;
         const value = target.value;
         const name = target.name;
+        console.log("change happening");
+        //console.log(laneID);
 
         this.setState({
             [name]: value
@@ -205,7 +146,12 @@ class GetCardInfo extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        this.props.handleSaveModal(this.state.stage, "5", "title", this.state.description);
+
+        this.props.handleSaveModal(this.props.isNew, this.state.stage, this.props.cardID, this.state.assignment, this.state.description);
+    }
+    handleDelete(e) {
+        e.preventDefault();
+        this.props.handleDeleteModal(this.state.stage, this.props.cardID, this.state.assignment, this.state.description);
     }
 
     render() {
@@ -215,13 +161,13 @@ class GetCardInfo extends React.Component {
                 <form className="pure-form pure-form-aligned" onSubmit={this.handleSubmit}>
                     <fieldset>
                         <div className="pure-control-group">
-                            <label htmlfor="descrip">Description:</label>
+                            <label htmlFor="descrip">Description:</label>
                             <textarea id="descrip" name="description" rows="5" cols="50" placeholder="Description" onChange={this.handleChange}>
 
                             </textarea>
                         </div>
                         <div className="pure-control-group">
-                            <label for="label"> Label: </label>
+                            <label htmlFor="label"> Label: </label>
                             <select id="label" name="label" onChange={this.handleChange}>
                                 <option value="login">Login & User Roles</option>
                                 <option value="chat">Chat</option>
@@ -233,18 +179,18 @@ class GetCardInfo extends React.Component {
                             </select>
                         </div>
                         <div className="pure-control-group">
-                            <label for="assign">Assignment:</label>
+                            <label htmlFor="assign">Assignment:</label>
                             <select id="assign" name="assignment" onChange={this.handleChange}>
-                                <option value="kevin">Kevin</option>
-                                <option value="alisa">Alisa</option>
-                                <option value="kyle">Kyle</option>
-                                <option value="yin">Yin</option>
-                                <option value="joel">Joel</option>
+                                <option value="Kevin">Kevin</option>
+                                <option value="Alisa">Alisa</option>
+                                <option value="Kyle">Kyle</option>
+                                <option value="Yin">Yin</option>
+                                <option value="Joel">Joel</option>
                             </select>
 
                         </div>
                         <div className="pure-control-group">
-                            <label for="stage">Stage:</label>
+                            <label htmlFor="stage">Stage:</label>
                             <select id="stage" name="stage" onChange={this.handleChange}>
                                 <option value="Backlog">Backlog</option>
                                 <option value="Next">Next</option>
@@ -256,6 +202,7 @@ class GetCardInfo extends React.Component {
                         </div>
                         <div className="pure-controls">
                             <input className="pure-button pure-button-primary" type="submit" value="Submit" />
+                            <button className="pure-button pure-button-primary" onClick={this.handleDelete}>Delete</button>
                         </div>
 
                     </fieldset>
@@ -273,6 +220,7 @@ class ProjectManagement extends React.Component {
         this.state = {
             showModal: false,
             modalID: null,
+            isNew: false,
             projects: "",
             lanes: [],
             projArray: []
@@ -282,7 +230,7 @@ class ProjectManagement extends React.Component {
         this.handleOpenModal = this.handleOpenModal.bind(this);
         this.handleCloseModal = this.handleCloseModal.bind(this);
         this.handleSaveModal = this.handleSaveModal.bind(this);
-
+        this.handleDeleteModal = this.handleDeleteModal.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         //
 
@@ -296,11 +244,6 @@ class ProjectManagement extends React.Component {
             self.getData(data);
             console.log(self.state.projects);
             mydata.lanes = self.state.lanes;
-            console.log("Showing Data here");
-            console.log(mydata);
-            console.log("Showing True Data here");
-            console.log(true_data);
-
         },
             function (err) {
                 //Error occur
@@ -328,16 +271,8 @@ class ProjectManagement extends React.Component {
 
         //console.log("Next count:");
         //console.log(projArray[0].count);
-        console.log("Next stuff:");
-        console.log(projArray[0]);
 
         this.state.lanes = projArray[0];
-        console.log("Next lanes");
-        console.log(this.state.lanes);
-        console.log("Next my card");
-        console.log(this.state.lanes[1].cards[0].id);
-        console.log("Length Next");
-        console.log(this.state.lanes.length);
 
         for (let i = 0; i < this.state.lanes.length; i++) {
             for (let j = 0; j < this.state.lanes[i].cards.length; j++) {
@@ -381,17 +316,32 @@ class ProjectManagement extends React.Component {
     }
 
 
-    handleOpenModal(cardId) {
+    handleOpenModal(cardId, isNewCard) {
         this.setState({ showModal: true });
         this.setState({ modalID: cardId });
+        this.setState({ isNew: isNewCard });
     }
 
     handleCloseModal() {
         this.setState({ showModal: false });
     }
 
-    handleSaveModal(laneId, id, title, description) {
-        addCard(laneId, id, title, description);
+    handleSaveModal(isNew, laneId, id, title, description) {
+        if (isNew) {
+            var newId = Tools.guid();
+            addCard(laneId, newId, title, description);
+        }
+        else {
+            deleteCard(laneId, id, title, description);
+            addCard(laneId, id, title, description);
+        }
+
+        this.setState({ showModal: false });
+    }
+
+
+    handleDeleteModal(laneId, id, title, description) {
+        deleteCard(laneId, id, title, description)
         this.setState({ showModal: false });
     }
 
@@ -400,7 +350,7 @@ class ProjectManagement extends React.Component {
         return (
             <div>
                 <div style={div_style}>
-                    <button onClick={() => { this.handleOpenModal(0) }} style={{ margin: 5 }}>Add New Card</button>
+                    <button onClick={() => { this.handleOpenModal(null, true) }} style={{ margin: 5 }}>Add New Card</button>
                 </div>
                 <Board
                     data={mydata}
@@ -409,7 +359,7 @@ class ProjectManagement extends React.Component {
                     handleDragStart={handleDragStart}
                     handleDragEnd={handleDragEnd}
                     tagStyle={{ fontSize: '80%' }}
-                    onCardClick={(cardId, title, metadata) => this.handleOpenModal(cardId)}
+                    onCardClick={(cardId, title, metadata) => this.handleOpenModal(cardId, false)}
                     eventBusHandle={setEventBus}
                 />
                 <ReactModal
@@ -418,7 +368,12 @@ class ProjectManagement extends React.Component {
                     className="Modal"
                     overlayClassName="Overlay"
                 >
-                    <GetCardInfo warn={this.state.modalID} handleSaveModal={this.handleSaveModal} />
+                    <GetCardInfo
+                        cardID={this.state.modalID}
+                        isNew={this.state.isNew}
+                        handleSaveModal={this.handleSaveModal}
+                        handleDeleteModal={this.handleDeleteModal}
+                    />
                     <button className="pure-button pure-button-primary" onClick={this.handleCloseModal}>Cancel</button>
                 </ReactModal>
             </div>);
