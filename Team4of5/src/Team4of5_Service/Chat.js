@@ -8,10 +8,129 @@ let usersRef = ref.child('users');
 let contactRef = ref.child('chatContact');
 let chatroomRef = ref.child('chatRoom');
 let projectRef = ref.child('chatProject');
+let historyRef = ref.child('chatHistory');
+
+//History
+export const listenHistoryChange = function (chatRoomUid) {
+
+    return historyRef.child(firebase.auth().currentUser.uid)
+}
+
+export const updateHistory = function (chatroomUid, lastMsg) {
+    return new Promise(function (resolve, reject) {
+        try {
+            chatroomRef.child(chatroomUid).child('members').once('value').then(function (memData) {
+                for (let key in memData.val()) {
+
+                    historyRef.child(key).update({
+                        [chatroomUid]: {
+                            lastMsg: lastMsg
+                        }
+                    })
+                }
+            })
+
+        } catch (err) {
+            return reject(err)
+        }
+    });
+}
+
+
+export const queryChatHistory = function () {
+    return new Promise(function (resolve, reject) {
+        try {
+            let hisData = [];
+            contactRef.child(firebase.auth().currentUser.uid).once('value').then(function (data) {
+                let contactData = data.val();
+                let count = 0;
+                let dataSize = 0;
+                for (let index in contactData) {
+
+                    if (index == 'status') continue;
+
+                    chatroomRef.child(contactData[index].chatroomUid).child('messages').orderByKey().
+                        limitToLast(1).once('value').then(function (msgData) {
+                            
+                           if(msgData.val() != null){
+                               dataSize = dataSize + 1;
+                           }
+
+                            const checkReturn = () => {
+                                if (count == dataSize) {
+                                    hisData.sort(function (a, b) {
+                                        return parseInt(b.sendDate) - parseInt(a.sendDate);
+                                    })
+                                    return resolve(hisData);
+                                }
+                            }
+
+                            for (let dateKey in msgData.val()) {
+
+
+                                getUserName(msgData.val()[dateKey].senderUid).then(function (name) {
+
+
+
+
+                                    if (contactData[index].type == 'Project') {
+
+                                        getProjectName(index).then(function (pName) {
+                                            count = count + 1;
+                                            hisData.push({
+                                                sendDate: dateKey,
+                                                chatroomUid: contactData[index].chatroomUid,
+                                                senderUid: msgData.val()[dateKey].senderUid,
+                                                senderName: name.val(),
+                                                content: msgData.val()[dateKey].content,
+                                                type: contactData[index].type,
+                                                contactUid: index,
+                                                title: pName.val()
+                                            })
+                                            checkReturn();
+                                        })
+                                    } else {
+                                        getUserName(index).then(function (UserName) {
+                                            count = count + 1;
+                                            hisData.push({
+                                                sendDate: dateKey,
+                                                chatroomUid: contactData[index].chatroomUid,
+                                                senderUid: msgData.val()[dateKey].senderUid,
+                                                senderName: name.val(),
+                                                content: msgData.val()[dateKey].content,
+                                                type: contactData[index].type,
+                                                title: UserName.val()
+                                            })
+                                            checkReturn();
+                                        })
+
+                                    }
+
+                                }).catch(function (err) {
+                                    return reject(err)
+                                })
+                            }
+                        })
+                }
+            }).catch(function (err) {
+                return reject(err);
+            })
+        } catch (err) {
+            return reject(err);
+        }
+    });
+}
+
+
+export const getProjectName = function (Puid) {
+    return projectRef.child(Puid).child('name').once('value')
+}
+
+export const getUserName = function (Uuid) {
+    return usersRef.child(Uuid).child('display_name').once('value')
+}
 
 //Project related
-
-
 export const createProject = function (memberUids, projectName) {
     return new Promise(function (resolve, reject) {
         try {
@@ -77,6 +196,16 @@ export const pushMsg = function (msg, chatRoomUid) {
     });
 }
 
+//must be called after chatroom has been created
+export const getChatroomMembers = function (chatRoomUid) {
+    return new Promise(function (resolve, reject) {
+        try {
+            chatroomRef.child(chatRoomUid).child('members')
+        } catch (err) {
+            return reject(err)
+        }
+    });
+}
 
 //Pass the members other than the current user
 export const getChatroomMsg = function (contact, chatRoomUid) {
@@ -129,6 +258,10 @@ export const getChatroomMsg = function (contact, chatRoomUid) {
                     }
                     console.log("4")
                     thisContactRef.update(membersUpdate);
+
+                    //If new chat room created, create history at the same time
+                    updateHistory(chatRoomUid, '');
+
                     return resolve('');
                 } else {
                     return thisContactRef.child('messages').orderByKey().once('value')
@@ -160,6 +293,23 @@ const addProjectToContact = function (projectUid, userUid, projectName, pRoomUid
         }
 
     });
+}
+
+export const getUserStatus = function () {
+    return contactRef.child(firebase.auth().currentUser.uid).child('status').once('value')
+}
+
+export const updateStatus = function (status) {
+    return new Promise(function (resolve, reject) {
+        try {
+            contactRef.child(firebase.auth().currentUser.uid).update({
+                status: status
+            })
+            return resolve();
+        } catch (err) {
+            return reject(err);
+        }
+    })
 }
 
 export const addContact = function (contactUid, type) {

@@ -80,7 +80,7 @@ class Contact extends React.Component {
         let moreProject = [];
         let temp = [];
         for (let index in data) {
-            if(index == 'status') continue;
+            if (index == 'status') continue;
             let element = data[index];
             console.log(index);
             console.log(element);

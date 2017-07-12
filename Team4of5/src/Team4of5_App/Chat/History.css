@@ -21,6 +21,7 @@
 #hisDateSpan{
     font-size:16px; 
     float:right;
+    margin-left:1.25em;
+    display:inline-block;
 }
-
 

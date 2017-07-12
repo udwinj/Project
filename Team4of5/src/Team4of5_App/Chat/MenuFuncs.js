@@ -24,6 +24,7 @@ import { bindActionCreators } from 'redux';
 import createStore from '../App_Redux/CreateStores'
 import PropTypes from 'prop-types';
 import * as User from '../../Team4of5_Service/Users.js';
+import * as ChatService from '../../Team4of5_Service/Chat.js';
 
 const store = createStore();
 
@@ -46,18 +47,9 @@ class MenuFuncs extends React.Component {
 
     componentDidMount() {
         let self = this;
-        console.log("User.userExist: "+ User.userExist());
-        if(User.userExist() == true){
+        console.log("User.userExist: " + User.userExist());
+        if (User.userExist() == true) {
             User.getUserData().then(function (data) {
-                //Update UI, 
-                // const userdata = data.val();
-                // console.log("get data");
-                // console.log(userdata);
-                // //  getData(data).bind(this);
-
-                // let newUser = [];
-                // newUser.push(userdata.display_name);
-                // self.setState({ userInfo: newUser });
                 self.getData(data);
             }, function (err) {
                 //Error occur
@@ -66,6 +58,18 @@ class MenuFuncs extends React.Component {
             })
         }
 
+        ChatService.getUserStatus().then(function (data) {
+            if (data.val() == null) {
+                ChatService.updateStatus('Active').then(function () {
+                }).catch(function (err) {
+                    alert(err);
+                })
+            } else {
+                self.setState({ selectValue: data.val() });
+            }
+        })
+
+        ChatService
     }
     getData(data) {
         let newUser = []
@@ -77,9 +81,15 @@ class MenuFuncs extends React.Component {
     }
 
     updateValue(newValue) {
-        this.setState({
-            selectValue: newValue
-        });
+        let self = this;
+        ChatService.updateStatus(newValue).then(function () {
+            self.setState({
+                selectValue: newValue
+            });
+        }).catch(function (err) {
+            alert(err);
+        })
+
     }
 
     render() {
