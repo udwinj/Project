@@ -34,7 +34,6 @@ const Home = () => (
         </div>
     </div>
     <div>
-    <h1>Project Summary</h1>
     <ProjectSummary/>
     </div>
     </div>
