@@ -76,6 +76,7 @@ class Contact extends React.Component {
     }
 
     getData(data) {
+        let self = this;
         let moreDivs = [];
         let moreProject = [];
         let temp = [];
@@ -83,34 +84,70 @@ class Contact extends React.Component {
             if (index == 'status') continue;
             let element = data[index];
             console.log(index);
-            console.log(element);
-            if (element.type == 'Individual') {
-                temp = moreDivs
-            } else {
-                temp = moreProject
-            }
-            temp.push(
-                <div key={'div' + index} style={{ height: 50, marginBottom: 20, background: '#00ffffff', ...style }}>
-                    <Row onClick={this.switchToChat.bind(this, index, element)} style={{ marginLeft: 0 }}>
-                        <Media.Left>
-                            <FaChild size={48} />
-                        </Media.Left>
-                        <Media.Body>
-                            <h4>{element.name}</h4>
-                        </Media.Body>
-                    </Row>
-                </div>
-            )
+            //console.log(element);
+
+
+
+            ChatService.listenOnOffline(index).on('value', function (snapshot) {
+
+
+
+                let content = null;
+                if (element.type == 'Individual') {
+                    content = snapshot.val() == true ? <h4>(online)</h4> : <h4>(offline)</h4>
+                } else {
+                    content = <FaChild size={48} />
+                }
+
+                for (let i = 0; i < self.state.contactData.length; i++) {
+                    console.log("here!!")
+                    console.log(i)
+                    console.log(self.state.contactData.length)
+                    if (self.state.contactData[i].key == index) {
+                        self.state.contactData.splice(i, 1);
+                        console.log("get away")
+                        console.log(self.state.contactData.length)
+                        break;
+                    }
+                }
+
+                let data = (
+                    <div key={index} style={{ height: 50, marginBottom: 20, background: '#00ffffff', ...style }}>
+                        <Row onClick={self.switchToChat.bind(self, index, element)} style={{ marginLeft: 0 }}>
+                            <Media.Left>
+                                {content}
+                            </Media.Left>
+                            <Media.Body>
+                                <h4>{element.name}</h4>
+                            </Media.Body>
+                        </Row>
+                    </div>
+                )
+
+
+                if (element.type == 'Individual') {
+                    let oriData = self.state.contactData;
+                    oriData.unshift(data)
+                    self.setState({
+                        contactData: oriData,
+                        hasMoreI: false,
+                        hasMoreP: false
+                    });
+                } else {
+                    //temp = moreProject
+                    self.setState({
+                        projectData: self.state.projectData.concat(data),
+                        hasMoreI: false,
+                        hasMoreP: false
+                    });
+                }
+
+            });
+
 
         }
         //setTimeout(() => {
-        this.setState({
-            contactData: this.state.contactData.concat(moreDivs),
-            projectData: this.state.projectData.concat(moreProject),
-            hasMoreI: false,
-            hasMoreP: false
-        },
-        );
+
         //}, 500);
     }
 
@@ -183,7 +220,8 @@ class Contact extends React.Component {
                                     //next={this.generateProject.bind(this)}
                                     hasMore={this.state.hasMoreP}
                                     height={530}
-                                    loader={<h4>Loading...</h4>}>
+                                    //loader={<h4>Loading...</h4>}
+                                    >
                                     {this.state.projectData}
                                 </InfiniteScroll>
                             </div>
@@ -199,7 +237,8 @@ class Contact extends React.Component {
                                     //next={this.generateContact.bind(this)}
                                     hasMore={this.state.hasMoreI}
                                     height={530}
-                                    loader={<h4>Loading...</h4>}>
+                                    //loader={<h4>Loading...</h4>}
+                                    >
                                     {this.state.contactData}
                                 </InfiniteScroll>
                             </div>

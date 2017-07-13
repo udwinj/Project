@@ -101,6 +101,7 @@ export const updateSettings = function (user_display_name, user_role) {
 // this allows a user to logout
 // it shouldn't need any parameters if the user is logged in
 export const logoutUser = function () {
+    firebase.database().ref("presence/" + firebase.auth().currentUser.uid).set(false);
     return firebase.auth().signOut();
 }
 
@@ -124,9 +125,7 @@ export const getCurrentUser = function () {
 
 export const getAllUserData = function () {
 
-
     return issueRef.orderByKey().once("value");
-
 
 }
 

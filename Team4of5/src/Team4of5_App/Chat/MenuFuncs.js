@@ -69,7 +69,6 @@ class MenuFuncs extends React.Component {
             }
         })
 
-        ChatService
     }
     getData(data) {
         let newUser = []

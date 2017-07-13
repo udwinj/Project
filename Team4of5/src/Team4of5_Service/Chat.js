@@ -10,6 +10,35 @@ let chatroomRef = ref.child('chatRoom');
 let projectRef = ref.child('chatProject');
 let historyRef = ref.child('chatHistory');
 
+
+
+//listen contact online/offline
+export const listenOnOffline = function (Uuid) {
+    return firebase.database().ref("presence/" + Uuid);
+}
+
+export const listenCurUserOnOffline = function () {
+    let amOnline = firebase.database().ref(".info/connected");
+    let userRef = firebase.database().ref("presence/" + firebase.auth().currentUser.uid);
+    amOnline.on('value', function (snapshot) {
+        if (snapshot.val()) {
+
+            contactRef.child(firebase.auth().currentUser.uid).child('status').once('value').then(function (status) {
+                if (status.val() != null && status.val() == 'Active') {
+                    console.log("connected");
+                    userRef.onDisconnect().remove();
+                    userRef.set(true);
+                }
+            })
+
+        } else {
+            console.log("not connected");
+            userRef.set(false);
+        }
+    });
+}
+
+
 //History
 export const listenHistoryChange = function (chatRoomUid) {
 
@@ -51,10 +80,10 @@ export const queryChatHistory = function () {
 
                     chatroomRef.child(contactData[index].chatroomUid).child('messages').orderByKey().
                         limitToLast(1).once('value').then(function (msgData) {
-                            
-                           if(msgData.val() != null){
-                               dataSize = dataSize + 1;
-                           }
+
+                            if (msgData.val() != null) {
+                                dataSize = dataSize + 1;
+                            }
 
                             const checkReturn = () => {
                                 if (count == dataSize) {
@@ -305,6 +334,11 @@ export const updateStatus = function (status) {
             contactRef.child(firebase.auth().currentUser.uid).update({
                 status: status
             })
+            if(status == 'Active'){
+                firebase.database().ref("presence/" + firebase.auth().currentUser.uid).set(true)
+            }else{
+                firebase.database().ref("presence/" + firebase.auth().currentUser.uid).set(false)
+            }
             return resolve();
         } catch (err) {
             return reject(err);
@@ -395,4 +429,5 @@ export const findUser = function (user_email) {
         }, 500);
     });
 }
+
 

@@ -4,6 +4,7 @@ import registerServiceWorker from '../../registerServiceWorker.js';
 import * as Users from '../../Team4of5_Service/Users.js';
 import Menu from '../Menu.js';
 import './UserLoginSignup.css';
+import * as ChatService from '../../Team4of5_Service/Chat.js';
 
 import {
   BrowserRouter as Router,
@@ -54,6 +55,7 @@ class UserLoginSignup extends React.Component {
         alert("Login Succeed!!");
           console.log('User Confirm!!');
           //handle redirect
+          ChatService.listenCurUserOnOffline();
           this.setState({redirectToMenu: true});
       }).then((User) => {
         Users.saveUserinfo();
