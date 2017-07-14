@@ -16,12 +16,15 @@ export const getProjectData = function () {
 
 }
 
-export const getMyProjects = function () {
+export const getProjects = function () {
 
-    return firebase.database().ref().child('chatProject/0be3f584-33ce-11e2-7b8c-72fe4d59dc4f/data/lanes').once('value')
+
+    return chatProject.once("value");
 
 
 }
+
+
 
 
 export const addNewCard = function (laneID, id, title, description) {
