@@ -128,7 +128,7 @@ componentDidMount() {
 
 
         newIssue.push({
-          id: k, status: issuedata[k].status,
+          id: issuedata[k].surrogate_id, status: issuedata[k].status,
           type:issuedata[k].type,
           priority:issuedata[k].priority,
           severity: issuedata[k].severity,

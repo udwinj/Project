@@ -14,7 +14,23 @@ export const addNewIssue = function(
     expComDate, owner, project,
        issue_status, type, priority, severity){
 
+  var cnt_projs = 1
+
+    issueRef.once('value', function(snapshot) {
+      const keys = Object.keys(snapshot.val())
+      for (var i = 0; i< keys.length; i++){
+        const k = keys[i]
+        if (snapshot.val()[k].project == project){
+          cnt_projs = cnt_projs+1
+        }
+      }
+
+    });
+
+    var surrogate_id = project.concat("-", cnt_projs)
+
 	    issueRef.push({
+              surrogate_id: surrogate_id,
               owner: owner,
               completionDate: completionDate,
               details: details,
@@ -55,9 +71,20 @@ export const update_completion_dt = function(issue_id,completionDate){
 // this allows a user to update their display name in the settings tab
 export const issueUpdate = function (issueID, completionDate, status,priority,severity) {
 
-    var issue_id = issueID;
-    var exists = false
+    var issue_id;
+    var exists = false;
     var comp, pri, stat, sev;
+
+    issueRef.once('value', function(snapshot) {
+      const keys = Object.keys(snapshot.val())
+      for (var i = 0; i< keys.length; i++){
+        const k = keys[i]
+        if (snapshot.val()[k].surrogate_id == issueID){
+          issue_id = k
+        }
+      }
+
+    });
 
     issueRef.child(issue_id).once('value', function(snapshot) {
       exists = (snapshot.val() !== null);
