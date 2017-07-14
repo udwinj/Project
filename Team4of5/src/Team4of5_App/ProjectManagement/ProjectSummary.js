@@ -1,46 +1,79 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import * as ChatProj from '../../Team4of5_Service/ChatProject.js';
+import * as Users from '../../Team4of5_Service/Users.js';
 
-const projectSummaryDate = [{
-  id: 1,
-  name: "React 101",
-  progress: "completed"
-},
-{
-  id: 2,
-  name: "React 102",
-  progress: "inprogress"
-},
-{
-  id: 3,
-  name: "Data Visulization 101",
-  progress: "inprogress"
-},
-{
-  id: 4,
-  name: "Machine Learning 101",
-  progress: "inprogress"
-
-},
-{
-  id: 5,
-  name: "Backend Development 105",
-  progress: "Not start"
-},
-{
-  id: 6,
-  name: "React 105",
-  progress: "Not start"
-}]
 class ProjectSummary extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+            projdata: [],
+            thisUser: ''
+        };
+
+        this.getData = this.getData.bind(this);
+    }
+        componentDidMount() {
+        let self = this;
+        this.state.thisUser = Users.getCurrentUser().email;
+
+        ChatProj.getMyProjects().then(function (data) {
+
+            self.getData(data);
+
+        },
+            function (err) {
+                //Error occur
+                console.log("Promise Error");
+                console.log(err);
+            }
+        );
+
+    }
+
+    getData(data) {
+        const projdata = data.val();
+        var projArray = []
+        const keys = Object.keys(projdata);
+        projArray.push({status: 'Project Status', title:'Project Owner',desc:'Project Description', id:'0'})
+        for (var i = 0; i< keys.length; i++){
+            var xstatus = projdata[i].id
+            var projLength = projdata[i].cards.length
+            const projKeys = Object.keys(projdata[i].cards)
+            for (var x = 0; x<projLength; x++){
+                projArray.push({status: xstatus, title: projdata[i].cards[x].title, desc: projdata[i].cards[x].description, id: projdata[i].cards[x].id});
+            }
+        }
+        this.setState({projdata: projArray});
+
+
+      }
   render() {
+              let listproj = this.state.projdata.map(p =>{
+               return (
+                    <tr className="grey2" key={p.id}>
+                         {Object.keys(p).filter(k => k !== 'id').map(k => {
+                               return (<td className="grey1" key={p.id+''+k}><div suppressContentEditableWarning="true" contentEditable="false"
+                              value={k} >{p[k]}</div></td>);
+                         })}
+                    </tr>
+               );
+          });
     return (
-      <BootstrapTable data={ projectSummaryDate } striped hover condensed >
-          <TableHeaderColumn dataField='id' isKey>Project ID</TableHeaderColumn>
-          <TableHeaderColumn dataField='name'>Product Name</TableHeaderColumn>
-          <TableHeaderColumn dataField='progress' editable={ { type: 'textarea', defaultValue: 'Please Update' }}>Product Progress</TableHeaderColumn>
-      </BootstrapTable>
+                       <fieldset className="step-4">
+                       <h2> Projects for {this.state.thisUser} </h2>
+                    <div className="heading">
+                    </div>
+                    <div className=" padd-lr">
+                         <table  width="1000" cellSpacing="50" id="mytable">
+                              <tbody>{listproj}</tbody>
+                         </table>
+
+                    </div>
+
+               </fieldset>
+
+
     );
   }
 }
