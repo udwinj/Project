@@ -76,7 +76,7 @@ class ProjectSummary extends React.Component {
                     <div className="heading">
                     </div>
                     <div className=" padd-lr">
-                         <table  width="1000" cellSpacing="50" id="mytable">
+                         <table  width="500" cellSpacing="50" id="mytable">
                               <tbody>{listproj}</tbody>
                          </table>
 
