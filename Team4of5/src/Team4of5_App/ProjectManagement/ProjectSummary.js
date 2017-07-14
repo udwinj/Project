@@ -15,9 +15,9 @@ class ProjectSummary extends React.Component {
     }
         componentDidMount() {
         let self = this;
-        this.state.thisUser = Users.getCurrentUser().email;
+        this.state.thisUser = Users.getCurrentUser().uid;
 
-        ChatProj.getMyProjects().then(function (data) {
+        ChatProj.getProjects().then(function (data) {
 
             self.getData(data);
 
@@ -35,14 +35,25 @@ class ProjectSummary extends React.Component {
         const projdata = data.val();
         var projArray = []
         const keys = Object.keys(projdata);
-        projArray.push({status: 'Project Status', title:'Project Owner',desc:'Project Description', id:'0'})
+        projArray.push({name:'Project Name', id:'0'})
         for (var i = 0; i< keys.length; i++){
-            var xstatus = projdata[i].id
-            var projLength = projdata[i].cards.length
-            const projKeys = Object.keys(projdata[i].cards)
-            for (var x = 0; x<projLength; x++){
-                projArray.push({status: xstatus, title: projdata[i].cards[x].title, desc: projdata[i].cards[x].description, id: projdata[i].cards[x].id});
+          var members = []
+          var projname =''
+          var user_in_proj = false
+          const k = keys[i];
+
+          projname = projdata[k].name
+
+          for (var x = 0; x< projdata[k].members.length; x++){
+            if (projdata[k].members[x] == this.state.thisUser){
+              user_in_proj = true
             }
+          }
+
+          if (user_in_proj == true){
+              projArray.push({name: projname, id: k});
+          }
+            
         }
         this.setState({projdata: projArray});
 
@@ -61,7 +72,7 @@ class ProjectSummary extends React.Component {
           });
     return (
                        <fieldset className="step-4">
-                       <h2> Projects for {this.state.thisUser} </h2>
+                       <h2> My Projects </h2>
                     <div className="heading">
                     </div>
                     <div className=" padd-lr">
