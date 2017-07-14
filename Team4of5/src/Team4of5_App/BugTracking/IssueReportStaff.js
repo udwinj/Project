@@ -249,7 +249,7 @@ class IssueReportStaff extends React.Component {
                return (
                     <tr className="grey2" key={p.id}>
                          {Object.keys(p).filter(k => k !== 'id').map(k => {
-                               return (<td className="grey1" key={p.id+''+k}><div suppressContentEditableWarning="true" contentEditable="true"
+                               return (<td className="grey1" key={p.id+''+k}><div suppressContentEditableWarning="true" contentEditable="false"
                               value={k} onInput={this.editColumn.bind(this,{p},{k})}>{p[k]}</div></td>);
                          })}
                     </tr>
@@ -260,7 +260,7 @@ class IssueReportStaff extends React.Component {
                return (
                     <tr className="grey2" key={p.id}>
                          {Object.keys(p).filter(k => k !== 'id').map(k => {
-                               return (<td className="grey1" key={p.id+''+k}><div suppressContentEditableWarning="true" contentEditable="true"
+                               return (<td className="grey1" key={p.id+''+k}><div suppressContentEditableWarning="true" contentEditable="false"
                               value={k} onInput={this.editColumn.bind(this,{p},{k})}>{p[k]}</div></td>);
                          })}
                     </tr>
