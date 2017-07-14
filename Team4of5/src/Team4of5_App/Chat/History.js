@@ -73,12 +73,16 @@ class History extends React.Component {
     for (let i = 0; i < data.length; i++) {
 
       console.log(title)
+      let content = data[i].content;
+      if(content.length > 10){
+        content = content.substring(0, 30)+"..."
+      }
       moreDivs.push(
         <div key={data[i].chatroomUid} style={{ height: 50, background:'#00ffffff', ...style }}>
           <h4 onClick={this.switchToChat.bind(this, data[i].chatroomUid, {
             chatroomUid: data[i].chatroomUid,
             name: data[i].title, type: data[i].type
-          })}>{data[i].senderName}: {data[i].content}  </h4>
+          })}>{data[i].senderName}: {content}  </h4>
           <span id="hisDateSpan"> {new Date(parseInt(data[i].sendDate)).toString()}</span>
         </div>
       );

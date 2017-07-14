@@ -47,7 +47,7 @@ class MenuRecent extends React.Component {
       ],
       hasMoreData: true,
     };
-    this.generateDivs = this.generateDivs.bind(this);
+    //this.generateDivs = this.generateDivs.bind(this);
     this.switchToChat = this.switchToChat.bind(this);
     this.setData = this.setData.bind(this);
   }
@@ -85,12 +85,16 @@ class MenuRecent extends React.Component {
 
       //let title = data[i].type == 'Project' ? data[i].projectName : data[i].senderName
       console.log(title)
+      let content = data[i].content;
+      if(content.length > 10){
+        content = content.substring(0, 15)+"..."
+      }
       moreDivs.push(
         <div key={data[i].chatroomUid} style={{ height: 50, background: colors[i % 4], ...style }}>
           <h4 onClick={this.switchToChat.bind(this, data[i].chatroomUid, {
             chatroomUid: data[i].chatroomUid,
             name: data[i].title, type: data[i].type
-          })}>{data[i].senderName}: {data[i].content}</h4>
+          })}>{data[i].senderName}: {content}</h4>
         </div>
       );
     }
@@ -101,23 +105,23 @@ class MenuRecent extends React.Component {
   //   this.generateDivs();
   // }
 
-  generateDivs() {
-    let moreDivs = [];
-    let count = this.state.divs.length;
-    for (let i = 0; i < 10; i++) {
-      moreDivs.push(
-        <div key={'div' + count++} style={{ height: 50, background: colors[i % 4], ...style }}>
-          <h4 onClick={this.switchToChat.bind(this, count)}>User{count} Last Msg</h4>
-        </div>
-      );
-    }
-    //remove index of 5
-    ///moreDivs.splice(5,1)
-    //moreDivs.unshift
-    setTimeout(() => {
-      this.setState({ divs: this.state.divs.concat(moreDivs) });
-    }, 500);
-  }
+  // generateDivs() {
+  //   let moreDivs = [];
+  //   let count = this.state.divs.length;
+  //   for (let i = 0; i < 10; i++) {
+  //     moreDivs.push(
+  //       <div key={'div' + count++} style={{ height: 50, background: colors[i % 4], ...style }}>
+  //         <h4 onClick={this.switchToChat.bind(this, count)}>User{count} Last Msg</h4>
+  //       </div>
+  //     );
+  //   }
+  //   //remove index of 5
+  //   ///moreDivs.splice(5,1)
+  //   //moreDivs.unshift
+  //   setTimeout(() => {
+  //     this.setState({ divs: this.state.divs.concat(moreDivs) });
+  //   }, 500);
+  // }
 
   render() {
     return (
@@ -129,7 +133,7 @@ class MenuRecent extends React.Component {
             pullDownToRefreshContent={<h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>}
             releaseToRefreshContent={<h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>}
             refreshFunction={this.refresh}*/
-            next={this.generateDivs.bind(this)}
+            //next={this.generateDivs.bind(this)}
             hasMore={true}
             height={300}
             //loader={<h4>Loading...</h4>}
