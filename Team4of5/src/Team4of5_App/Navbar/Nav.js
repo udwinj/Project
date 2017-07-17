@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Navbar, NavItem, Nav, Jumbotron, Button, Input } from 'react-bootstrap';
+import { Navbar, NavItem, Nav,  NavDropdown, MenuItem } from 'react-bootstrap';
+import './Nav.css';
 
 //load the firebase
 import * as firebase from 'firebase';
@@ -63,34 +64,41 @@ class NavbarHeaderC extends React.Component {
 
 
     return (
-      <Navbar inverse>
+      <Navbar  collapseOnSelect activeKey="5" className="navbar navbar-default">
         <Navbar.Header>
-          <Navbar.Brand>
+          <Navbar.Brand >
             <a>Team 4 of 5</a>
           </Navbar.Brand>
+          <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
-          <Nav >
-            <NavItem>
-              <Button><NavLink activeStyle={{ fontWeight: 'bold', color: 'black' }} activeClassName='active' to='/menu/Chat'>Chat</NavLink></Button>
+          <Nav>
+            <NavItem id="chat1" eventKey={1}>
+              <Link id="chat" to='/menu/Chat'>Chat</Link>
             </NavItem>
-            <NavItem>
-              <Button><NavLink activeStyle={{ fontWeight: 'bold', color: 'black' }} exact activeClassName='active' to='/menu/Settings'>Settings</NavLink></Button>
+            <NavItem id="pm1" eventKey={2}>
+              <Link id="pm" to='/menu/ProjectManagement'>Project Management</Link>
             </NavItem>
-            <NavItem>
-              <Button><NavLink activeStyle={{ fontWeight: 'bold', color: 'black' }} activeClassName='active' to='/menu/IssueTracker'>Issue Tracker</NavLink></Button>
+            <NavItem id="issue1" eventKey={3}>
+              <Link id="issue" to='/menu/IssueTracker'>Issue Tracker</Link>
             </NavItem>
-            <NavItem>
-              <Button><NavLink activeStyle={{ fontWeight: 'bold', color: 'black' }} activeClassName='active' to='/menu/ProjectManagement'>Project Management</NavLink></Button>
+            <NavItem id="setting1" eventKey={4}>
+              <Link id="setting" to='/menu/Settings'>Settings</Link>
             </NavItem>
-            <NavItem>
-              <Button><NavLink activeStyle={{ fontWeight: 'bold', color: 'black' }} activeClassName='active' to='/menu'>Menu</NavLink></Button>
-            </NavItem>
-            <NavItem>
-              <Button><NavLink activeStyle={{ fontWeight: 'bold', color: 'black' }} activeClassName='active' to='/login'>Logout</NavLink></Button>
-            </NavItem>
-            <NavItem>Welcome, {this.state.userInfo[1]}</NavItem>
-            <NavItem>Company {this.state.userInfo[2]}</NavItem>
+
+
+        </Nav>
+         <Nav pullRight>
+             <NavDropdown eventKey={5}>
+                <MenuItem id="menu1" eventKey={5.1}>
+              <Link id="menu" to='/menu'>Menu</Link>
+             </MenuItem>
+            <MenuItem id="logout1" eventKey={5.2}>
+              <Link id="logout" to='/login'>Logout</Link>
+               </MenuItem>
+            </NavDropdown>
+            <MenuItem>Welcome, {this.state.userInfo[1]}</MenuItem>
+            <MenuItem>Company {this.state.userInfo[2]}</MenuItem>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
