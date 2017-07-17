@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import IssueTracker from './BugTracking/IssueTracker.js';
 import IssueReports from './BugTracking/IssueReports.js';
 import NewIssue from './BugTracking/NewIssue.js';
+import IssueWiki from './BugTracking/IssueWiki.js';
 import Chat from './Chat/Chat.js';
 import ProjectManagement from './ProjectManagement/ProjectManagement.js';
 import Settings from './Settings/Settings.js';
@@ -80,6 +81,7 @@ class Menu extends React.Component {
                     <Route path='/menu/IssueTracker' component={IssueTracker} />
                     <Route path='/menu/IssueReports' component={IssueReports} />
                     <Route path='/menu/NewIssue' component={NewIssue} />
+                    <Route path='/menu/IssueWiki' component={IssueWiki} />
                     <Route path='/menu/Chat' component={Chat} />
                     <Route path='/menu/ProjectManagement' component={ProjectManagement} />
                     <Route path='/menu/Settings' component={Settings} />
