@@ -1,5 +1,4 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, {Component} from 'react';
 import registerServiceWorker from '../../registerServiceWorker.js';
 import Navbar from '../Navbar/Nav.js';
 import IssueTrackerNav from './IssueTrackerNav.js';
@@ -15,24 +14,35 @@ import {BrowserRouter as Router, Route, Link, Redirect, withRouter} from 'react-
 //import css
 import './IssueTracker.css';
 //import react-bootstrap
-import {FormGroup, FormControl, ControlLabel, HelpBlock, Button, Col} from 'react-bootstrap';
+import {
+    FormGroup,
+    FormControl,
+    ControlLabel,
+    HelpBlock,
+    Button,
+    Col
+} from 'react-bootstrap';
 
-function FieldGroup({ id, label, help, ...props }) {
-  return (
-    <FormGroup controlId={id}>
-      <ControlLabel>{label}</ControlLabel>
-      <FormControl {...props} />
-      {help && <HelpBlock>{help}</HelpBlock>}
-    </FormGroup>
-  );
+function FieldGroup({
+    id,
+    label,
+    help,
+    ...props
+}) {
+    return (
+        <FormGroup controlId={id}>
+            <ControlLabel>{label}</ControlLabel>
+            <FormControl {...props}/> {help && <HelpBlock>{help}</HelpBlock>}
+        </FormGroup>
+    );
 }
-class NewIssue extends React.Component {
+class NewIssue extends Component {
     constructor(props) {
         super(props);
         this.state = {
             value: '',
             formBtnTxt: 'Add Issue',
-            redirectToIssue: false,
+            redirectToIssue: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -87,117 +97,113 @@ class NewIssue extends React.Component {
         return (
             <div>
                 <IssueTrackerNav/>
-                <div className="Aligner">
+                <div className="AlignerNew">
 
+                    <div className='createIssue1'>
 
-                <div className='createIssue1'>
-
-                    <div className="panel panel-default">
-                        <div className="panel-heading clearfix">
-                         <h1 className="panel-title pull-left">Create New Issue</h1>
-                        <div className="pull-right">
-                        <p>Please enter issue information</p>
+                        <div className="panel panel-info">
+                            <div className="panel-heading clearfix">
+                                <h1 className="panel-title pull-left">Create New Issue</h1>
+                                <div className="pull-right">
+                                    <p>Please enter issue information</p>
+                                </div>
+                            </div>
                         </div>
-                        </div>
-                    </div>
-                    <form onSubmit={this.handleSubmit}>
+                        <form onSubmit={this.handleSubmit}>
 
-                    <FormGroup controlId="formControlsText">
-                            <ControlLabel>Owner</ControlLabel>
-                            <FormControl type="text" placeholder="Enter Owner email" value={this.state.owner} onChange={this.handleChange.bind(this, 'owner')}/>
-                        </FormGroup>
-                        <FormGroup controlId="formControlsText">
+                            <FormGroup controlId="formControlsText">
+                                <ControlLabel>Owner</ControlLabel>
+                                <FormControl type="text" placeholder="Enter Owner email" value={this.state.owner} onChange={this.handleChange.bind(this, 'owner')}/>
+                            </FormGroup>
+                            <FormGroup controlId="formControlsText">
 
-                             <ControlLabel>Expected completion days</ControlLabel>
+                                <ControlLabel>Expected completion days</ControlLabel>
 
-                            <FormControl type="text" value={this.state.expComDate} placeholder='Estimated days to solve issue' onChange={this.handleChange.bind(this, 'expComDate')}/>
+                                <FormControl type="text" value={this.state.expComDate} placeholder='Estimated days to solve issue' onChange={this.handleChange.bind(this, 'expComDate')}/>
 
-                        </FormGroup>
-                        <FormGroup controlId="formControlsTextarea">
-                         <ControlLabel>Details</ControlLabel>
+                            </FormGroup>
+                            <FormGroup controlId="formControlsTextarea">
+                                <ControlLabel>Details</ControlLabel>
 
-                              <FormControl type="text" value={this.state.details} placeholder='Issue details' onChange={this.handleChange.bind(this, 'details')}/>
+                                <FormControl componentClass="textarea" value={this.state.details} placeholder='Issue details' onChange={this.handleChange.bind(this, 'details')}/>
 
-                        </FormGroup>
-                        <FormGroup controlId="formControlsText">
+                            </FormGroup>
+                            <FormGroup controlId="formControlsText">
 
-                             <ControlLabel>Project</ControlLabel>
+                                <ControlLabel>Project</ControlLabel>
 
-                            <FormControl type="text" value={this.state.project} placeholder='Enter project ID associated with this issue' onChange={this.handleChange.bind(this, 'project')}/>
+                                <FormControl type="text" value={this.state.project} placeholder='Enter project ID associated with this issue' onChange={this.handleChange.bind(this, 'project')}/>
 
-                        </FormGroup>
+                            </FormGroup>
 
-                        <FormGroup controlId="formControlsSelect">
+                            <FormGroup controlId="formControlsSelect">
 
-                              <ControlLabel>Status</ControlLabel>
+                                <ControlLabel>Status</ControlLabel>
 
+                                <FormControl componentClass="select" value={this.state.status} onChange={this.handleChange.bind(this, 'status')}>
 
-                              <FormControl componentClass="select" value={this.state.status} onChange={this.handleChange.bind(this, 'status')}>
+                                    <option value=""></option>
+                                    <option value="New">New</option>
+                                    <option value="Open">Open</option>
+                                    <option value="Assigned">Assigned</option>
+                                    <option value="Verified">Verified</option>
+                                    <option value="Closed">Closed</option>
+                                </FormControl>
 
+                            </FormGroup>
+                            <FormGroup controlId="formControlsSelect">
+                                <ControlLabel>Type</ControlLabel>
+                                <FormControl componentClass="select" value={this.state.type} onChange={this.handleChange.bind(this, 'type')}>
 
-                                  <option value=""></option>
-                                  <option value="New">New</option>
-                                  <option value="Open">Open</option>
-                                  <option value="Assigned">Assigned</option>
-                                  <option value="Verified">Verified</option>
-                                  <option value="Closed">Closed</option>
-                              </FormControl>
+                                    <option value=""></option>
+                                    <option value="Blocker">Blocker</option>
+                                    <option value="Critical">Critical</option>
+                                    <option value="Major">Major</option>
+                                    <option value="Minor">Minor</option>
+                                    <option value="Trivial">Trivial</option>
+                                </FormControl>
+                            </FormGroup>
+                            <FormGroup controlId="formControlsSelect">
+                                <ControlLabel>Priority</ControlLabel>
+                                <FormControl componentClass="select" value={this.state.priority} onChange={this.handleChange.bind(this, 'priority')}>
 
-                        </FormGroup>
-                        <FormGroup controlId="formControlsSelect">
-                            <ControlLabel>Type</ControlLabel>
-                              <FormControl componentClass="select" value={this.state.type} onChange={this.handleChange.bind(this, 'type')}>
-
-                                <option value=""></option>
-                                <option value="Blocker">Blocker</option>
-                                <option value="Critical">Critical</option>
-                                <option value="Major">Major</option>
-                                <option value="Minor">Minor</option>
-                                <option value="Trivial">Trivial</option>
-                              </FormControl>
-                        </FormGroup>
-                        <FormGroup controlId="formControlsSelect">
-                            <ControlLabel>Priority</ControlLabel>
-                              <FormControl componentClass="select" value={this.state.priority} onChange={this.handleChange.bind(this, 'priority')}>
-
-                                <option value=""></option>
-                                <option value="Immediate">Immediate</option>
-                                <option value="High">High</option>
-                                <option value="Medium">Medium</option>
-                                <option value="Low">Low</option>
-                                <option value="Verified">Verified</option>
-                                <option value="Fix if time">Fix if time</option>
-                              </FormControl>
-                        </FormGroup>
-                        <FormGroup controlId="formControlsSelect">
+                                    <option value=""></option>
+                                    <option value="Immediate">Immediate</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Verified">Verified</option>
+                                    <option value="Fix if time">Fix if time</option>
+                                </FormControl>
+                            </FormGroup>
+                            <FormGroup controlId="formControlsSelect">
                                 <ControlLabel>Severity</ControlLabel>
-                              <FormControl componentClass="select" value={this.state.severity} onChange={this.handleChange.bind(this, 'severity')}>
+                                <FormControl componentClass="select" value={this.state.severity} onChange={this.handleChange.bind(this, 'severity')}>
 
-                                <option value=""></option>
-                                <option value="Critical">Critical</option>
-                                <option value="High">High</option>
-                                <option value="Medium">Medium</option>
-                                <option value="Low">Low</option>
-                                <option value="None">None</option>
-                              </FormControl>
-                        </FormGroup>
+                                    <option value=""></option>
+                                    <option value="Critical">Critical</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Low">Low</option>
+                                    <option value="None">None</option>
+                                </FormControl>
+                            </FormGroup>
 
-                        <FormGroup controlId="formControlsText">
+                            <FormGroup controlId="formControlsText">
 
-                             <ControlLabel>Actual completion date</ControlLabel>
+                                <ControlLabel>Actual completion date</ControlLabel>
 
-                            <FormControl type="date" value={this.state.completionDate} onChange={this.handleChange.bind(this, 'completionDate')}/>
+                                <FormControl type="date" value={this.state.completionDate} onChange={this.handleChange.bind(this, 'completionDate')}/>
 
-                        </FormGroup>
+                            </FormGroup>
 
+                            <Button type="submit" id="submitBtn">
+                                Submit
+                            </Button>
 
-                        <Button type="submit" id="submitBtn">
-                            Submit
-                        </Button>
-
-                    </form>
-                        </div>
-</div>
+                        </form>
+                    </div>
+                </div>
             </div>
         );
     }

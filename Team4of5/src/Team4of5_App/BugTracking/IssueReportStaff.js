@@ -1,8 +1,12 @@
 import React, {Component} from 'react';
+//import css
 import './IssueTracker.css';
+//import react-bootstrap
+import {Table } from 'react-bootstrap';
+
 import * as User from '../../Team4of5_Service/Users.js';
 
-class IssueReportStaff extends React.Component {
+class IssueReportStaff extends Component {
      constructor(props){
           super(props);
      this.state = {
@@ -247,55 +251,63 @@ class IssueReportStaff extends React.Component {
 
           let list = this.state.data.map(p =>{
                return (
+
                     <tr className="grey2" key={p.id}>
                          {Object.keys(p).filter(k => k !== 'id').map(k => {
                                return (<td className="grey1" key={p.id+''+k}><div suppressContentEditableWarning="true" contentEditable="false"
                               value={k} onInput={this.editColumn.bind(this,{p},{k})}>{p[k]}</div></td>);
                          })}
                     </tr>
+
                );
           });
 
           let listproj = this.state.projdata.map(p =>{
                return (
+
                     <tr className="grey2" key={p.id}>
                          {Object.keys(p).filter(k => k !== 'id').map(k => {
                                return (<td className="grey1" key={p.id+''+k}><div suppressContentEditableWarning="true" contentEditable="false"
                               value={k} onInput={this.editColumn.bind(this,{p},{k})}>{p[k]}</div></td>);
                          })}
                     </tr>
+
                );
           });
 
           return (
-          <div>
-            <h1> Issue Reports </h1>
-               <fieldset className="step-4">
-                    <div className="heading">
-                         <h3>Issue Status by Owner</h3>
-                    </div>
-                    <div className=" padd-lr">
-                         <table cellSpacing="50" id="mytable">
+              <div>
+                  <h1 className="IssueReportText"> Issue Reports </h1>
+
+          <div className="AlignerReport">
+
+                    <div className="padd-lr">
+                        <div className="panel panel-primary">
+                            <div className="panel-heading clearfix">
+                             <h3 className="panel-title text-center">Issue Status by Owner</h3>
+                             </div>
+                        </div>
+                         <Table responsive striped bordered condensed hover >
                               <tbody>{list}</tbody>
-                         </table>
+                         </Table>
 
                     </div>
 
-               </fieldset>
-
-                <fieldset className="step-4">
-                    <div className="heading">
-                         <h3>Issue Status by Project</h3>
-                    </div>
                     <div className=" padd-lr">
-                         <table cellSpacing="50" id="mytable">
+                        <div className="panel panel-primary">
+                            <div className="panel-heading clearfix">
+                             <h3 className="panel-title text-center">Issue Status by Project</h3>
+                             </div>
+                        </div>
+                         <Table responsive striped bordered condensed hover>
                               <tbody>{listproj}</tbody>
-                         </table>
+                         </Table>
 
                     </div>
 
-               </fieldset>
+
                </div>
+                 </div>
           );
      }
 }
