@@ -125,7 +125,6 @@ class Settings extends React.Component {
                 <select value={this.state.role} onChange={this.handleChange.bind(this, 'role')}>
                 <option value=""></option>
                 <option value="Customer">Customer</option>
-                <option value="Administrator">Administrator</option>
                 <option value="Project Contributor">Project Contributor</option>
               </select>
               </label>
