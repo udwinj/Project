@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Navbar, NavItem, Nav,  NavDropdown, MenuItem } from 'react-bootstrap';
 import './Nav.css';
+import { LinkContainer } from 'react-router-bootstrap';
 
 //load the firebase
 import * as firebase from 'firebase';
@@ -64,7 +65,7 @@ class NavbarHeaderC extends React.Component {
 
 
     return (
-      <Navbar  collapseOnSelect activeKey="5" className="navbar navbar-default">
+      <Navbar activeKey="5" className="navbar navbar-default">
         <Navbar.Header>
           <Navbar.Brand >
             <a>Team 4 of 5</a>
@@ -73,29 +74,39 @@ class NavbarHeaderC extends React.Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav>
-            <NavItem id="chat1" eventKey={1}>
-              <Link id="chat" to='/menu/Chat'>Chat</Link>
-            </NavItem>
-            <NavItem id="pm1" eventKey={2}>
-              <Link id="pm" to='/menu/ProjectManagement'>Project Management</Link>
-            </NavItem>
-            <NavItem id="issue1" eventKey={3}>
-              <Link id="issue" to='/menu/IssueTracker'>Issue Tracker</Link>
-            </NavItem>
-            <NavItem id="setting1" eventKey={4}>
-              <Link id="setting" to='/menu/Settings'>Settings</Link>
-            </NavItem>
+
+        <LinkContainer  to='/menu/Chat'>
+              <NavItem  eventKey={1}>Chat</NavItem>
+          </LinkContainer>
+
+
+            <LinkContainer  to='/menu/ProjectManagement'>
+              <NavItem  eventKey={2}>Project Management</NavItem>
+          </LinkContainer>
+
+            <LinkContainer  to="/menu/IssueTracker">
+                  <NavItem  eventKey={3}>Issue Tracker</NavItem>
+            </LinkContainer>
+
+
+              <LinkContainer  to='/menu/Settings'>
+              <NavItem  eventKey={4}>Settings</NavItem>
+          </LinkContainer>
 
 
         </Nav>
          <Nav pullRight>
-             <NavDropdown eventKey={5}>
-                <MenuItem id="menu1" eventKey={5.1}>
-              <Link id="menu" to='/menu'>Menu</Link>
-             </MenuItem>
-            <MenuItem id="logout1" eventKey={5.2}>
-              <Link id="logout" to='/login'>Logout</Link>
-               </MenuItem>
+             <NavDropdown title="more" id="basic-dropdown" eventKey={5}>
+
+              <LinkContainer to='/menu'>
+              <MenuItem  eventKey={5.1}>Menu</MenuItem>
+          </LinkContainer>
+
+
+              <LinkContainer  to='/login'>
+              <MenuItem  eventKey={5.2}>Logout</MenuItem>
+          </LinkContainer>
+
             </NavDropdown>
             <MenuItem>Welcome, {this.state.userInfo[1]}</MenuItem>
             <MenuItem>Company {this.state.userInfo[2]}</MenuItem>
