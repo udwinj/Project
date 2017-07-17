@@ -34,8 +34,12 @@ render(){
             <NavLink activeClassName='active' to='/menu/IssueReports'>Reports</NavLink>
           </NavItem>
           <NavItem>
+            <NavLink activeClassName='active' to='/menu/IssueWiki'>Issue Wiki</NavLink>
+          </NavItem>
+          <NavItem>
             <NavLink activeClassName='active' to='/menu/NewIssue'>Create New Issue</NavLink>
           </NavItem>
+
         </Nav>
         </Navbar>
     </div>
