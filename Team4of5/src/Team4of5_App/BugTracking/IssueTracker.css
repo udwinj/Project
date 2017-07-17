@@ -1,4 +1,5 @@
-.Aligner {
+/*Creat New Issue*/
+.AlignerNew {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,29 +17,6 @@
 #formControlsText, #formControlsTextarea{
     width: 80%;
 }
-.titleNew{
-    margin: 10px;
-    position: relative;
-
-    text-align: center;
-}
-.titleNew h1{
-  text-align: center;
-  font-family: monospace;
-  font-size: 50px;
-  font-weight: bold;
-}
-.titleNew h3{
-  text-align: center;
-  font-family: monospace;
-  font-size: 20px;
-  font-weight: bold;
-}
-.titleNew p{
-  text-align: center;
-  font-family: sans-serif;
-  font-size: 20px;
-}
 
 #submitBtn{
   background: #3498db;
@@ -51,9 +29,13 @@
 }
 
 /*Report Table*/
-#mytable{
-    font-weight: 500;
-    margin: 50px 20px;
+.AlignerReport{
+    display: flex;
+    flex-direction: row;
+}
+.IssueReportText{
+    text-align: center;
+    margin: 50px;
 }
 .grey1 {
     border: 1px solid;
@@ -62,6 +44,11 @@
     height: 50px;
     font-size: 15px;
     text-align: center;
+}
+.padd-lr{
+    max-width: 50%;
+    width: 100%;
+    padding: 20px;
 }
 /*Issue tracker type and others*/
 .type{
