@@ -34,10 +34,11 @@ export const saveUserinfo = function () {
                 email: user_email
             });
             thisUserRef.on("value", function (snapshot) {
-                var displayname = snapshot.val().display_name;
                 var role = snapshot.val().role;
-                if (role == null || displayname == null) {
-                    alert("Please go to the settings page to complete your profile")
+                if (role == null) {
+                            thisUserRef.update({
+                                role: 'Customer'
+                });
                 }
             });
         }
