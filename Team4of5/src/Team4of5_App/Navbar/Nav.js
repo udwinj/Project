@@ -56,6 +56,7 @@ class NavbarHeaderC extends React.Component {
 
     newUser.push(userdata.role);
     newUser.push(userdata.display_name);
+    newUser.push(userdata.company);
     this.setState({ userInfo: newUser });
   }
   render() {
@@ -89,6 +90,7 @@ class NavbarHeaderC extends React.Component {
               <Button><NavLink activeStyle={{ fontWeight: 'bold', color: 'black' }} activeClassName='active' to='/login'>Logout</NavLink></Button>
             </NavItem>
             <NavItem>Welcome, {this.state.userInfo[1]}</NavItem>
+            <NavItem>Company {this.state.userInfo[2]}</NavItem>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
