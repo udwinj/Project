@@ -1,0 +1,36 @@
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+    font-size: 14px;
+    background: #f8f8f8;
+    border-width: 1px;
+    border-radius: 4px;
+}
+#setting, #chat, #pm, #menu, #logout, #issue{
+
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    color: #777777;
+
+}
+
+.navbar-default .navbar-brand {
+
+color: #777777;
+font-size: 20px;
+font-weight: 600;
+}
+#setting1:hover,
+#chat1:hover, #pm1:hover, #menu1:hover, #logout1:hover, #issue1:hover,
+ #setting1:focus,
+ #chat1:focus, #pm1:focus, #menu1:focus, #logout1:focus, #issue1:focus{
+
+      background: #bac2c6;
+
+ }
+
+.active>#setting1, .active>#chat1, .active>#pm1, .active>#menu1, .active>#logout1, .active>#issue1,
+.active>#setting1:hover, .active>#chat1:hover, .active>#pm1:hover, .active>#menu1:hover, .active>#logout1:hover, .active>#issue1:hover,
+.active>#setting1:focus, .active>#chat1:focus, .active>#pm1:focus, .active>#menu1:focus, .active>#logout1:focus, .active>#issue1:focus {
+
+   background: #f9f9f9;
+ }
