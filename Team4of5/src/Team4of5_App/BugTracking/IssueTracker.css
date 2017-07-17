@@ -1,7 +1,20 @@
-.createIssue{
-    margin-top: 10px;
+.Aligner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.createIssue1{
+    max-width: 70%;
+    border: 1px solid #d9dbdd;
     width: 100%;
-    text-align: center;
+    padding: 20px;
+}
+#formControlsSelect{
+
+    width: 50%;
+}
+#formControlsText, #formControlsTextarea{
+    width: 80%;
 }
 .titleNew{
     margin: 10px;
