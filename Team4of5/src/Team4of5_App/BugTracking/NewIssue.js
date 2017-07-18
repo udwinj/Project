@@ -197,9 +197,10 @@ class NewIssue extends Component {
 
                             </FormGroup>
 
-                            <Button type="submit" id="submitBtn">
+                            <button type="submit" id="newIssueBtn" className="btn btn-primary">
                                 Submit
-                            </Button>
+                            </button>
+                            <Link to='/menu/IssueTracker' className='btn btn-danger'>Cancel</Link>
 
                         </form>
                     </div>

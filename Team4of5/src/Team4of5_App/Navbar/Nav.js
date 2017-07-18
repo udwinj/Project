@@ -65,7 +65,8 @@ class NavbarHeaderC extends React.Component {
 
 
     return (
-      <Navbar activeKey="5" className="navbar navbar-default">
+
+      <Navbar collapseOnSelect className="navbar navbar-default">
         <Navbar.Header>
           <Navbar.Brand >
             <a>Team 4 of 5</a>

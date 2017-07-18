@@ -1,20 +1,16 @@
-.navbar-default .navbar-collapse, .navbar-default .navbar-form {
-    font-size: 14px;
-    background: #f8f8f8;
+.navbar .navbar-default  {
+    background-color: #428bca !important;
     border-width: 1px;
     border-radius: 4px;
 }
-.navbar-default .navbar-nav>li>a{
 
+.navbar-default .navbar-nav>li>a{
     text-decoration: none;
     font-size: 15px;
-    font-weight: 600;
     color: #777777;
-
 }
 
 .navbar-default .navbar-brand {
-
 color: #777777;
 font-size: 20px;
 font-weight: 600;
