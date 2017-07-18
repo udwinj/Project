@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navbar, NavItem, Nav, Jumbotron, Button, Input} from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 import {
     BrowserRouter as Router,
@@ -26,20 +27,26 @@ render(){
   return (
       <div>
          <Navbar>
-        <Nav >
-          <NavItem>
-            <NavLink activeClassName='active' to='/menu/IssueTracker'>Issue</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink activeClassName='active' to='/menu/IssueReports'>Reports</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink activeClassName='active' to='/menu/IssueWiki'>Issue Wiki</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink activeClassName='active' to='/menu/NewIssue'>Create New Issue</NavLink>
-          </NavItem>
 
+        <Nav >
+            <LinkContainer  to='/menu/IssueTracker'>
+                  <NavItem  eventKey={1}>Issue</NavItem>
+              </LinkContainer>
+
+
+                <LinkContainer  to='/menu/IssueReports'>
+                  <NavItem  eventKey={2}>Reports</NavItem>
+              </LinkContainer>
+
+                  <LinkContainer  to='/menu/NewIssue'>
+                  <NavItem  eventKey={4}>Create New Issue</NavItem>
+              </LinkContainer>
+
+        </Nav>
+        <Nav pullRight>
+            <LinkContainer  to="/menu/IssueWiki">
+                  <NavItem  eventKey={3}>Issue Wiki</NavItem>
+            </LinkContainer>
         </Nav>
         </Navbar>
     </div>
