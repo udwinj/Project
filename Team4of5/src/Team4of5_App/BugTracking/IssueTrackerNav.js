@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navbar, NavItem, Nav, Jumbotron, Button, Input} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+
 import {
     BrowserRouter as Router,
     Route,
@@ -22,11 +23,11 @@ class  IssueTrackerNav extends React.Component {
 
 render(){
 
-
-  return (
+return (
       <div>
-         <Navbar  activeKey="1" >
-        <Nav bsStyle="pills">
+         <Navbar>
+
+        <Nav >
             <LinkContainer  to='/menu/IssueTracker'>
                   <NavItem  eventKey={1}>Issue</NavItem>
               </LinkContainer>
@@ -36,13 +37,12 @@ render(){
                   <NavItem  eventKey={2}>Reports</NavItem>
               </LinkContainer>
 
-
                   <LinkContainer  to='/menu/NewIssue'>
                   <NavItem  eventKey={4}>Create New Issue</NavItem>
               </LinkContainer>
 
         </Nav>
-        <Nav pullRight bsStyle="pills">
+        <Nav pullRight>
             <LinkContainer  to="/menu/IssueWiki">
                   <NavItem  eventKey={3}>Issue Wiki</NavItem>
             </LinkContainer>
@@ -50,6 +50,7 @@ render(){
         </Navbar>
     </div>
  );
+  
 }
 }
 
