@@ -23,8 +23,7 @@ class  IssueTrackerNav extends React.Component {
 
 render(){
 
-
-  return (
+return (
       <div>
          <Navbar>
 
@@ -51,6 +50,7 @@ render(){
         </Navbar>
     </div>
  );
+  
 }
 }
 
