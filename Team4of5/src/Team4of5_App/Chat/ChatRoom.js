@@ -198,7 +198,7 @@ class ChatRoom extends React.Component {
                                 <h3>{this.props.extraData.ContactData.name}</h3>
                             </Media.Left>
                             <Media.Right>
-                                {this.props.extraData.ContactData.type == "Project" ? chatMemBar(this) :''}
+                                {this.props.extraData.ContactData.type == "Project" ? chatMemBar(this) : ''}
                             </Media.Right>
                         </Col>
                     </Row>
@@ -214,12 +214,18 @@ class ChatRoom extends React.Component {
                         bubbleStyles={
                             {
                                 text: {
-                                    fontSize: 20
+                                    fontSize: 20,
+                                    color: 'black'
                                 },
                                 chatbubble: {
                                     borderRadius: 30,
                                     padding: 10
+
+                                },
+                                userBubble: {
+                                    backgroundColor: '#8FC1D4',
                                 }
+
                             }
                         }
                     />
