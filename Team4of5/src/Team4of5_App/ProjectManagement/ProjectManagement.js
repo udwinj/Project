@@ -3,7 +3,8 @@ import Navbar from '../Navbar/Nav.js';
 import ProjectManagementTable from './ProjectManagementTable.js';
 import './ProjectManagementTables.css';
 import * as Users from '../../Team4of5_Service/Users.js';
-import { Board } from 'react-trello'
+//import { Board } from 'react-trello'
+import { Board } from './trello-board/index.js';
 import ReactModal from 'react-modal';
 import { forms } from 'pure-css';
 import * as ChatProj from '../../Team4of5_Service/ChatProject.js';
@@ -70,23 +71,20 @@ let setEventBus = (handle) => {
     eventBus = handle
 }
 
-const completeMilkEvent = () => {
-    eventBus.publish({ type: 'ADD_CARD', laneId: 'COMPLETED', card: { id: "Milk", title: "Buy Milk", label: "15 mins", description: "Use Headspace app" } })
-    eventBus.publish({ type: 'REMOVE_CARD', laneId: 'PLANNED', cardId: "Milk" })
-}
-
 const addCard = (laneID, id, title, description) => {
+    console.log("adding: " + laneID + id + title + description)
     ChatProj.addNewCard(laneID, id, title, description);
     eventBus.publish({ type: 'ADD_CARD', laneId: laneID, card: { id: id, title: "", label: title, description: description } });
 }
 
 const renderCard = (laneID, id, title, description) => {
+    eventBus.publish({ type: 'REMOVE_CARD', laneId: laneID, cardId: id });
     eventBus.publish({ type: 'ADD_CARD', laneId: laneID, card: { id: id, title: "", label: title, description: description } });
 }
 
 const deleteCard = (laneID, id, title, description) => {
     ChatProj.removeCard(laneID, id);
-    eventBus.publish({ type: 'REMOVE_CARD', laneId: laneID, card: { id: id, title: "", label: title, description: description } });
+    eventBus.publish({ type: 'REMOVE_CARD', laneId: laneID, cardId: id });
 }
 
 const updateLaneCard = (cardId, sourceLaneId, targetLaneId) => {
@@ -126,10 +124,10 @@ class GetCardInfo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            description: '',
-            label: '',
-            assignment: 'Kevin',
-            stage: 'Backlog'
+            description: this.props.description,
+            label: this.props.assignment,
+            assignment: this.props.assignment,
+            stage: this.props.lane //issue is that new card doesn't know what stage it is
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -151,12 +149,17 @@ class GetCardInfo extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-
+        //console.log("adding: " + laneId + id + title + description)
+        // problem is also here, props isn't defined for new card
+        //this.state.stage
         this.props.handleSaveModal(this.props.isNew, this.state.stage, this.props.cardID, this.state.assignment, this.state.description);
     }
     handleDelete(e) {
         e.preventDefault();
-        this.props.handleDeleteModal(this.state.stage, this.props.cardID, this.state.assignment, this.state.description);
+        console.log("Removing Here");
+        //console.log(lane);
+        //console.log(id);
+        this.props.handleDeleteModal(this.props.lane, this.props.cardID, this.state.assignment, this.state.description);
     }
 
     render() {
@@ -168,7 +171,7 @@ class GetCardInfo extends React.Component {
                         <div className="pure-control-group">
                             <label htmlFor="descrip">Description:</label>
                             <textarea id="descrip" name="description" rows="5" cols="50" placeholder="Description" onChange={this.handleChange}>
-
+                                {this.state.description}
                             </textarea>
                         </div>
                         <div className="pure-control-group">
@@ -185,7 +188,7 @@ class GetCardInfo extends React.Component {
                         </div>
                         <div className="pure-control-group">
                             <label htmlFor="assign">Assignment:</label>
-                            <select id="assign" name="assignment" onChange={this.handleChange}>
+                            <select id="assign" name="assignment" onChange={this.handleChange} >
                                 <option value="Kevin">Kevin</option>
                                 <option value="Alisa">Alisa</option>
                                 <option value="Kyle">Kyle</option>
@@ -225,6 +228,11 @@ class ProjectManagement extends React.Component {
         this.state = {
             showModal: false,
             modalID: null,
+            modalDescription: null,
+            modalAssignment: "Kevin",
+            modalTitle: null,
+            modalLabel: null,
+            modalLane: "Backlog",
             isNew: false,
             projects: "",
             lanes: [],
@@ -321,10 +329,19 @@ class ProjectManagement extends React.Component {
     }
 
 
-    handleOpenModal(cardId, isNewCard) {
+    handleOpenModal(card, isNewCard, laneId) {
         this.setState({ showModal: true });
-        this.setState({ modalID: cardId });
         this.setState({ isNew: isNewCard });
+        if (card != null) {
+
+            this.setState({ modalID: card.id });
+            this.setState({ modalDescription: card.description });
+            this.setState({ modalAssignment: card.label });
+            //this.setState({ modal: card.description });
+            this.setState({ modalLane: laneId })
+
+        }
+
     }
 
     handleCloseModal() {
@@ -337,8 +354,25 @@ class ProjectManagement extends React.Component {
             addCard(laneId, newId, title, description);
         }
         else {
-            deleteCard(laneId, id, title, description);
-            addCard(laneId, id, title, description);
+            let myFirstPromise = new Promise((resolve, reject) => {
+                // We call resolve(...) when what we were doing made async successful, and reject(...) when it failed.
+                // In this example, we use setTimeout(...) to simulate async code. 
+                // In reality, you will probably be using something like XHR or an HTML5 API.
+                deleteCard(laneId, id, title, description);
+                setTimeout(function () {
+                    resolve(); // Yay! Everything went well!
+                }, 250);
+            });
+
+            myFirstPromise.then(() => {
+                // successMessage is whatever we passed in the resolve(...) function above.
+                // It doesn't have to be a string, but if it is only a succeed message, it probably will be.
+                console.log("Yay! ");
+                addCard(laneId, id, title, description);
+            });
+
+            //deleteCard(laneId, id, title, description);
+            //addCard(laneId, id, title, description);
         }
 
         this.setState({ showModal: false });
@@ -355,7 +389,7 @@ class ProjectManagement extends React.Component {
         return (
             <div>
                 <div style={div_style}>
-                    <button onClick={() => { this.handleOpenModal(null, true) }} style={{ margin: 5 }}>Add New Card</button>
+                    <button onClick={() => { this.handleOpenModal(null, true, null) }} style={{ margin: 5 }}>Add New Card</button>
                 </div>
                 <Board
                     data={mydata}
@@ -364,7 +398,7 @@ class ProjectManagement extends React.Component {
                     handleDragStart={handleDragStart}
                     handleDragEnd={handleDragEnd}
                     tagStyle={{ fontSize: '80%' }}
-                    onCardClick={(cardId, title, metadata) => this.handleOpenModal(cardId, false)}
+                    onCardClick={(card, laneId) => this.handleOpenModal(card, false, laneId)}
                     eventBusHandle={setEventBus}
                 />
                 <ReactModal
@@ -375,6 +409,11 @@ class ProjectManagement extends React.Component {
                 >
                     <GetCardInfo
                         cardID={this.state.modalID}
+                        description={this.state.modalDescription}
+                        assignment={this.state.modalAssignment}
+                        title={this.state.modalTitle}
+                        label={this.state.modalLabel}
+                        lane={this.state.modalLane}
                         isNew={this.state.isNew}
                         handleSaveModal={this.handleSaveModal}
                         handleDeleteModal={this.handleDeleteModal}
