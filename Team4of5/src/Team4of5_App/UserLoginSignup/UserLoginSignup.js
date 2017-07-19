@@ -3,9 +3,7 @@ import ReactDOM from 'react-dom';
 import registerServiceWorker from '../../registerServiceWorker.js';
 import * as Users from '../../Team4of5_Service/Users.js';
 import Menu from '../Menu.js';
-import './UserLoginSignup.css';
 import * as ChatService from '../../Team4of5_Service/Chat.js';
-
 import {
   BrowserRouter as Router,
   Route,
@@ -13,6 +11,20 @@ import {
   Redirect,
   withRouter
 } from 'react-router-dom'
+// style
+import './UserLoginSignup.css';
+//import react-bootstrap
+import {
+    Form,
+    FormGroup,
+    FormControl,
+    ControlLabel,
+    HelpBlock,
+    Button,
+    Col,
+    InputGroup,
+    Glyphicon
+} from 'react-bootstrap';
 
 class UserLoginSignup extends React.Component {
 
@@ -95,13 +107,6 @@ class UserLoginSignup extends React.Component {
     const { from } = this.props.location.state ||{ from: { pathname: '/menu' }}
     const { redirectToMenu } = this.state
 
-    // // if (redirectToMenu) {
-    // //   console.log(from);
-    // //   return (
-    // //     <Redirect to="/Menu" push />
-    // //     //<Redirect to={from}/>
-    // //   )
-    // // }
     if (redirectToMenu) {
           return (
            <Redirect to={from}/>
@@ -109,44 +114,63 @@ class UserLoginSignup extends React.Component {
         }
 
     return (
-    <div className="submitform">
-      <form onSubmit={this.handleSubmit} >
-        <div className="title">
-            <h1>Login  |  Signup</h1>
-            <p>Please enter your login information</p>
-        </div>
+    <div className="AlignerLogin">
+            <div className='setingPanel'>
+                <div className="panel panel-info">
+                    <div className="panel-heading clearfix">
+                        <h1 className="panel-title text-center"><strong>Please enter Login or Signup information</strong></h1>
+                    </div>
+    <div className='panel-body text-center'>
+      <Form horizontal onSubmit={this.handleSubmit} >
         <button type="button"
           id="switchBtn"
-          onClick={this.switchLoginSignup}>Login | SignUp</button>
+          onClick={this.switchLoginSignup}>Login &nbsp;&nbsp;|&nbsp;&nbsp; Signup</button>
 
-        <div>
-          <label>
-            <div className="emailLabel">
-              Email:
-                    </div>
-            <input type="text" value={this.state.email} onChange={this.handleChange.bind(this, 'email')} />
-          </label>
-        </div>
-        <div>
-          <label>
-            <div className="passwordLabel">
-              Password (at least 6 digits):
-                    </div>
-            <input type="password" value={this.state.first_name} onChange={this.handleChange.bind(this, 'password')} />
-          </label>
-        </div>
-        <div>
-          <label>
-            <div>
-                  <a
-                    onClick={this.handlePasswordChange} href="javascript:void(0);">Forgot Password?</a>
-            </div>
-          </label>
-        </div>
-        <input type="submit"
-          id="submitBtn"
-          value={this.state.formBtnTxt} />
-      </form>
+            <FormGroup controlId="formHorizontalEmail">
+     <Col componentClass={ControlLabel} sm={2}>
+       Email
+     </Col>
+     <Col sm={10}>
+         <InputGroup>
+         <InputGroup.Addon>
+         <Glyphicon glyph="user" />
+         </InputGroup.Addon>
+       <FormControl type="text" placeholder="Email" value={this.state.email} onChange={this.handleChange.bind(this, 'email')}/>
+</InputGroup>
+     </Col>
+   </FormGroup>
+
+   <FormGroup controlId="formHorizontalPassword">
+     <Col componentClass={ControlLabel} sm={2}>
+       Password
+       <small>at least 6 digits</small>
+     </Col>
+     <Col sm={10}>
+         <InputGroup>
+         <InputGroup.Addon>
+         <Glyphicon glyph="lock" />
+         </InputGroup.Addon>
+       <FormControl type="password" placeholder="Password" value={this.state.first_name} onChange={this.handleChange.bind(this, 'password')}/>
+</InputGroup>
+     </Col>
+   </FormGroup>
+   <FormGroup>
+
+             <a onClick={this.handlePasswordChange} href="javascript:void(0);">Forgot Password?</a>
+
+      </FormGroup>
+      <FormGroup>
+
+                <input type="submit"
+                 id = "submitBtn"
+                  value={this.state.formBtnTxt}/>
+
+          </FormGroup>
+
+      </Form>
+      </div>
+          </div>
+      </div>
     </div>
     );
   }

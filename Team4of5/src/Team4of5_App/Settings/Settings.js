@@ -17,9 +17,7 @@ import {
     FormControl,
     ControlLabel,
     HelpBlock,
-    Button,
-    ListGroup,
-    ListGroupItem
+    Button
 } from 'react-bootstrap';
 
 class Settings extends React.Component {
