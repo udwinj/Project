@@ -150,6 +150,30 @@ export const queryChatHistory = function () {
     });
 }
 
+export const checkProjectNameExist = function (newName) {
+    return new Promise(function (resolve, reject) {
+        try {
+            let size = 0
+            let count = 0
+            projectRef.once('value').then(function (data){
+                for(let key in data.val()){
+                    size = size + 1
+                    getProjectName(key).then(function(pName){
+                        count = count + 1;
+                        if(pName.val() == newName){
+                            return reject('Project name already existed, change your project name!!')
+                        }
+                        if(count == size){
+                            return resolve();
+                        }
+                    })
+                }
+            }) 
+        } catch (err) {
+            return reject(err)
+        }
+    })
+}
 
 export const getProjectName = function (Puid) {
     return projectRef.child(Puid).child('name').once('value')
@@ -157,6 +181,10 @@ export const getProjectName = function (Puid) {
 
 export const getUserName = function (Uuid) {
     return usersRef.child(Uuid).child('display_name').once('value')
+}
+
+export const getUserEmail = function (Uuid) {
+    return usersRef.child(Uuid).child('email').once('value')
 }
 
 //Project related
@@ -229,12 +257,44 @@ export const pushMsg = function (msg, chatRoomUid) {
 export const getChatroomMembers = function (chatRoomUid) {
     return new Promise(function (resolve, reject) {
         try {
-            chatroomRef.child(chatRoomUid).child('members')
+            chatroomRef.child(chatRoomUid).child('members').once('value').then(function (data) {
+                let userDNames = [];
+                let totalSize = 0;
+                let count = 0;
+                let check = () => {
+                    count = count + 1;
+                    if (count == totalSize) {
+                        return resolve(userDNames);
+                    }
+                }
+                for (let key in data.val()) {
+                    totalSize = totalSize + 1
+                    getUserName(key).then(function (UserDName) {
+                        if (UserDName.val() != null) {
+
+                            userDNames.push(UserDName.val());
+                            check()
+                        } else {
+                            getUserEmail(key).then(function (userEmail) {
+                                userDNames.push(UserDName.val());
+                                check()
+                            }).catch(function (err) {
+                                return reject(err)
+                            })
+                        }
+                    }).catch(function (err) {
+                        return reject(err)
+                    })
+                }
+            }).catch(function (err) {
+                return reject(err)
+            })
         } catch (err) {
             return reject(err)
         }
     });
 }
+
 
 //Pass the members other than the current user
 export const getChatroomMsg = function (contact, chatRoomUid) {
@@ -334,9 +394,9 @@ export const updateStatus = function (status) {
             contactRef.child(firebase.auth().currentUser.uid).update({
                 status: status
             })
-            if(status == 'Active'){
+            if (status == 'Active') {
                 firebase.database().ref("presence/" + firebase.auth().currentUser.uid).set(true)
-            }else{
+            } else {
                 firebase.database().ref("presence/" + firebase.auth().currentUser.uid).set(false)
             }
             return resolve();

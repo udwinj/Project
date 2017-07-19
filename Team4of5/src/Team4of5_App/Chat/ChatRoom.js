@@ -5,14 +5,40 @@ import { ChatFeed, Message } from 'react-chat-ui'
 import { connect } from 'react-redux'
 import * as ChatService from '../../Team4of5_Service/Chat.js';
 import * as UserService from '../../Team4of5_Service/Users.js';
+import Select from 'react-select';
+import {
+    Grid, Row, Col, Thumbnail, Button, MenuItem,
+    DropdownButton, ButtonToolbar, Media, Image
+} from 'react-bootstrap';
 
 //Reference: https://github.com/brandonmowat/react-chat-ui/
 
+
+const chatMemBar = (self) => {
+    return (
+        <Select
+            style={{ width: 150, marginTop: 12 }}
+            autosize
+            //ref="stateSelect"
+            placeholder="Members"
+            autofocus
+            options={self.state.members}
+            simpleValue
+            clearable={false}
+            name="members"
+            disabled={false}
+            //value={this.state.selectValue}
+            //onChange={this.updateValue}
+            searchable={false} />
+    )
+
+}
 class ChatRoom extends React.Component {
     constructor(props) {
         console.log(2)
         super(props)
         this.state = {
+            members: [],
             hasInit: false,
             messages: [
                 //(new Message({ id: 1, message: "Hey guys!!!!!!" })),
@@ -41,11 +67,13 @@ class ChatRoom extends React.Component {
         let contactData = { uid: this.props.extraData.ContactUid, data: this.props.extraData.ContactData };
         console.log(this.props.extraData);
         console.log(contactData);
-        // if (contactData.type == 'Project') {
+        // if (contactData.type == 'PrgetChatroomMembersoject') {
 
 
 
         // } else {
+
+
         let isInit = true;
         ChatService.getChatroomMsg(contactData, this.props.extraData.ContactData.chatroomUid).
             then(function (messages) {
@@ -55,6 +83,18 @@ class ChatRoom extends React.Component {
                     self.addMsgToRoom(messages[index]);
                 }
             }).then(() => {
+                if (this.props.extraData.ContactData.type == "Project") {
+                    ChatService.getChatroomMembers(this.props.extraData.ContactData.chatroomUid).then(function (memData) {
+                        self.setState(self.state.members = [])
+                        for (let i = 0; i < memData.length; i++) {
+                            self.state.members.push({ value: memData[i], label: memData[i] })
+                        }
+                        self.setState(self.state)
+                    })
+                }
+
+            })
+            .then(() => {
                 ChatService.listenChatRoomChange(this.props.extraData.ContactData.chatroomUid).on('child_added', function (data) {
                     console.log('Listen msg changing:');
                     console.log(data.val());
@@ -150,8 +190,20 @@ class ChatRoom extends React.Component {
             console.log('return render !!!!!'),
             < div >
                 <div>
-                    <h3>{this.props.extraData.ContactData.name}</h3>
+
+
+                    <Row>
+                        <Col xs={1} md={1} >
+                            <Media.Left>
+                                <h3>{this.props.extraData.ContactData.name}</h3>
+                            </Media.Left>
+                            <Media.Right>
+                                {this.props.extraData.ContactData.type == "Project" ? chatMemBar(this) :''}
+                            </Media.Right>
+                        </Col>
+                    </Row>
                 </div>
+
                 <div id="ChatMian">
                     <ChatFeed
                         messages={this.state.messages} // Boolean: list of message objects

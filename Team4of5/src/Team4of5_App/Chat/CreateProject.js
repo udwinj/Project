@@ -59,7 +59,7 @@ class CreateProject extends React.Component {
             //Only "indivdual" type can be added into a project
             if (element.type == "Individual") {
                 moreDivs.push(
-                    {value: element.name, label: element.name, extraData: element, Uuid:index}
+                    { value: element.name, label: element.name, extraData: element, Uuid: index }
                 );
             }
 
@@ -75,32 +75,34 @@ class CreateProject extends React.Component {
     }
 
     handleConfirm() {
-        console.log(this.refs)
-         console.log(this.ref)
-         let title = this.refs.message.value ;
+        let self = this;
+        let title = this.refs.message.value;
         if (title == "") {
             alert("Please input your project name!");
         } else if (this.state.value == "") {
             alert("Please choose your members!");
         } else {
-            let memUids = [];
-            let users = ""
-            for (let i = 0; i < this.state.value.length; i++) {
-                users = users.concat(this.state.value[i].value + " ")
-                memUids.push(this.state.value[i].Uuid);
-            }
-            console.log(title)
-            ChatService.createProject(memUids, title).then(function(data){
-                alert("Project name: " + title + "\n Project Members: " + users
-                +"\n Successfully added!");
-            }).catch(function(err){
-                alert("Error: "+ err);
+            ChatService.checkProjectNameExist(title).then(function () {
+                let memUids = [];
+                let users = ""
+                for (let i = 0; i < self.state.value.length; i++) {
+                    users = users.concat(self.state.value[i].value + " ")
+                    memUids.push(self.state.value[i].Uuid);
+                }
+                console.log(title)
+                ChatService.createProject(memUids, title).then(function (data) {
+                    alert("Project name: " + title + "\n Project Members: " + users
+                        + "\n Successfully added!");
+                }).catch(function (err) {
+                    alert("Error: " + err);
+                })
+
+                self.refs.message.value = "";
+                self.setState({ value: [] })
+            }).catch(function (err) {
+                alert(err);
             })
 
-
-            
-            this.refs.message.value = "";
-            this.setState({ value: [] })
         }
     }
 
