@@ -188,10 +188,8 @@ class ChatRoom extends React.Component {
         }
         return (
             console.log('return render !!!!!'),
-            < div >
+            <div>
                 <div>
-
-
                     <Row>
                         <Col xs={1} md={1} >
                             <Media.Left>
@@ -203,6 +201,8 @@ class ChatRoom extends React.Component {
                         </Col>
                     </Row>
                 </div>
+            <div className='chatContainer'>
+
 
                 <div id="ChatMian">
                     <ChatFeed
@@ -214,12 +214,13 @@ class ChatRoom extends React.Component {
                         bubbleStyles={
                             {
                                 text: {
-                                    fontSize: 20,
+                                    fontSize: 15,
                                     color: 'black'
                                 },
                                 chatbubble: {
-                                    borderRadius: 30,
-                                    padding: 10
+                                    borderRadius: 5,
+                                    padding: 10,
+                                    
 
                                 },
                                 userBubble: {
@@ -231,12 +232,12 @@ class ChatRoom extends React.Component {
                     />
                 </div>
                 <div id="ChatInput">
-                    <form onSubmit={this._onMessageSubmit.bind(this)}>
+                    <form id="typeMessage" onSubmit={this._onMessageSubmit.bind(this)}>
                         <input type="chatInput" ref="message" placeholder="Type a message..." className="message-input" />
                     </form>
                 </div>
-            </div >
-
+            </div>
+</div>
         )
     }
 

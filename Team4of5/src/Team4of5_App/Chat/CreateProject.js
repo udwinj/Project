@@ -70,7 +70,7 @@ class CreateProject extends React.Component {
     }
 
     handleSelectChange(value) {
-        console.log('You\'ve selected:', value);
+        console.log('You\'ve selected: ', value);
         this.setState({ value });
     }
 

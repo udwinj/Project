@@ -12,18 +12,30 @@
     height: 200px;
     background: red;
 }*/
+.chatContainer{
+background-color:#fff;
+max-width:50%;
+height:100%;
+display:flex ;
+flex-direction: column ;
+justify-content: space-around;
+}
 
 #ChatMian{
   height: 565px;
   width: 500px;
   overflow-y: scroll;
   position: relative;
-  background: blueviolet;
+  /*background: blueviolet;*/
+ background-color:powderblue;
+ padding:.5em;
+ flex:1;
+ margin: auto;
 }
 
 input[type="chatInput"]{
   font-family: sans-serif;
-   width: 470px;
+   width: 500px;
    height: 40px;
    display: block;
    font-size: 15px;
@@ -32,13 +44,13 @@ input[type="chatInput"]{
 
 
 #ChatInput{
-  padding: 10px;
-  width: 480px;
+
+ width: 500px;
+ flex:1;
 }
 
-
-h3 span { 
-    font-size:16px; 
+h3 span {
+    font-size:16px;
     font-weight: normal;
 }
 
@@ -48,4 +60,3 @@ h3 span {
   overflow-y: scroll;
   position: relative;
 }
-
