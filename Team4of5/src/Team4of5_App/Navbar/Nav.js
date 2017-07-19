@@ -69,7 +69,7 @@ class NavbarHeaderC extends React.Component {
       <Navbar collapseOnSelect className="navbar navbar-default">
         <Navbar.Header>
           <Navbar.Brand >
-            <a>Team 4 of 5</a>
+            <Link to='/menu'>Team 4 of 5</Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
