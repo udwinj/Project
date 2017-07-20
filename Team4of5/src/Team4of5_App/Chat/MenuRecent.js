@@ -130,7 +130,8 @@ class MenuRecent extends React.Component {
     return (
       <div>
 
-        <h1 className="panel-title">{title}</h1>
+        <h1 className="titleFont">{title}</h1>
+
         <div id="InfiniteScroll">
           <InfiniteScroll
             /*pullDownToRefresh
