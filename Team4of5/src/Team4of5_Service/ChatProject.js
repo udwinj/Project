@@ -169,6 +169,8 @@ export const removeCard = function (laneID, id) {
 }
 
 
+
+
 export const updateCard = function (id, laneID, targetLaneId) {
 
     var card_lane;
