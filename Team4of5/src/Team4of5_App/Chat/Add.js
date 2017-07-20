@@ -1,11 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import { connect } from 'react-redux'
 import * as actions from '../App_Redux/ActionCreator'
 import { bindActionCreators } from 'redux';
 import * as Users from '../../Team4of5_Service/Users.js';
 import * as ChatService from '../../Team4of5_Service/Chat.js';
+//import react-bootstrap
+import {
+    Form,
+    FormGroup,
+    FormControl,
+    ControlLabel
+} from 'react-bootstrap';
+//import './Add.css';
+
 
 class Add extends React.Component {
     constructor(props) {
@@ -49,18 +57,21 @@ class Add extends React.Component {
 
     render() {
         return (
-            <div>
-                <div>
-                    <h1>Add Contact</h1>
-                    <p>Search Email</p>
+            <div className="panel panel-info">
+                <div className="panel-heading clearfix">
+                    <h1 className="panel-title">Add Contact</h1>
                 </div>
-                <div id="ChatInput">
-                    <form onSubmit={this._onMessageSubmit.bind(this)}>
-                        <input type="chatInput" ref="message" placeholder="Search..." className="message-input" />
-                    </form>
-                </div>
-            </div>
+                <div className="panel-body">
 
+                    <Form onSubmit={this._onMessageSubmit.bind(this)}>
+                        <FormGroup>
+                            <ControlLabel>Search Email</ControlLabel>
+                        <FormControl type="text" ref="message" placeholder="Search..." className="message-input" />
+                        </FormGroup>
+                    </Form>
+
+            </div>
+            </div>
         )
     }
 }
@@ -70,7 +81,7 @@ export default Add;
 
 
 // onClick={(message) => this.props.addMessage(message)}
-// actions = { addMessage } 
+// actions = { addMessage }
 // const mapDispatchToProps = (dispatch) => {
 //   return {SwitchAction:bindActionCreators(actions.switchContent, dispatch)};
 // };
