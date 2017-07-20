@@ -1,17 +1,15 @@
 
-
-
-
 #leftMenu {
   width: 33%;
-  height:100%;
-  background: lightblue;
+  height:750px;
+  background: #2e6da4;
   /* Just so it's visible */
 }
 #rightContent {
+
   width: 67%;
-  height:672px;
+  height:750px;
   /* Grow to rest of container */
-  background: lightgreen;
+  background: lightblue;
   /* Just so it's visible */
 }
