@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-    Grid, Row, Col, Thumbnail, Button, MenuItem,
+    Grid, Row, Col, Thumbnail, Button, ButtonGroup, MenuItem,
     DropdownButton, ButtonToolbar, Media, Image
 } from 'react-bootstrap';
 import './MenuFuncs.css'
@@ -94,16 +94,17 @@ class MenuFuncs extends React.Component {
     render() {
         console.log("CCCCCHHHAATTT!!!")
         return (
-            <Grid>
+            <Grid id="funcsGrid">
                 <Row id='funcsRow'>
+
                     <Col xs={1} md={1}> <Media.Left>
-                        <TiUserIcon size={48} />
+                        <TiUserIcon size={38} />
                     </Media.Left></Col>
                     <Col xs={1} md={1}>
-                        <div>
+                        <div >
                             <h4>{this.state.userInfo[0]}</h4>
                             <Select
-                                style={{ width: 100 }}
+                                style={{ width: 150 }}
                                 autosize
                                 ref="stateSelect"
                                 autofocus
@@ -122,41 +123,41 @@ class MenuFuncs extends React.Component {
                 <Row id='funcsRow'>
                     <Col xs={1} md={1}> <Media.Left>
                         {/*<Image width={64} height={64} src="https://www.wikipedia.org/portal/wikipedia.org/assets/img/Wikipedia-logo-v2.png" alt="Image" />*/}
-                        <TiContactsIcon size={48} />
+                        <TiContactsIcon size={28} />
                     </Media.Left></Col>
-                    <Col xs={1} md={1}><Button bsStyle="default"
+                    <Col xs={1} md={1}><button className="menuBtn"
                         //!!! Name tag cannot be removed name={["GotoContact"]}
 
-                        onClick={() => { return this.props.SwitchAction({ GotoContent: "GotoContact" }) }}>Contact</Button></Col>
+                        onClick={() => { return this.props.SwitchAction({ GotoContent: "GotoContact" }) }}>Contact</button></Col>
 
                 </Row>
                 <Row id='funcsRow'>
                     <Col xs={1} md={1}> <Media.Left>
-                        <TiUserAddIcon size={48} />
+                        <TiUserAddIcon size={28} />
                     </Media.Left></Col>
-                    <Col xs={1} md={1}><Button
+                    <Col xs={1} md={1}><button className="menuBtn"
                         //I found the trick, use the name to pass the data to the component
-                        bsStyle="default"
+
                         //name={["GotoAdd", "123"]}
-                        onClick={() => { return this.props.SwitchAction({ GotoContent: "GotoAdd" }) }}>Add</Button></Col>
+                        onClick={() => { return this.props.SwitchAction({ GotoContent: "GotoAdd" }) }}>Add</button></Col>
                 </Row>
                 <Row id='funcsRow'>
                     <Col xs={1} md={1}> <Media.Left>
-                        <AddProjectIcon size={48} />
+                        <AddProjectIcon size={28} />
                     </Media.Left></Col>
-                    <Col xs={1} md={1}><Button
-                        bsStyle="default"
+                    <Col xs={1} md={1}><button className="menuBtn"
+
                         //name={["GotoProject"]}
-                        onClick={() => { return this.props.SwitchAction({ GotoContent: "GotoProject" }) }}>Create Project</Button></Col>
+                        onClick={() => { return this.props.SwitchAction({ GotoContent: "GotoProject" }) }}>Create Project</button></Col>
                 </Row>
                 <Row id='funcsRow'>
                     <Col xs={1} md={1}> <Media.Left>
-                        <FaHistoryIcon size={48} />
+                        <FaHistoryIcon size={28} />
                     </Media.Left></Col>
-                    <Col xs={1} md={1}><Button
-                        bsStyle="default"
+                    <Col xs={1} md={1}><button className="menuBtn"
+
                         //name={["GotoHistory"]}
-                        onClick={() => { return this.props.SwitchAction({ GotoContent: "GotoHistory" }) }}>History</Button></Col>
+                        onClick={() => { return this.props.SwitchAction({ GotoContent: "GotoHistory" }) }}>History</button></Col>
                 </Row>
             </Grid>
 
@@ -169,4 +170,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(null, mapDispatchToProps)(MenuFuncs);
-

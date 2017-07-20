@@ -7,10 +7,13 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import {
+    Button,
+    FormGroup,
+    FormControl,
+    ControlLabel
+ } from 'react-bootstrap';
 import * as ChatService from '../../Team4of5_Service/Chat.js';
-
-
 
 
 const style = {
@@ -70,7 +73,7 @@ class CreateProject extends React.Component {
     }
 
     handleSelectChange(value) {
-        console.log('You\'ve selected:', value);
+        console.log('You\'ve selected: ', value);
         this.setState({ value });
     }
 
@@ -108,10 +111,13 @@ class CreateProject extends React.Component {
 
     render() {
         return (
-            <div>
-                <h1>CreateProject</h1>
+            <div className="panel panel-info" id="title">
+                <div className="panel-heading clearfix">
+                <h1  className="panel-title">Create A New Project</h1>
+            </div>
+            <div className="panel-body">
 
-                <input style={style} ref="message" placeholder="Project Name" className="message-input" />
+                <FormControl style={style} ref="message" placeholder="Project Name" className="message-input" />
 
                 <Select multi={true}
                     disabled={false}
@@ -120,10 +126,10 @@ class CreateProject extends React.Component {
                     options={this.state.options}
                     onChange={this.handleSelectChange} />
 
-                <Button bsStyle="default"
+                <Button bsStyle="primary"
                     style={buttonStyle}
                     onClick={this.handleConfirm}>Confirm</Button>
-
+            </div>
             </div>
 
         )

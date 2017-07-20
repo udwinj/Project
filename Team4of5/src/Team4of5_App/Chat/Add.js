@@ -1,54 +1,49 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import { connect } from 'react-redux'
 import * as actions from '../App_Redux/ActionCreator'
 import { bindActionCreators } from 'redux';
 import * as Users from '../../Team4of5_Service/Users.js';
 import * as ChatService from '../../Team4of5_Service/Chat.js';
+//import react-bootstrap
+import {
+    Form,
+    FormGroup,
+    FormControl,
+    ControlLabel
+} from 'react-bootstrap';
+//import './Add.css';
 
-import fetch from 'isomorphic-fetch';
-//reference: https://github.com/JedWatson/react-select
-import Select from 'react-select';
-import { Button } from 'react-bootstrap';
 
 class Add extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            curUserCompany: '',
-            //options:[],
-            value: [],
             messages: ''
         }
-        this.onChange = this.onChange.bind(this);
-        this.getUsers = this.getUsers.bind(this);
-        this.onMessageSubmit = this.onMessageSubmit.bind(this);
         //dispatch(this.props.actions.switchContent())
     }
 
-    componentDidMount() {
-        //
-        let self = this;
-        Users.getCurUserCompany().then(function (company) {
-            self.setState({ curUserCompany: company.val() })
-        }).catch(function (err) {
-            console.log("Error:" + err)
-        })
-    }
+    // componentDidMount() {
+    //   this.props.IncomeList("Yoo")
+    // }
 
-    onMessageSubmit(e) {
-        // var input = this.refs.message;
+    _onMessageSubmit(e) {
+        var input = this.refs.message;
         e.preventDefault();
-        // if (!input.value) { return false; }
-        console.log(this.state.value);
+        if (!input.value) { return false; }
+        console.log(input.value);
 
 
 
-        alert("User: " + this.state.value.value + " (Searching...)");
+        alert("User: " + input.value + " (Searching...)");
         //this._pushMessage(this.state.curr_user, input.value)
-        ChatService.findUser(this.state.value.value)
+        ChatService.findUser(input.value)
             .then((data) => {
+                // alert(input.value + " Succeed!!");
+                //alert(data.email + " with the name " + data.display_name)
+
+                //return snapshot.val().email;
                 return ChatService.addContact(data, "Individual")
 
             }).then(function () {
@@ -57,157 +52,60 @@ class Add extends React.Component {
                 //console.log("error occur!!" + err)
                 alert(err)
             });
-        this.onChange([])
-    }
-
-    onChange(value) {
-        console.log(value)
-        this.setState({
-            value: value,
-        });
-    }
-
-    getUsers(input) {
-
-        let self = this;
-
-        if (!input) {
-            console.log('here')
-            return Promise.resolve({ options: [] });
-        }
-
-        let contactEmails = []
-        return fetch('https://team4of5-8d52e.firebaseio.com/users.json?&orderBy=%22email%22&startAt=%22'
-            + input + '%22&endAt=%22' + input + '\uf8ff%22')
-
-            .then((response) => response.json())
-            .then((json) => {
-                for (let key in json) {
-                    console.log(json[key])
-                    console.log(json[key].display_name)
-                    if (json[key].company == self.state.curUserCompany) {
-                        contactEmails.push({ value: json[key].email, label: json[key].email })
-                    }
-                }
-                console.log(contactEmails);
-                self.setState({ options: contactEmails })
-                return {
-                    options: contactEmails,
-                    complete: true
-                };
-            });
+        input.value = '';
     }
 
     render() {
-        const AsyncComponent = Select.Async
         return (
-            <div>
-                <div>
-                    <h1>Add Contact</h1>
-                    <p>Search Email</p>
+            <div className="panel panel-info">
+                <div className="panel-heading clearfix">
+                    <h1 className="panel-title">Add Contact</h1>
                 </div>
-                <div id="ChatInput">
-                    <AsyncComponent
-                        multi={false}
-                        value={this.state.value}
-                        onChange={this.onChange}
-                        //onValueClick={this.gotoUser}
-                        //Options={this.state.options}
-                        valueKey="value"
-                        labelKey="label"
-                        loadOptions={this.getUsers}
-                        backspaceRemoves={true} />
-                    <Button bsStyle="default"
-                        style={{
-                            marginBottom: 20,
-                            marginTop: 20
-                        }}
-                        onClick={this.onMessageSubmit}>Confirm</Button>
-                </div>
+                <div className="panel-body">
+
+                    <Form onSubmit={this._onMessageSubmit.bind(this)}>
+                        <FormGroup>
+                            <ControlLabel>Search Email</ControlLabel>
+                        <FormControl type="text" ref="message" placeholder="Search..." className="message-input" />
+                        </FormGroup>
+                    </Form>
 
             </div>
-
+            </div>
         )
     }
 }
 
 
+export default Add;
 
 
-
-// class Add extends React.Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             messages: ''
-//         }
-//         //dispatch(this.props.actions.switchContent())
+// onClick={(message) => this.props.addMessage(message)}
+// actions = { addMessage }
+// const mapDispatchToProps = (dispatch) => {
+//   return {SwitchAction:bindActionCreators(actions.switchContent, dispatch)};
+// };
+// const mapStateToProps = (state) => {
+//     console.log("mapStateToProps", state.default[state.default.length-1])
+//     return {
+//         switchName: state.default[state.default.length-1]
 //     }
+// };
 
-//     // componentDidMount() {
-//     //   this.props.IncomeList("Yoo")
-//     // }
+// export default connect(mapStateToProps, null)(Add);
 
-//     _onMessageSubmit(e) {
-//         var input = this.refs.message;
-//         e.preventDefault();
-//         if (!input.value) { return false; }
-//         console.log(input.value);
+// const addContact = (contact) => ({
+//     type: ADD_CONTACT,
+//     payload: contact
+// });
 
-
-
-//         alert("User: " + input.value + " (Searching...)");
-//         let value = input.value
-
-//         return fetch('https://team4of5-8d52e.firebaseio.com/users.json?&orderBy=%22email%22&startAt=%22'
-//                 +value+'%22&endAt=%22'+value+'\uf8ff%22')
-
-//             .then((response) => response.json())
-//             .then((json) => {
-//                 console.log(json)
-
-//                 for(let key in json){
-//                     console.log(json[key])
-//                     console.log(json[key].display_name)
-//                 }
-//                 //return { options: json.items };
-//             });
-
-//         //this._pushMessage(this.state.curr_user, input.value)
-//         // ChatService.findUser(input.value)
-//         //     .then((data) => {
-//         //         // alert(input.value + " Succeed!!");
-//         //         //alert(data.email + " with the name " + data.display_name)
-
-//         //         //return snapshot.val().email;
-//         //         return ChatService.addContact(data, "Individual")
-
-//         //     }).then(function () {
-//         //         alert("Successfully added!!!")
-//         //     }).catch(function (err) {
-//         //         //console.log("error occur!!" + err)
-//         //         alert(err)
-//         //     });
-//         // input.value = '';
-//     }
-
-//     render() {
-//         return (
-//             <div>
-//                 <div>
-//                     <h1>Add Contact</h1>
-//                     <p>Search Email</p>
-//                 </div>
-//                 <div id="ChatInput">
-//                     <form onSubmit={this._onMessageSubmit.bind(this)}>
-//                         <input type="chatInput" ref="message" placeholder="Search..." className="message-input" />
-//                     </form>
-//                 </div>
-//             </div>
-
-//         )
+// const contactsReducer = (state = [], action) => {
+//     switch(action.type) {
+//         case ADD_CONTACT:
+//             return [...state, action.payload];
+//         default:
+//             return state;
 //     }
 // }
 
-
-export default Add;
+// export default Add;

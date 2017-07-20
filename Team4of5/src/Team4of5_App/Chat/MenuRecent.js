@@ -15,7 +15,10 @@ import * as ChatService from '../../Team4of5_Service/Chat.js';
 const style = {
   display: 'flex',
   alignItems: 'center',
-  fontSize: 20
+  fontSize: 15,
+  fontFamily:'sans-serif',
+  justifyContent:'space-around',
+
 };
 
 // const divs = [
@@ -34,7 +37,7 @@ const style = {
 // ];
 
 const title = 'Recent';
-const colors = ['#9bc95b', '#ffd47b', '#95a9d6', '#ffa8e1'];
+const colors = ['#e8e8e8', '#ddd'];
 
 
 
@@ -79,7 +82,7 @@ class MenuRecent extends React.Component {
   }
 
   setData(data) {
-    
+
     let moreDivs = [];
     for (let i = 0; i < data.length; i++) {
 
@@ -90,11 +93,11 @@ class MenuRecent extends React.Component {
         content = content.substring(0, 15)+"..."
       }
       moreDivs.push(
-        <div key={data[i].chatroomUid} style={{ height: 50, background: colors[i % 4], ...style }}>
-          <h4 onClick={this.switchToChat.bind(this, data[i].chatroomUid, {
+        <div className='panel panel-body' key={data[i].chatroomUid} style={{ height: 30, margin:5, background: colors[i % 2], ...style }}>
+          <p onClick={this.switchToChat.bind(this, data[i].chatroomUid, {
             chatroomUid: data[i].chatroomUid,
             name: data[i].title, type: data[i].type
-          })}>{data[i].senderName}: {content}</h4>
+        })}>{data[i].senderName}: {content}</p>
         </div>
       );
     }
@@ -126,7 +129,9 @@ class MenuRecent extends React.Component {
   render() {
     return (
       <div>
-        <h3>{title}</h3>
+
+        <h1 className="titleFont">{title}</h1>
+
         <div id="InfiniteScroll">
           <InfiniteScroll
             /*pullDownToRefresh
@@ -153,6 +158,3 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(null, mapDispatchToProps)(MenuRecent);
 
 //export default MenuRecent;
-
-
-
