@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { connect } from 'react-redux'
 import {
     Grid, Row, Col, Thumbnail, Button, MenuItem,
-    DropdownButton, ButtonToolbar, Media, Image
+    DropdownButton, ButtonToolbar, Media, Image, FormGroup, FormControl
 } from 'react-bootstrap';
 import TiGroup from 'react-icons/lib/ti/group'
 import * as actions from '../App_Redux/ActionCreator'
@@ -19,7 +19,10 @@ import * as ChatService from '../../Team4of5_Service/Chat.js';
 const style = {
     display: 'flex',
     alignItems: 'center',
-    fontSize: 20
+    fontSize: 15,
+    flexFlow: 'row wrap',
+    fontFamily:'sans-serif',
+    justifyContent:'space-around',
 };
 
 const title = 'Recent';
@@ -94,9 +97,9 @@ class Contact extends React.Component {
 
                 let content = null;
                 if (element.type == 'Individual') {
-                    content = snapshot.val() == true ? <h4>(online)</h4> : <h4>(offline)</h4>
+                    content = snapshot.val() == true ? <h5>(online)</h5> : <h5>(offline)</h5>
                 } else {
-                    content = <FaChild size={48} />
+                    content = <FaChild size={30} />
                 }
 
                 for (let i = 0; i < self.state.contactData.length; i++) {
@@ -112,16 +115,18 @@ class Contact extends React.Component {
                 }
 
                 let data = (
-                    <div key={index} style={{ height: 50, marginBottom: 20, background: '#00ffffff', ...style }}>
+
+                    <div className="panel panel-body" key={index} style={{ height: 50, marginBottom: 5, marginLeft:5, background: '#00ffffff', ...style }}>
                         <Row onClick={self.switchToChat.bind(self, index, element)} style={{ marginLeft: 0 }}>
                             <Media.Left>
                                 {content}
                             </Media.Left>
                             <Media.Body>
-                                <h4>{element.name}</h4>
+                                <h5>{element.name}</h5>
                             </Media.Body>
                         </Row>
                     </div>
+
                 )
 
 
@@ -161,10 +166,8 @@ class Contact extends React.Component {
         for (let i = 0; i < 30; i++) {
             moreDivs.push(
                 //onClick={this.switchToChat.bind(this, count, "Project" + count)}
-                <div key={'div' + count++} style={{ height: 50, marginTop: 10, background: '#00ffffff', ...style }}>
-                    <h4 >User{count} Last Msg
-
-          </h4>
+                <div key={'div' + count++} style={{ height: 50, marginTop: 10, marginLeft:5, background: '#00ffffff', ...style }}>
+                    <h5 >User{count} Last Msg</h5>
                     <span id="hisDateSpan">  June 17 2017</span>
                 </div>
             );
@@ -186,16 +189,18 @@ class Contact extends React.Component {
                 //             <span id="hisDateSpan">  June 17 2017</span>
                 //         </div>
                 //onClick={this.switchToChat.bind(this, count, "Name" + count)}
+
                 <div key={'div' + count++} style={{ height: 50, marginBottom: 20, background: '#00ffffff', ...style }}>
                     <Row style={{ marginLeft: 0 }}>
                         <Media.Left>
-                            <FaChild size={48} />
+                            <FaChild size={30} />
                         </Media.Left>
                         <Media.Body>
                             <h4>Name{count}</h4>
                         </Media.Body>
                     </Row>
                 </div>
+
             );
         }
         setTimeout(() => {
@@ -205,12 +210,21 @@ class Contact extends React.Component {
 
     render() {
         return (
-            <div>
-                <h1>Contact</h1>
+            <div className="panel panel-info">
+                    <div className="panel-heading clearfix">
+                <h1 className="panel-title">Contact</h1>
+                </div>
                 <Grid>
+
                     <Row id='funcsRow'>
-                        <Col sm={8} md={4}>
-                            <h3>Project</h3>
+
+                        <Col xs={3} >
+
+                            <div className="panel panel-primary">
+                                <div className="panel-heading clearfix">
+                            <h1 className="panel-title">Project</h1>
+                            </div>
+                            <div className='panel-body'>
                             <div type={ScrollStyle}>
                                 <InfiniteScroll
                                     /*pullDownToRefresh
@@ -225,9 +239,20 @@ class Contact extends React.Component {
                                     {this.state.projectData}
                                 </InfiniteScroll>
                             </div>
+                            </div>
+                            </div>
+
                         </Col>
-                        <Col sm={8} md={4}>
-                            <h3>Individual</h3>
+
+
+                        <Col xs={3}  xsOffset={1}>
+                            <div className="panel panel-primary">
+
+                                    <div className="panel-heading clearfix">
+                                <h1 className="panel-title">Individual</h1>
+                                </div>
+                                <div className='panel-body'>
+
                             <div type={ScrollStyle}>
                                 <InfiniteScroll
                                     /*pullDownToRefresh
@@ -242,8 +267,10 @@ class Contact extends React.Component {
                                     {this.state.contactData}
                                 </InfiniteScroll>
                             </div>
-
+                                </div>
+                        </div>
                         </Col>
+
                     </Row>
                 </Grid>
 
@@ -258,4 +285,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(null, mapDispatchToProps)(Contact);
-
