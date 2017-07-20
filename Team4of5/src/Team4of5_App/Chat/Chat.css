@@ -1,15 +1,22 @@
 
 #leftMenu {
-  width: 33%;
+  width: 30%;
   height:750px;
-  background: #2e6da4;
+  background: lightblue;
+  font-family: sans-serif;
+  font-size: 15px;
+
   /* Just so it's visible */
 }
 #rightContent {
 
-  width: 67%;
+  width: 70%;
   height:750px;
+  font-family: sans-serif;
+  font-size: 15px;
   /* Grow to rest of container */
-  background: lightblue;
+  background: #23719F;
+ padding: 20px 60px;
+
   /* Just so it's visible */
 }

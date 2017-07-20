@@ -49,14 +49,14 @@ class Chat extends React.Component {
 
         return (
             <Provider store={store}>
-                <div id='chatbackground'>
+
                 <Grid>
                     <Row className="show-grid">
                         <Col id='leftMenu' xs={1} md={1}><ChatMenu /></Col>
                         <Col id='rightContent' xs={1} md={1}><ContentSwitcher/></Col>
                     </Row>
                 </Grid>
-                </div>
+            
             </Provider>
         )
     }
