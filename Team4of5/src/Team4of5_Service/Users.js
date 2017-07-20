@@ -114,6 +114,10 @@ export const userExist = function () {
     }
 }
 
+export const getCurUserCompany = function(){
+    return usersRef.child(firebase.auth().currentUser.uid).child('company').once('value')
+}
+
 //Must check current user exist before calling this function!!!!!
 export const getUserData = function () {
     let user = firebase.auth().currentUser;
