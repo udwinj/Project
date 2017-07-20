@@ -1,15 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ChatRoom from './ChatRoom'
-import ContentSwitcher from './ContentSwitcher'
-import './History.css'
-import { connect } from 'react-redux'
-import * as actions from '../App_Redux/ActionCreator'
+import ContentSwitcher from './ContentSwitcher';
+import { connect } from 'react-redux';
+import * as actions from '../App_Redux/ActionCreator';
 import { bindActionCreators } from 'redux';
-import createStore from '../App_Redux/CreateStores'
+import createStore from '../App_Redux/CreateStores';
 import * as ChatService from '../../Team4of5_Service/Chat.js';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
+import './History.css'
+//import react-bootstrap
+import {
+    FormGroup,
+    FormControl,
+    ControlLabel,
+    HelpBlock,
+    Button
+} from 'react-bootstrap';
 //Reference: https://github.com/ankeetmaini/react-infinite-scroll-component
 
 const style = {
@@ -78,13 +86,16 @@ class History extends React.Component {
         content = content.substring(0, 30)+"..."
       }
       moreDivs.push(
+        <div className="panel panel-info">
         <div key={data[i].chatroomUid} style={{ height: 50, background:'#00ffffff', ...style }}>
-          <h4 onClick={this.switchToChat.bind(this, data[i].chatroomUid, {
+          <h5 onClick={this.switchToChat.bind(this, data[i].chatroomUid, {
             chatroomUid: data[i].chatroomUid,
             name: data[i].title, type: data[i].type
-          })}>{data[i].senderName}: {content}  </h4>
+        })}>{data[i].senderName}: {content}  </h5>
           <span id="hisDateSpan"> {new Date(parseInt(data[i].sendDate)).toString()}</span>
         </div>
+        </div>
+
       );
     }
     this.setState({ divs: this.state.divs.concat(moreDivs),

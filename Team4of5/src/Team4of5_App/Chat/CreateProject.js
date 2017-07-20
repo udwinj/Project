@@ -111,12 +111,12 @@ class CreateProject extends React.Component {
 
     render() {
         return (
-            <div className="panel panel-info">
+            <div className="panel panel-info" id="title">
                 <div className="panel-heading clearfix">
-                <h1 className="panel-title">Create A New Project</h1>
+                <h1  className="panel-title">Create A New Project</h1>
             </div>
             <div className="panel-body">
-                
+
                 <FormControl style={style} ref="message" placeholder="Project Name" className="message-input" />
 
                 <Select multi={true}
