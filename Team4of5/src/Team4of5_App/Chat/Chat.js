@@ -56,7 +56,7 @@ class Chat extends React.Component {
                         <Col id='rightContent' xs={1} md={1}><ContentSwitcher/></Col>
                     </Row>
                 </Grid>
-            
+
             </Provider>
         )
     }
