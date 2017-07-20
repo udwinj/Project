@@ -87,13 +87,15 @@ class History extends React.Component {
       }
       moreDivs.push(
         <div className="panel panel-info">
-        <div key={data[i].chatroomUid} style={{ height: 50, background:'#00ffffff', ...style }}>
+
+        <div style={{ height: 50, background:'#fbfbfb', margin:5, ...style }} key={data[i].chatroomUid} >
           <h5 onClick={this.switchToChat.bind(this, data[i].chatroomUid, {
             chatroomUid: data[i].chatroomUid,
             name: data[i].title, type: data[i].type
         })}>{data[i].senderName}: {content}  </h5>
           <span id="hisDateSpan"> {new Date(parseInt(data[i].sendDate)).toString()}</span>
         </div>
+
         </div>
 
       );
@@ -126,8 +128,10 @@ class History extends React.Component {
 
   render() {
     return (
-      <div>
-        <h3>{title}</h3>
+      <div className="panel panel-info">
+          <div className="panel-heading clearfix">
+        <h1 className="panel-title">{title}</h1>
+    </div>
         <div id="HistoryScroll">
           <InfiniteScroll
             /*pullDownToRefresh
