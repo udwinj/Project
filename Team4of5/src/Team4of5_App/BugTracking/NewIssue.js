@@ -15,6 +15,7 @@ import {BrowserRouter as Router, Route, Link, Redirect, withRouter} from 'react-
 import './IssueTracker.css';
 //import react-bootstrap
 import {
+    Form,
     FormGroup,
     FormControl,
     ControlLabel,
@@ -23,19 +24,6 @@ import {
     Col
 } from 'react-bootstrap';
 
-function FieldGroup({
-    id,
-    label,
-    help,
-    ...props
-}) {
-    return (
-        <FormGroup controlId={id}>
-            <ControlLabel>{label}</ControlLabel>
-            <FormControl {...props}/> {help && <HelpBlock>{help}</HelpBlock>}
-        </FormGroup>
-    );
-}
 class NewIssue extends Component {
     constructor(props) {
         super(props);
@@ -108,8 +96,9 @@ class NewIssue extends Component {
                                     <p>Please enter issue information</p>
                                 </div>
                             </div>
-                        </div>
-                        <form onSubmit={this.handleSubmit}>
+                            <div className='panel-body'>
+
+                        <Form onSubmit={this.handleSubmit}>
 
                             <FormGroup controlId="formControlsText">
                                 <ControlLabel>Owner</ControlLabel>
@@ -202,7 +191,9 @@ class NewIssue extends Component {
                             </button>
                             <Link to='/menu/IssueTracker' className='btn btn-danger'>Cancel</Link>
 
-                        </form>
+                        </Form>
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>

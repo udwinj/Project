@@ -8,6 +8,7 @@ import * as firebase from 'firebase';
 import * as Config from '../../Team4of5_Service/Config.js';
 import * as Issues from '../../Team4of5_Service/Issues.js';
 import IssueUpdate from './IssueUpdate.js';
+import './IssueTracker.css';
 
 const issueData = []
 const issueStatus = [{
@@ -162,15 +163,14 @@ render(){
 
 return (
 
-    <div>
-        <div>
-            <h3>Update Issue</h3>
-            <IssueUpdate />
-        </div>
+    <div id="issueUpdateBody">
 
     <div className="panel panel-primary">
         <div className="panel-heading clearfix">
-    <h1 className="panel-title pull-left">Issue Summary</h1>
+    <h2 className="pull-left">Issue Summary</h2>
+    <div className='pull-right'>
+            <IssueUpdate />
+    </div>
     </div>
     <div className='panel-body'>
       <BootstrapTable
