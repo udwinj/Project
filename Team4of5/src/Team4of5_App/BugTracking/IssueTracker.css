@@ -4,6 +4,10 @@
   align-items: center;
   justify-content: center;
   margin-top: 50px;
+
+}
+.AligenrNew .panel-body h3{
+    color:#777;
 }
 .createIssue1{
     max-width: 70%;
