@@ -90,9 +90,19 @@ export default class IssueType extends React.Component {
   render() {
     return (
         <div>
+            <IssueTrackerNav/>
 
-        <IssueTrackerNav/>
+        <div id="issueUpdateBody">
+
+
+        <div className="panel panel-primary">
+
+            <div className="panel-heading clearfix">
+            <h2 className="pull-left">Issue WiKi</h2>
+    </div>
+    <div className='panel-body'>
 <div className="AlignerWiki">
+
         <div className='IssueType'>
       <BootstrapTable
       data={ IssueTypeData}
@@ -133,9 +143,12 @@ export default class IssueType extends React.Component {
       <TableHeaderColumn dataField='type' tdStyle={ { whiteSpace: 'normal' } }>Details</TableHeaderColumn>
 
     </BootstrapTable>
+    </div>
 </div>
 </div>
       </div>
+          </div>
+          </div>
 
     );
   }

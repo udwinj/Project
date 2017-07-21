@@ -8,6 +8,7 @@ import * as firebase from 'firebase';
 import * as Config from '../../Team4of5_Service/Config.js';
 import * as Issues from '../../Team4of5_Service/Issues.js';
 import IssueUpdate from './IssueUpdate.js';
+import './IssueTracker.css';
 
 const issueData = []
 const issueStatus = [{
@@ -162,14 +163,16 @@ render(){
 
 return (
 
-    <div>
-        <div>
-            <h3>Update Issue</h3>
-            <IssueUpdate />
-        </div>
-        <div>
+    <div id="issueUpdateBody">
 
-    <h3>Issue Summary</h3>
+    <div className="panel panel-primary">
+        <div className="panel-heading clearfix">
+    <h2 className="pull-left">Issue Summary</h2>
+    <div className='pull-right'>
+            <IssueUpdate />
+    </div>
+    </div>
+    <div className='panel-body'>
       <BootstrapTable
         ref='table'
         data={ this.state.issues }
@@ -210,7 +213,8 @@ return (
         <TableHeaderColumn dataField='project' filter={ { type: 'TextFilter', style: issueFilterStyle} } tdStyle={ { whiteSpace: 'nowrap' } } width='200'>Project</TableHeaderColumn>
 
       </BootstrapTable>
-</div>
+      </div>
+   </div>
       </div>
     );
 

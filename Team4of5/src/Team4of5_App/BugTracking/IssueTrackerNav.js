@@ -25,9 +25,7 @@ render(){
 
 return (
       <div>
-         <Navbar>
-
-        <Nav >
+        <Nav bsStyle="tabs" >
             <LinkContainer  to='/menu/IssueTracker'>
                   <NavItem  eventKey={1}>Issue</NavItem>
               </LinkContainer>
@@ -38,19 +36,16 @@ return (
               </LinkContainer>
 
                   <LinkContainer  to='/menu/NewIssue'>
-                  <NavItem  eventKey={4}>Create New Issue</NavItem>
+                  <NavItem  eventKey={4}>Report A New Issue</NavItem>
               </LinkContainer>
-
-        </Nav>
-        <Nav pullRight>
             <LinkContainer  to="/menu/IssueWiki">
                   <NavItem  eventKey={3}>Issue Wiki</NavItem>
             </LinkContainer>
         </Nav>
-        </Navbar>
+
     </div>
  );
-  
+
 }
 }
 

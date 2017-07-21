@@ -276,13 +276,17 @@ class IssueReportStaff extends Component {
           });
 
           return (
-              <div>
-                  <h1 className="IssueReportText"> Issue Reports </h1>
+              <div id="issueUpdateBody">
+              <div className="panel panel-primary">
+                  <div className="panel-heading clearfix">
+                  <h2 className="pull-left"> Issue Reports </h2>
+                  </div>
+                  <div className='panel-body'>
 
-          <div className="AlignerReport">
+                  <div className="AlignerReport">
 
                     <div className="padd-lr">
-                        <div className="panel panel-primary">
+                        <div className="panel panel-info">
                             <div className="panel-heading clearfix">
                              <h3 className="panel-title text-center">Issue Status by Owner</h3>
                              </div>
@@ -294,7 +298,7 @@ class IssueReportStaff extends Component {
                     </div>
 
                     <div className=" padd-lr">
-                        <div className="panel panel-primary">
+                        <div className="panel panel-info">
                             <div className="panel-heading clearfix">
                              <h3 className="panel-title text-center">Issue Status by Project</h3>
                              </div>
@@ -307,7 +311,9 @@ class IssueReportStaff extends Component {
 
 
                </div>
+               </div>
                  </div>
+                  </div>
           );
      }
 }
