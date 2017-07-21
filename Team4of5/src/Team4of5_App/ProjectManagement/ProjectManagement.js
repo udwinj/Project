@@ -126,10 +126,10 @@ class GetCardInfo extends React.Component {
         this.state = {
             description: this.props.description,
             label: this.props.assignment,
-            assignment: this.props.assignment,
-            stage: this.props.lane //issue is that new card doesn't know what stage it is
+            assignment: "Unassigned",
+            stage: this.props.lane
         };
-
+        //this.props.assignment
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
@@ -145,6 +145,7 @@ class GetCardInfo extends React.Component {
         this.setState({
             [name]: value
         });
+        console.log(this.state.assignment);
     }
 
     handleSubmit(e) {
@@ -189,6 +190,7 @@ class GetCardInfo extends React.Component {
                         <div className="pure-control-group">
                             <label htmlFor="assign">Assignment:</label>
                             <select id="assign" name="assignment" onChange={this.handleChange} >
+                                <option value="Unassigned">Unassigned</option>
                                 <option value="Kevin">Kevin</option>
                                 <option value="Alisa">Alisa</option>
                                 <option value="Kyle">Kyle</option>
@@ -229,7 +231,7 @@ class ProjectManagement extends React.Component {
             showModal: false,
             modalID: null,
             modalDescription: null,
-            modalAssignment: "Kevin",
+            modalAssignment: "Unassigned",
             modalTitle: null,
             modalLabel: null,
             modalLane: "Backlog",
@@ -367,7 +369,7 @@ class ProjectManagement extends React.Component {
             myFirstPromise.then(() => {
                 // successMessage is whatever we passed in the resolve(...) function above.
                 // It doesn't have to be a string, but if it is only a succeed message, it probably will be.
-                console.log("Yay! ");
+                //console.log("Yay! ");
                 addCard(laneId, id, title, description);
             });
 
