@@ -91,12 +91,10 @@ class NewIssue extends Component {
 
                         <div className="panel panel-primary">
                             <div className="panel-heading clearfix">
-                                <h1 className="panel-title pull-left">Create New Issue</h1>
-                                <div className="pull-right">
-                                    <p>Please enter issue information</p>
-                                </div>
+                                <h1 className="pull-left">Report A New Issue</h1>
                             </div>
                             <div className='panel-body'>
+                                <h3 >Please enter issue information</h3>
 
                         <Form onSubmit={this.handleSubmit}>
 
