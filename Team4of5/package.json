@@ -11,7 +11,7 @@
     "lodash": "^4.17.4",
     "pure-css": "^1.0.4",
     "purecss": "^1.0.0",
-    "react": "^15.5.4",
+    "react": "^15.6.1",
     "react-bootstrap": "^0.31.0",
     "react-bootstrap-table": "^3.4.0",
     "react-chat-ui": "0.0.28",
