@@ -167,9 +167,12 @@ return (
             <h3>Update Issue</h3>
             <IssueUpdate />
         </div>
-        <div>
 
-    <h3>Issue Summary</h3>
+    <div className="panel panel-primary">
+        <div className="panel-heading clearfix">
+    <h1 className="panel-title pull-left">Issue Summary</h1>
+    </div>
+    <div className='panel-body'>
       <BootstrapTable
         ref='table'
         data={ this.state.issues }
@@ -210,7 +213,8 @@ return (
         <TableHeaderColumn dataField='project' filter={ { type: 'TextFilter', style: issueFilterStyle} } tdStyle={ { whiteSpace: 'nowrap' } } width='200'>Project</TableHeaderColumn>
 
       </BootstrapTable>
-</div>
+      </div>
+   </div>
       </div>
     );
 

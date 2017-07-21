@@ -101,7 +101,7 @@ class NewIssue extends Component {
 
                     <div className='createIssue1'>
 
-                        <div className="panel panel-info">
+                        <div className="panel panel-primary">
                             <div className="panel-heading clearfix">
                                 <h1 className="panel-title pull-left">Create New Issue</h1>
                                 <div className="pull-right">

@@ -276,10 +276,13 @@ class IssueReportStaff extends Component {
           });
 
           return (
-              <div>
+              <div className="issueReportBody">
+                  <div className="panel-heading clearfix">
                   <h1 className="IssueReportText"> Issue Reports </h1>
+                  </div>
+                  <div className='panel-body'>
 
-          <div className="AlignerReport">
+                  <div className="AlignerReport">
 
                     <div className="padd-lr">
                         <div className="panel panel-primary">
@@ -306,6 +309,7 @@ class IssueReportStaff extends Component {
                     </div>
 
 
+               </div>
                </div>
                  </div>
           );
