@@ -45,6 +45,34 @@ export const saveUserinfo = function () {
     });
 }
 
+export const updateToAdmin = function (email) {
+    return usersRef.once("value", function(snap) {
+      const keys = Object.keys(snap.val());
+      for (let i = 0; i < keys.length; i++) {
+        const k = keys[i];
+        const uid = k
+        var thisUserRef =  usersRef.child(k)
+        thisUserRef.once("value", function(snap2){
+        if (snap2.val().email == email){
+            if (snap2.val().role=="Sysadmin")
+            {
+            alert("You cannot edit Sysadmin privileges")
+            }
+            else {
+                thisUserRef.update({
+                    role: "Admin"
+                });
+            }
+
+        }
+
+        });
+
+      }
+    });
+
+}
+
 
 // this is reset password if email in manually given
 export const resetPwd = function (user_email) {

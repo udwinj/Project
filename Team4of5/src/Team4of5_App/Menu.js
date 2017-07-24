@@ -7,6 +7,7 @@ import IssueWiki from './BugTracking/IssueWiki.js';
 import Chat from './Chat/Chat.js';
 import ProjectManagement from './ProjectManagement/ProjectManagement.js';
 import Settings from './Settings/Settings.js';
+import AdminSettings from './Settings/AdminSettings.js';
 import NavbarHeaderC from './Navbar/Nav.js';
 import ProjectSummary from './ProjectManagement/ProjectSummary.js'
 
@@ -28,10 +29,11 @@ const Home = () => (
     <div>
         <h1>Menu</h1>
         <div>
-            <button id="IssueTracker"><Link to='/menu/IssueTracker'>IssueTracker</Link></button>
+            <button id="IssueTracker"><Link to='/menu/Issue Tracker'>IssueTracker</Link></button>
             <button id="Chat"><Link to='/menu/Chat'>Chat</Link></button>
-             <button id="ProjectManagement"><Link to='/menu/ProjectManagement'>ProjectManagement</Link></button>
+            <button id="ProjectManagement"><Link to='/menu/ProjectManagement'>Project Management</Link></button>
             <button id="Settings"><Link to='/menu/Settings'>Settings</Link></button>
+            <button id="AdminSettings"><Link to='/menu/AdminSettings'>Admin Settings</Link></button>
         </div>
     </div>
     <div>
@@ -85,6 +87,7 @@ class Menu extends React.Component {
                     <Route path='/menu/Chat' component={Chat} />
                     <Route path='/menu/ProjectManagement' component={ProjectManagement} />
                     <Route path='/menu/Settings' component={Settings} />
+                    <Route path='/menu/AdminSettings' component={AdminSettings} />
                 </Switch>
             </div>
             </div>
