@@ -11,6 +11,10 @@ import * as Issues from '../../Team4of5_Service/Issues.js';
 
 import {BrowserRouter as Router, Route, Link, Redirect, withRouter} from 'react-router-dom';
 
+import fetch from 'isomorphic-fetch';
+//reference: https://github.com/JedWatson/react-select
+import Select from 'react-select';
+
 //import css
 import './IssueTracker.css';
 //import react-bootstrap
@@ -70,8 +74,40 @@ class NewIssue extends Component {
         this.state.severity = '';
         event.preventDefault();
     }
+    getUsers(input) {
+
+        let self = this;
+
+        if (!input) {
+            console.log('here')
+            return Promise.resolve({ options: [] });
+        }
+
+        let contactEmails = []
+        return fetch('https://team4of5-8d52e.firebaseio.com/users.json?&orderBy=%22email%22&startAt=%22'
+            + input + '%22&endAt=%22' + input + '\uf8ff%22')
+
+            .then((response) => response.json())
+            .then((json) => {
+                for (let key in json) {
+                    console.log(json[key])
+                    console.log(json[key].display_name)
+                    if (json[key].company == self.state.curUserCompany) {
+                        contactEmails.push({ value: json[key].email, label: json[key].email })
+                    }
+                }
+                console.log(contactEmails);
+                self.setState({ options: contactEmails })
+                return {
+                    options: contactEmails,
+                    complete: true
+                };
+            });
+    }
 
     render() {
+        const AsyncComponent = Select.Async
+
         const {from} = this.props.location.state || {
             from: {
                 pathname: '/menu/IssueTracker'
@@ -100,7 +136,21 @@ class NewIssue extends Component {
 
                             <FormGroup controlId="formControlsText">
                                 <ControlLabel>Owner</ControlLabel>
-                                <FormControl type="text" placeholder="Enter Owner email" value={this.state.owner} onChange={this.handleChange.bind(this, 'owner')}/>
+                                {/* <FormControl type="text" placeholder="Enter Owner email"
+                                    value={this.state.owner}
+                                    onChange={this.handleChange.bind(this, 'owner')}
+
+                                /> */}
+                                <AsyncComponent
+                                    multi={false}
+                                    value={this.state.value}
+                                    onChange={this.handleChange.bind(this, 'owner')}
+                                    //onValueClick={this.gotoUser}
+                                    //Options={this.state.options}
+                                    valueKey="value"
+                                    labelKey="label"
+                                    loadOptions={this.getUsers}
+                                    backspaceRemoves={true} />
                             </FormGroup>
                             <FormGroup controlId="formControlsText">
 
