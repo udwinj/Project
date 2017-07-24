@@ -32,7 +32,7 @@ class NewIssue extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: '',
+            value: [],
             formBtnTxt: 'Add Issue',
             redirectToIssue: false
         };
@@ -42,13 +42,19 @@ class NewIssue extends Component {
         //connect with firebase
     }
 
-    handleChange(name, event) {
-        let items = this.state;
-        items[name] = event.target.value;
-        this.setState(items);
+    // handleChange(name, event) {
+    //     let items = this.state;
+    //     items[name] = event.target.value;
+    //     this.setState(items);
+    // }
+    handleChange(value) {
+        console.log(value)
+        this.setState({
+            value: value,
+        });
     }
-
     handleSubmit(event) {
+        event.preventDefault();
 
         if (this.state.details && this.state.expComDate && this.state.owner && this.state.project && this.state.status && this.state.type && this.state.priority && this.state.severity) {
             if (!this.state.completionDate) {
@@ -72,7 +78,8 @@ class NewIssue extends Component {
         this.state.type = '';
         this.state.priority = '';
         this.state.severity = '';
-        event.preventDefault();
+        this.handleChange([])
+
     }
     getUsers(input) {
 
@@ -143,8 +150,8 @@ class NewIssue extends Component {
                                 /> */}
                                 <AsyncComponent
                                     multi={false}
-                                    value={this.state.value}
-                                    onChange={this.handleChange.bind(this, 'owner')}
+                                    value={this.state.owner}
+                                    onChange={this.handleChange}
                                     //onValueClick={this.gotoUser}
                                     //Options={this.state.options}
                                     valueKey="value"
