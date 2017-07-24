@@ -91,7 +91,7 @@ class NewIssue extends Component {
 
                         <div className="panel panel-primary">
                             <div className="panel-heading clearfix">
-                                <h1 className="pull-left">Report A New Issue</h1>
+                                <h1 className="pull-left">Report a New Issue</h1>
                             </div>
                             <div className='panel-body'>
                                 <h3 >Please enter issue information</h3>
