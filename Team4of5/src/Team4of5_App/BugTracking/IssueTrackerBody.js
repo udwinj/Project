@@ -9,6 +9,8 @@ import * as Config from '../../Team4of5_Service/Config.js';
 import * as Issues from '../../Team4of5_Service/Issues.js';
 import IssueUpdate from './IssueUpdate.js';
 import './IssueTracker.css';
+import * as ChatProj from '../../Team4of5_Service/ChatProject.js';
+import * as Users from '../../Team4of5_Service/Users.js';
 
 const issueData = []
 const issueStatus = [{
@@ -99,17 +101,62 @@ class IssueTrackerBody extends React.Component{
   super(props);
 
   this.state = {
-    issues:[]
+    issues:[],
+    projdata: [],
+    thisUser: ''
   };
 
     this.issueRef = firebase.database().ref().child('issues');
+    this.getData = this.getData.bind(this);
 
 }
 //After the connect, what the state will do--gotdata
 componentDidMount() {
+
+  let self = this;
+  this.state.thisUser = Users.getCurrentUser().uid;
+
+  ChatProj.getProjects().then(function (data) {
+
+      self.getData(data);
+
+  },
+      function (err) {
+          //Error occur
+          console.log("Promise Error");
+          console.log(err);
+      }
+  );
   this.issueRef.on('value', this.gotData, this.errData);
 
 }
+    getData(data) {
+        const projdata = data.val();
+        var projArray = []
+        const keys = Object.keys(projdata);
+        for (var i = 0; i< keys.length; i++){
+          var members = []
+          var projname =''
+          var user_in_proj = false
+          const k = keys[i];
+
+          projname = projdata[k].name
+
+          for (var x = 0; x< projdata[k].members.length; x++){
+            if (projdata[k].members[x] == this.state.thisUser){
+              user_in_proj = true
+            }
+          }
+
+          if (user_in_proj == true){
+              projArray.push({name: projname});
+          }
+            
+        }
+        this.setState({projdata: projArray});
+
+
+      }
 
 //get the data from the firebase and push them out
  gotData = (data) => {
@@ -118,6 +165,7 @@ componentDidMount() {
       const keys = Object.keys(issuedata);
 
       for (let i = 0; i < keys.length; i++) {
+        var projMatch = false
         const k = keys[i];
 
         //reformat the dates
@@ -126,7 +174,12 @@ componentDidMount() {
 
         var completionDate_reformat = new Date(issuedata[k].completionDate);
         completionDate_reformat =  (completionDate_reformat.getMonth() + 1) + '/' + (completionDate_reformat.getDate()+1) + '/'+ completionDate_reformat.getFullYear();
-
+        for (var y = 0; y< this.state.projdata.length; y++){
+          if (this.state.projdata[y].name == issuedata[k].project){
+              projMatch= true
+          }
+        }
+        if (projMatch == true) {
 
         newIssue.push({
           id: issuedata[k].surrogate_id, status: issuedata[k].status,
@@ -140,6 +193,7 @@ componentDidMount() {
          completionDate: completionDate_reformat,
          project: issuedata[k].project
         });
+    }
 
       }
       this.setState({issues: newIssue});

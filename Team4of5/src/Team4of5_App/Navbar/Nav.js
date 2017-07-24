@@ -97,7 +97,7 @@ class NavbarHeaderC extends React.Component {
 
         </Nav>
          <Nav pullRight>
-             <NavDropdown title="more" id="basic-dropdown" eventKey={5}>
+             <NavDropdown title="More" id="basic-dropdown" eventKey={5}>
 
               <LinkContainer to='/menu'>
               <MenuItem  eventKey={5.1}>Menu</MenuItem>
