@@ -10,13 +10,18 @@ import { forms } from 'pure-css';
 import * as ChatProj from '../../Team4of5_Service/ChatProject.js';
 import * as Tools from '../Tools.js';
 
-
+import { Input } from 'react-bootstrap';
 
 
 //Connect Firebase
 import * as firebase from 'firebase';
 import * as Config from '../../Team4of5_Service/Config.js';
 import * as Issues from '../../Team4of5_Service/Issues.js';
+
+const options = {
+    "USA": ["New York", "San Francisco"],
+    "Germany": ["Berlin", "Munich"]
+}
 
 var mydata = {
     lanes: [
@@ -238,7 +243,9 @@ class ProjectManagement extends React.Component {
             isNew: false,
             projects: "",
             lanes: [],
-            projArray: []
+            projArray: [],
+            projects: [],
+            thisUser: ''
         };
 
         this.getData = this.getData.bind(this);
@@ -253,6 +260,7 @@ class ProjectManagement extends React.Component {
     //After the connect, what the state will do--gotdata
     componentDidMount() {
         let self = this;
+        this.state.thisUser = Users.getCurrentUser().uid;
 
         ChatProj.getProjectData().then(function (data) {
 
@@ -271,21 +279,71 @@ class ProjectManagement extends React.Component {
 
     }
 
+    getUserProjects(data) {
+        const projdata = data.val();
+        var projArray = []
+        const keys = Object.keys(projdata);
+        projArray.push({ name: 'Project Name', id: '0' })
+        for (var i = 0; i < keys.length; i++) {
+            var members = []
+            var projname = ''
+            var user_in_proj = false
+            const k = keys[i];
+
+            projname = projdata[k].name
+
+            for (var x = 0; x < projdata[k].members.length; x++) {
+                if (projdata[k].members[x] == this.state.thisUser) {
+                    user_in_proj = true
+                }
+            }
+
+            if (user_in_proj == true) {
+                projArray.push({ name: projname, id: k });
+            }
+
+        }
+        this.setState({ projdata: projArray });
+
+
+    }
+
 
     getData(data) {
         const projdata = data.val();
         var projArray = []
         const keys = Object.keys(projdata);
-        //console.log("key next");
-        //console.log(keys);
-        // const keys_backlog = Object.keys(projdata[keys].data.Backlog);
-        //console.log("key_backlog next");
-        //console.log(keys);
+
+        //Get list of projects
+
+        var listProjArray = []
+        listProjArray.push({ name: 'Project Name', id: '0' })
+        for (var i = 0; i < keys.length; i++) {
+            var members = [];
+            var projname = '';
+            var user_in_proj = false;
+            const k = keys[i];
+
+            projname = projdata[k].name
+
+            for (var x = 0; x < projdata[k].members.length; x++) {
+                if (projdata[k].members[x] == this.state.thisUser) {
+                    user_in_proj = true
+                }
+            }
+
+            if (user_in_proj == true) {
+                listProjArray.push({ name: projname, id: k });
+            }
+
+        }
+        this.setState({ projects: listProjArray });
+        console.log(this.state.projects);
+
+
+
 
         projArray.push(projdata[keys[0]].data.lanes);
-
-        //console.log("Next count:");
-        //console.log(projArray[0].count);
 
         this.state.lanes = projArray[0];
 
@@ -294,34 +352,8 @@ class ProjectManagement extends React.Component {
                 renderCard(this.state.lanes[i].id, this.state.lanes[i].cards[j].id, this.state.lanes[i].cards[j].title, this.state.lanes[i].cards[j].description);
             }
         }
-
-        // var count = projArray[0].count;
-        // for (let i = 0; i < count; i++) {
-        //     let curCard = "_" + i;
-        //     console.log("Next stuff:");
-        //     console.log(projArray[0].curCard);
-        //     this.state.cards.push(projArray[0]._1);
-        // }
-
-        //this.state.cards.push(projArray[0]._1)
         this.setState({ projects: projArray });
         mydata.lanes = this.state.lanes;
-
-        //{ id: 'Card2', title: 'Card2', description: 'descrip.', tags: [{ title: 'Chat', color: 'black', bgcolor: 'yellow' }] }
-
-        //var count = projArray.count;
-        //console.log("Next count:");
-        //console.log(projArray[0].curCard);
-        //console.log(projArray.count);
-        //for (let i = 0; i < count; i++) {
-        //    let curCard = "_" + i;
-        //    console.log("Next stuff:");
-        //    console.log(projArray[0].curCard);
-        //    this.state.cards.push(projArray[0].curCard);
-        //}
-        //this.state.cards.push(projArray[0].Card1)
-        //this.setState({ projects: projArray });
-
 
     }
 
@@ -386,12 +418,41 @@ class ProjectManagement extends React.Component {
         this.setState({ showModal: false });
     }
 
+    createSelectItems() {
+        return this.state.projects;
+    }
+
+    onDropdownSelected(e) {
+        console.log("THE VAL", e.target.value);
+        //here you will see the current selected value of the select input
+    }
+
     //<button onClick={completeMilkEvent} style={{ margin: 5 }}>Complete Buy Milk</button>
     render() {
+
+        let listproj = this.state.projects.map(p => {
+            return (
+                <tr className="grey2" key={p.id}>
+                    {Object.keys(p).filter(k => k !== 'id').map(k => {
+                        return (<td className="grey1" key={p.id + '' + k}>
+                            <div suppressContentEditableWarning="true" contentEditable="false" value={k} onClick={() => alert("Hello")}>
+                                {p[k]}
+                            </div>
+                        </td>);
+                    })}
+                </tr>
+            );
+        });
+        const renderOption = item => <option value={item[0].name}>{item[0].name}</option>
+        const projectOptions = Object.keys(this.state.projects).map(renderOption)
+
         return (
             <div>
                 <div style={div_style}>
                     <button onClick={() => { this.handleOpenModal(null, true, null) }} style={{ margin: 5 }}>Add New Card</button>
+                    <table width="500" cellSpacing="50" id="mytable">
+                        <tbody>{listproj}</tbody>
+                    </table>
                 </div>
                 <Board
                     data={mydata}
