@@ -127,7 +127,6 @@ componentDidMount() {
           console.log(err);
       }
   );
-  this.issueRef.on('value', this.gotData, this.errData);
 
 }
     getData(data) {
@@ -154,6 +153,7 @@ componentDidMount() {
             
         }
         this.setState({projdata: projArray});
+        this.issueRef.on('value', this.gotData, this.errData);
 
 
       }
