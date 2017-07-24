@@ -26,21 +26,34 @@ class AdminSettings extends React.Component {
 
         this.state = {
             email: '',
+            company:'',
             redirectToMenu: false,
             userInfo: [],
             formBtnTxt: 'Update User'
         };
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.getData = this.getData.bind(this);
+        this.gotData = this.gotData.bind(this);
     }
 
     componentDidMount() {
+    var user = firebase.auth().currentUser;
+    var uid;
 
+        if (user != null) {
+            uid = user.uid;
+
+            var thisUser = firebase.database().ref().child('users/' + uid);
+            thisUser.on('value', this.gotData, this.errData);
+        }
 
 
     }
-    getData(data) {
+    gotData = (data) => {
+        let newUser = []
+        const userdata = data.val();
+        //const keys = Object.keys(userdata);
 
+        this.state.company = userdata.company;
     }
 
     handleChange(name, event) {
@@ -53,7 +66,7 @@ class AdminSettings extends React.Component {
     handleSubmit(event) {
         if (this.state.email) {
 
-            Users.updateToAdmin(this.state.email).then((User) => {
+            Users.updateToAdmin(this.state.email,this.state.company).then((User) => {
                 //         //handle redirect
                 this.setState({redirectToMenu: false});
             })
