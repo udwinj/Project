@@ -143,7 +143,7 @@ class UserLoginSignup extends React.Component {
    <FormGroup controlId="formHorizontalPassword">
      <Col componentClass={ControlLabel} sm={2}>
        Password
-       <small>at least 6 digits</small>
+       <small> at least 6 digits</small>
      </Col>
      <Col sm={10}>
          <InputGroup>
