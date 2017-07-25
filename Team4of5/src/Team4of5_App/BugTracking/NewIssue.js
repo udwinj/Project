@@ -4,12 +4,18 @@ import Navbar from '../Navbar/Nav.js';
 import IssueTrackerNav from './IssueTrackerNav.js';
 import IssueTracker from './IssueTracker.js';
 import Menu from '../Menu.js';
+import * as Users from '../../Team4of5_Service/Users.js';
+
 
 //Connect Firebase
 import * as Config from '../../Team4of5_Service/Config.js';
 import * as Issues from '../../Team4of5_Service/Issues.js';
 
 import {BrowserRouter as Router, Route, Link, Redirect, withRouter} from 'react-router-dom';
+
+import fetch from 'isomorphic-fetch';
+//reference: https://github.com/JedWatson/react-select
+import Select from 'react-select';
 
 //import css
 import './IssueTracker.css';
@@ -24,27 +30,47 @@ import {
     Col
 } from 'react-bootstrap';
 
-class NewIssue extends Component {
+class NewIssue extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: '',
+            curUserCompany: '',
+            value: [],
             formBtnTxt: 'Add Issue',
             redirectToIssue: false
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.getUsers = this.getUsers.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         //connect with firebase
     }
 
-    handleChange(name, event) {
-        let items = this.state;
-        items[name] = event.target.value;
-        this.setState(items);
+    componentDidMount() {
+        //
+        let self = this;
+        Users.getCurUserCompany().then(function (company) {
+            self.setState({ curUserCompany: company.val() })
+            console.log(self.state.curUserCompany)
+        }).catch(function (err) {
+            console.log("Error:" + err)
+        })
     }
 
+    // handleChange(name, event) {
+    //     let items = this.state;
+    //     items[name] = event.target.value;
+    //     this.setState(items);
+    // }
+    handleChange(value) {
+        console.log("change happening")
+        console.log(value)
+        this.setState({
+            value: value,
+        });
+    }
     handleSubmit(event) {
+        event.preventDefault();
 
         if (this.state.details && this.state.expComDate && this.state.owner && this.state.project && this.state.status && this.state.type && this.state.priority && this.state.severity) {
             if (!this.state.completionDate) {
@@ -68,10 +94,41 @@ class NewIssue extends Component {
         this.state.type = '';
         this.state.priority = '';
         this.state.severity = '';
-        event.preventDefault();
+        this.handleChange([])
+
+    }
+    getUsers(input) {
+
+        let self = this;
+
+        if (!input) {
+            console.log('here')
+            return Promise.resolve({ options: [] });
+        }
+
+        let contactEmails = []
+        return fetch('https://team4of5-8d52e.firebaseio.com/users.json?&orderBy=%22email%22&startAt=%22'
+            + input + '%22&endAt=%22' + input + '\uf8ff%22')
+
+            .then((response) => response.json())
+            .then((json) => {
+                for (let key in json) {
+                    //console.log(self.state.curUserCompany) self.state.curUserCompany
+                    if (json[key].company == 'A') {
+                        contactEmails.push({ value: json[key].email, label: json[key].email })
+                    }
+                }
+                self.setState({ options: contactEmails })
+                return {
+                    options: contactEmails,
+                    complete: true
+                };
+            });
     }
 
     render() {
+        const AsyncComponent = Select.Async
+
         const {from} = this.props.location.state || {
             from: {
                 pathname: '/menu/IssueTracker'
@@ -100,7 +157,21 @@ class NewIssue extends Component {
 
                             <FormGroup controlId="formControlsText">
                                 <ControlLabel>Owner</ControlLabel>
-                                <FormControl type="text" placeholder="Enter Owner email" value={this.state.owner} onChange={this.handleChange.bind(this, 'owner')}/>
+                                {/* <FormControl type="text" placeholder="Enter Owner email"
+                                    value={this.state.owner}
+                                    onChange={this.handleChange.bind(this, 'owner')}
+
+                                /> */}
+                                <AsyncComponent
+                                    multi={false}
+                                    value={this.state.value}
+                                    onChange={this.handleChange}
+                                    //onValueClick={this.gotoUser}
+                                    //Options={this.state.options}
+                                    valueKey="value"
+                                    labelKey="label"
+                                    loadOptions={this.getUsers}
+                                    backspaceRemoves={true} />
                             </FormGroup>
                             <FormGroup controlId="formControlsText">
 
