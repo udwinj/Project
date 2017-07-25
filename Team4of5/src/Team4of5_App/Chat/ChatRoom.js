@@ -48,6 +48,7 @@ class ChatRoom extends React.Component {
         }
         console.log("Initialize: " + UserService.getCurrentUser().uid)
         this.initialize = this.initialize.bind(this);
+        this.addMsgToRoom = this.addMsgToRoom.bind(this);
     }
 
     componentDidMount() {
@@ -82,7 +83,12 @@ class ChatRoom extends React.Component {
                 for (let index in messages) {
                     self.addMsgToRoom(messages[index]);
                 }
+
+                // //Scroll to buttom
+                // let room = self.refs.roomView;
+                // room.scrollTop = room.scrollHeight;
             }).then(() => {
+                
                 if (this.props.extraData.ContactData.type == "Project") {
                     ChatService.getChatroomMembers(this.props.extraData.ContactData.chatroomUid).then(function (memData) {
                         self.setState(self.state.members = [])
@@ -139,9 +145,16 @@ class ChatRoom extends React.Component {
         //     //TODO, if it is project, need to add name
         //     //msg = msgData.senderName+":"+ msgData.content
         // }
+
+        
         console.log(msgData.senderUid)
         prevState.messages.push(new Message({ id: recipient, message: msg }));
         this.setState(this.state)
+
+        
+        //Scroll to buttom
+        let room = this.refs.roomView;
+        room.scrollTop = room.scrollHeight;
     }
 
     _onPress(user) {
@@ -153,6 +166,10 @@ class ChatRoom extends React.Component {
         var prevState = this.state
         prevState.messages.push(new Message({ id: recipient, message: message }));
         this.setState(this.state)
+
+        //Scroll to buttom
+        let room = this.refs.roomView;
+        room.scrollTop = room.scrollHeight;
     }
 
     _onMessageSubmit(e) {
@@ -204,8 +221,9 @@ class ChatRoom extends React.Component {
             <div className='chatContainer'>
 
 
-                <div id="ChatMian">
+                <div id="ChatMian" ref='roomView'>
                     <ChatFeed
+                        style={{display: 'flex'}}
                         messages={this.state.messages} // Boolean: list of message objects
                         isTyping={this.state.is_typing} // Boolean: is the recipient typing
                         hasInputField={false} // Boolean: use our input, or use your own
@@ -230,6 +248,7 @@ class ChatRoom extends React.Component {
                             }
                         }
                     />
+                    
                 </div>
                 <div id="ChatInput">
                     <form id="typeMessage" onSubmit={this._onMessageSubmit.bind(this)}>
