@@ -37,12 +37,14 @@ class NewIssue extends React.Component {
             curUserCompany: '',
             value: [],
             formBtnTxt: 'Add Issue',
-            redirectToIssue: false
+            redirectToIssue: false,
+
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.getUsers = this.getUsers.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleOwnerChange = this.handleOwnerChange.bind(this);
         //connect with firebase
     }
 
@@ -57,12 +59,12 @@ class NewIssue extends React.Component {
         })
     }
 
-    // handleChange(name, event) {
-    //     let items = this.state;
-    //     items[name] = event.target.value;
-    //     this.setState(items);
-    // }
-    handleChange(value) {
+    handleChange(name, event) {
+        let items = this.state;
+        items[name] = event.target.value;
+        this.setState(items);
+    }
+    handleOwnerChange(value) {
         console.log("change happening")
         console.log(value)
         this.setState({
@@ -72,12 +74,12 @@ class NewIssue extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
 
-        if (this.state.details && this.state.expComDate && this.state.owner && this.state.project && this.state.status && this.state.type && this.state.priority && this.state.severity) {
+        if (this.state.details && this.state.expComDate && this.state.value.owner && this.state.project && this.state.status && this.state.type && this.state.priority && this.state.severity) {
             if (!this.state.completionDate) {
                 this.state.completionDate = 'null'
             }
 
-            Issues.addNewIssue(this.state.completionDate, this.state.details, this.state.expComDate, this.state.owner, this.state.project, this.state.status, this.state.type, this.state.priority, this.state.severity)
+            Issues.addNewIssue(this.state.completionDate, this.state.details, this.state.expComDate, this.state.value.owner, this.state.project, this.state.status, this.state.type, this.state.priority, this.state.severity)
             {
                 console.log('Issue!');
                 this.setState({redirectToIssue: true});
@@ -88,13 +90,12 @@ class NewIssue extends React.Component {
         this.state.completionDate = '';
         this.state.details = '';
         this.state.expComDate = '';
-        this.state.owner = '';
+        this.state.value = [];
         this.state.project = '';
         this.state.status = '';
         this.state.type = '';
         this.state.priority = '';
         this.state.severity = '';
-        this.handleChange([])
 
     }
     getUsers(input) {
@@ -115,7 +116,7 @@ class NewIssue extends React.Component {
                 for (let key in json) {
                     //console.log(self.state.curUserCompany) self.state.curUserCompany
                     if (json[key].company == 'A') {
-                        contactEmails.push({ value: json[key].email, label: json[key].email })
+                        contactEmails.push({ owner: json[key].email, label: json[key].email })
                     }
                 }
                 self.setState({ options: contactEmails })
@@ -165,7 +166,7 @@ class NewIssue extends React.Component {
                                 <AsyncComponent
                                     multi={false}
                                     value={this.state.value}
-                                    onChange={this.handleChange}
+                                    onChange={this.handleOwnerChange}
                                     //onValueClick={this.gotoUser}
                                     //Options={this.state.options}
                                     valueKey="value"
