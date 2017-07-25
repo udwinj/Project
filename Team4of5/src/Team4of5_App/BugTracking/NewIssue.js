@@ -4,6 +4,8 @@ import Navbar from '../Navbar/Nav.js';
 import IssueTrackerNav from './IssueTrackerNav.js';
 import IssueTracker from './IssueTracker.js';
 import Menu from '../Menu.js';
+import * as Users from '../../Team4of5_Service/Users.js';
+
 
 //Connect Firebase
 import * as Config from '../../Team4of5_Service/Config.js';
@@ -28,18 +30,31 @@ import {
     Col
 } from 'react-bootstrap';
 
-class NewIssue extends Component {
+class NewIssue extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            curUserCompany: '',
             value: [],
             formBtnTxt: 'Add Issue',
             redirectToIssue: false
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.getUsers = this.getUsers.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         //connect with firebase
+    }
+
+    componentDidMount() {
+        //
+        let self = this;
+        Users.getCurUserCompany().then(function (company) {
+            self.setState({ curUserCompany: company.val() })
+            console.log(self.state.curUserCompany)
+        }).catch(function (err) {
+            console.log("Error:" + err)
+        })
     }
 
     // handleChange(name, event) {
@@ -48,6 +63,7 @@ class NewIssue extends Component {
     //     this.setState(items);
     // }
     handleChange(value) {
+        console.log("change happening")
         console.log(value)
         this.setState({
             value: value,
@@ -97,13 +113,11 @@ class NewIssue extends Component {
             .then((response) => response.json())
             .then((json) => {
                 for (let key in json) {
-                    console.log(json[key])
-                    console.log(json[key].display_name)
-                    if (json[key].company == self.state.curUserCompany) {
+                    //console.log(self.state.curUserCompany) self.state.curUserCompany
+                    if (json[key].company == 'A') {
                         contactEmails.push({ value: json[key].email, label: json[key].email })
                     }
                 }
-                console.log(contactEmails);
                 self.setState({ options: contactEmails })
                 return {
                     options: contactEmails,
@@ -150,7 +164,7 @@ class NewIssue extends Component {
                                 /> */}
                                 <AsyncComponent
                                     multi={false}
-                                    value={this.state.owner}
+                                    value={this.state.value}
                                     onChange={this.handleChange}
                                     //onValueClick={this.gotoUser}
                                     //Options={this.state.options}
