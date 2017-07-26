@@ -10,9 +10,9 @@ import * as Config from '../../Team4of5_Service/Config.js';
 
 import {BrowserRouter as Router, Route, Link, Redirect, withRouter} from 'react-router-dom';
 
-// import fetch from 'isomorphic-fetch';
-// //reference: https://github.com/JedWatson/react-select
-// import Select from 'react-select';
+import fetch from 'isomorphic-fetch';
+//reference: https://github.com/JedWatson/react-select
+import Select from 'react-select';
 
 
 // style
@@ -35,13 +35,16 @@ class AdminSettings extends React.Component {
         this.state = {
             company:'',
             email:'',
+            value: [],
             redirectToMenu: false,
             userInfo: [],
             formBtnTxt: 'Update User'
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.gotData = this.gotData.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        //this.handleChange = this.handleChange.bind(this);
+        this.handleEmailChange = this.handleEmailChange.bind(this);
+        this.getUsers = this.getUsers.bind(this);
     }
 
     componentDidMount() {
@@ -60,21 +63,27 @@ class AdminSettings extends React.Component {
         let newUser = []
         const userdata = data.val();
         //const keys = Object.keys(userdata);
-
         this.state.company = userdata.company;
     }
 
-    handleChange(name, event) {
-        let items = this.state;
-        items[name] = event.target.value;
-        this.setState(items);
+    // handleChange(name, event) {
+    //     let items = this.state;
+    //     items[name] = event.target.value;
+    //     this.setState(items);
+    // }
+    handleEmailChange(value) {
+        console.log("change happening")
+        console.log(value)
+        this.setState({
+            value: value,
+        });
     }
     handleSubmit(event) {
 
         event.preventDefault();
-        if (this.state.email) {
+        if (this.state.value.email) {
 
-            Users.updateToAdmin(this.state.email,this.state.company)
+            Users.updateToAdmin(this.state.value.email,this.state.company)
              .then((Users)=>{
                      //handle redirect
                 this.setState({redirectToMenu: true});
@@ -85,12 +94,39 @@ class AdminSettings extends React.Component {
             alert("Please select a user ");
         }
 
-        this.state.email = '';
+        this.state.value = [];
+    }
+    getUsers(input) {
+
+        let self = this;
+
+        if (!input) {
+            console.log('here')
+            return Promise.resolve({ options: [] });
+        }
+
+        let contactEmails = []
+        return fetch('https://team4of5-8d52e.firebaseio.com/users.json?&orderBy=%22email%22&startAt=%22'
+            + input + '%22&endAt=%22' + input + '\uf8ff%22')
+
+            .then((response) => response.json())
+            .then((json) => {
+                for (let key in json) {
+                    //console.log(self.state.curUserCompany) self.state.curUserCompany
+                    if (json[key].company == 'A') {
+                        contactEmails.push({ email: json[key].email, label: json[key].email })
+                    }
+                }
+                self.setState({ options: contactEmails })
+                return {
+                    options: contactEmails,
+                    complete: true
+                };
+            });
     }
 
-
     render() {
-
+const AsyncComponent = Select.Async
         const {from} = this.props.location.state || {
             from: {
                 pathname: '/menu'
@@ -126,8 +162,17 @@ class AdminSettings extends React.Component {
                             <div className='panel-body'>
                                 <FormGroup controlId="formControlsSelect">
                                     <ControlLabel>User Email</ControlLabel>
-                                    <FormControl componentClass="input" value={this.state.email} onChange={this.handleChange.bind(this, 'email')}/>
-
+                                    {/* <FormControl componentClass="input" value={this.state.email} onChange={this.handleChange.bind(this, 'email')}/> */}
+                                    <AsyncComponent
+                                        multi={false}
+                                        value={this.state.value}
+                                        onChange={this.handleEmailChange}
+                                        //onValueClick={this.gotoUser}
+                                        //Options={this.state.options}
+                                        valueKey="value"
+                                        labelKey="label"
+                                        loadOptions={this.getUsers}
+                                        backspaceRemoves={true} />
                                 </FormGroup>
                             </div>
 
