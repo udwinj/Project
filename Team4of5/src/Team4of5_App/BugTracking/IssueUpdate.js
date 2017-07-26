@@ -70,9 +70,9 @@ class IssueUpdate extends React.Component {
                 <Button block onClick={() => this.setState({show: true})}>
                     Update Issue
                 </Button>
-                <Modal show={this.state.show} onHide={close} container={this} aria-labelledby="contained-modal-title">
+                <Modal id="modleTitle" show={this.state.show} onHide={close} container={this}>
                     <Modal.Header closeButton>
-                        <Modal.Title id="contained-modal-title">Please Fill In Issue Information</Modal.Title>
+                        <Modal.Title>Please Fill In Issue Information</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form onSubmit={this.handleSubmit}>

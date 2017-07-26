@@ -145,8 +145,7 @@ class NewIssue extends React.Component {
             return Promise.resolve({ options: [] });
         }
 
-        let projectID = []
-        //https://team4of5-8d52e.firebaseio.com/issues/-KohORdmxiZnx_oLt6s1/project
+        let projectID = []        
 
         return fetch('https://team4of5-8d52e.firebaseio.com/issues.json?orderBy=%22project%22&startAt=%22'
             + input + '%22&endAt=%22' + input + '\uf8ff%22')
