@@ -36,6 +36,7 @@ class NewIssue extends React.Component {
         this.state = {
             curUserCompany: '',
             value: [],
+            project:[],
             formBtnTxt: 'Add Issue',
             redirectToIssue: false,
 
@@ -45,6 +46,9 @@ class NewIssue extends React.Component {
         this.getUsers = this.getUsers.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleOwnerChange = this.handleOwnerChange.bind(this);
+        this.handleProjectChange = this.handleProjectChange.bind(this);
+        this.getProjectID = this.getProjectID.bind(this);
+
         //connect with firebase
     }
 
@@ -71,15 +75,22 @@ class NewIssue extends React.Component {
             value: value,
         });
     }
+    handleProjectChange(project) {
+        console.log("change happening")
+        console.log(project)
+        this.setState({
+            project: project,
+        });
+    }
     handleSubmit(event) {
         event.preventDefault();
 
-        if (this.state.details && this.state.expComDate && this.state.value.owner && this.state.project && this.state.status && this.state.type && this.state.priority && this.state.severity) {
+        if (this.state.details && this.state.expComDate && this.state.value.owner && this.state.project.project && this.state.status && this.state.type && this.state.priority && this.state.severity) {
             if (!this.state.completionDate) {
                 this.state.completionDate = 'null'
             }
 
-            Issues.addNewIssue(this.state.completionDate, this.state.details, this.state.expComDate, this.state.value.owner, this.state.project, this.state.status, this.state.type, this.state.priority, this.state.severity)
+            Issues.addNewIssue(this.state.completionDate, this.state.details, this.state.expComDate, this.state.value.owner, this.state.project.project, this.state.status, this.state.type, this.state.priority, this.state.severity)
             {
                 console.log('Issue!');
                 this.setState({redirectToIssue: true});
@@ -91,7 +102,7 @@ class NewIssue extends React.Component {
         this.state.details = '';
         this.state.expComDate = '';
         this.state.value = [];
-        this.state.project = '';
+        //this.state.project = '';
         this.state.status = '';
         this.state.type = '';
         this.state.priority = '';
@@ -122,6 +133,37 @@ class NewIssue extends React.Component {
                 self.setState({ options: contactEmails })
                 return {
                     options: contactEmails,
+                    complete: true
+                };
+            });
+    }
+    getProjectID(input) {
+        let self = this;
+
+        if (!input) {
+            console.log('Project')
+            return Promise.resolve({ options: [] });
+        }
+
+        let projectID = []        
+
+        return fetch('https://team4of5-8d52e.firebaseio.com/issues.json?orderBy=%22project%22&startAt=%22'
+            + input + '%22&endAt=%22' + input + '\uf8ff%22')
+
+            .then((response) => response.json())
+            .then((json) => {
+                for (let key in json) {
+                    //console.log(self.state.curUserCompany) self.state.curUserCompany
+                    projectID.push({ project: json[key].project, label: json[key].project })
+                    // if (json[key].company == 'A') {
+                    //
+                    // }
+
+
+                }
+                self.setState({ options: projectID })
+                return {
+                    options: projectID,
                     complete: true
                 };
             });
@@ -191,8 +233,17 @@ class NewIssue extends React.Component {
 
                                 <ControlLabel>Project</ControlLabel>
 
-                                <FormControl type="text" value={this.state.project} placeholder='Enter project ID associated with this issue' onChange={this.handleChange.bind(this, 'project')}/>
-
+                                {/* <FormControl type="text" value={this.state.project} placeholder='Enter project ID associated with this issue' onChange={this.handleChange.bind(this, 'project')}/> */}
+                                <AsyncComponent
+                                    multi={false}
+                                    value={this.state.project}
+                                    onChange={this.handleProjectChange}
+                                    //onValueClick={this.gotoUser}
+                                    //Options={this.state.options}
+                                    valueKey="value"
+                                    labelKey="label"
+                                    loadOptions={this.getProjectID}
+                                    backspaceRemoves={true} />
                             </FormGroup>
 
                             <FormGroup controlId="formControlsSelect">
