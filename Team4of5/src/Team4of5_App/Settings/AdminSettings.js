@@ -9,6 +9,12 @@ import * as firebase from 'firebase';
 import * as Config from '../../Team4of5_Service/Config.js';
 
 import {BrowserRouter as Router, Route, Link, Redirect, withRouter} from 'react-router-dom';
+
+// import fetch from 'isomorphic-fetch';
+// //reference: https://github.com/JedWatson/react-select
+// import Select from 'react-select';
+
+
 // style
 import './Settings.css';
 //import react-bootstrap
@@ -20,19 +26,22 @@ import {
     Button
 } from 'react-bootstrap';
 
+
+
 class AdminSettings extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            email: '',
             company:'',
+            email:'',
             redirectToMenu: false,
             userInfo: [],
             formBtnTxt: 'Update User'
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.gotData = this.gotData.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
@@ -45,9 +54,8 @@ class AdminSettings extends React.Component {
             var thisUser = firebase.database().ref().child('users/' + uid);
             thisUser.on('value', this.gotData, this.errData);
         }
-
-
     }
+
     gotData = (data) => {
         let newUser = []
         const userdata = data.val();
@@ -61,22 +69,25 @@ class AdminSettings extends React.Component {
         items[name] = event.target.value;
         this.setState(items);
     }
-
-
     handleSubmit(event) {
-        if (this.state.email) {
-
-            Users.updateToAdmin(this.state.email,this.state.company).then((User) => {
-                //         //handle redirect
-                this.setState({redirectToMenu: false});
-            })
-        };
-
-        this.state.email = '';
 
         event.preventDefault();
+        if (this.state.email) {
 
+            Users.updateToAdmin(this.state.email,this.state.company)
+             .then((Users)=>{
+                     //handle redirect
+                this.setState({redirectToMenu: true});
+
+
+            })
+        } else {
+            alert("Please select a user ");
+        }
+
+        this.state.email = '';
     }
+
 
     render() {
 
@@ -115,14 +126,12 @@ class AdminSettings extends React.Component {
                             <div className='panel-body'>
                                 <FormGroup controlId="formControlsSelect">
                                     <ControlLabel>User Email</ControlLabel>
-                                    <FormControl componentClass="input" value={this.state.email} onChange={this.handleChange.bind(this, 'email')}>
+                                    <FormControl componentClass="input" value={this.state.email} onChange={this.handleChange.bind(this, 'email')}/>
 
-
-                                    </FormControl>
                                 </FormGroup>
                             </div>
 
-  
+
                         </div>
                         <button type="submit" id="setingBtn" className="btn btn-primary"> Update to Admin </button>
                         <Link to='/menu' className='btn btn-danger'>Cancel</Link>
