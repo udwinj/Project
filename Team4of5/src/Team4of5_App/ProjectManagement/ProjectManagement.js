@@ -77,7 +77,7 @@ let setEventBus = (handle) => {
 }
 
 const addCard = (laneID, id, title, description) => {
-    console.log("adding: " + laneID + id + title + description)
+    //console.log("adding: " + laneID + id + title + description)
     ChatProj.addNewCard(laneID, id, title, description);
     eventBus.publish({ type: 'ADD_CARD', laneId: laneID, card: { id: id, title: "", label: title, description: description } });
 }
@@ -113,13 +113,10 @@ const handleDragEnd = (cardId, sourceLaneId, targetLaneId) => {
 }
 
 const shouldReceiveNewData = (nextData) => {
-    console.log('data has changed')
-    console.log(nextData)
-    console.log(mydata)
+    //console.log('data has changed')
+    //console.log(nextData)
+    //console.log(mydata)
 }
-
-
-
 
 
 
@@ -144,13 +141,13 @@ class GetCardInfo extends React.Component {
         const target = event.target;
         const value = target.value;
         const name = target.name;
-        console.log("change happening");
+        //console.log("change happening");
         //console.log(laneID);
 
         this.setState({
             [name]: value
         });
-        console.log(this.state.assignment);
+        //console.log(this.state.assignment);
     }
 
     handleSubmit(e) {
@@ -162,7 +159,7 @@ class GetCardInfo extends React.Component {
     }
     handleDelete(e) {
         e.preventDefault();
-        console.log("Removing Here");
+        //console.log("Removing Here");
         //console.log(lane);
         //console.log(id);
         this.props.handleDeleteModal(this.props.lane, this.props.cardID, this.state.assignment, this.state.description);
@@ -228,6 +225,33 @@ class GetCardInfo extends React.Component {
 }
 
 
+
+
+class ProjectTable extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+        };
+    }
+
+    render() {
+        return (
+            <div>
+                {this.props.data[0]}
+            </div>
+        );
+    }
+}
+
+
+
+
+
+
+
+
+
+
 class ProjectManagement extends React.Component {
 
     constructor(props) {
@@ -245,7 +269,8 @@ class ProjectManagement extends React.Component {
             lanes: [],
             projArray: [],
             projects: [],
-            thisUser: ''
+            thisUser: '',
+            projectList: []
         };
 
         this.getData = this.getData.bind(this);
@@ -254,6 +279,7 @@ class ProjectManagement extends React.Component {
         this.handleSaveModal = this.handleSaveModal.bind(this);
         this.handleDeleteModal = this.handleDeleteModal.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.displayedCards = this.displayedCards.bind(this);
         //
 
     }
@@ -317,7 +343,6 @@ class ProjectManagement extends React.Component {
         //Get list of projects
 
         var listProjArray = []
-        listProjArray.push({ name: 'Project Name', id: '0' })
         for (var i = 0; i < keys.length; i++) {
             var members = [];
             var projname = '';
@@ -333,16 +358,16 @@ class ProjectManagement extends React.Component {
             }
 
             if (user_in_proj == true) {
-                listProjArray.push({ name: projname, id: k });
+                //listProjArray.push({ name: projname, id: k });
+                listProjArray.push(projdata[k]);
             }
 
         }
-        this.setState({ projects: listProjArray });
-        console.log(this.state.projects);
+        this.setState({ projectList: listProjArray });
+        console.log(this.state.projectList);
 
-
-
-
+        this.displayedCards(this.state.projectList[0])
+        /*
         projArray.push(projdata[keys[0]].data.lanes);
 
         this.state.lanes = projArray[0];
@@ -354,6 +379,26 @@ class ProjectManagement extends React.Component {
         }
         this.setState({ projects: projArray });
         mydata.lanes = this.state.lanes;
+        */
+
+    }
+
+    displayedCards(project) {
+        var projArray = []
+        projArray.push(project.data.lanes);
+        console.log(projArray);
+        this.state.lanes = projArray[0];
+        console.log(this.state.lanes);
+        for (let i = 0; i < this.state.lanes.length; i++) {
+            for (let j = 0; j < this.state.lanes[i].cards.length; j++) {
+                renderCard(this.state.lanes[i].id, this.state.lanes[i].cards[j].id, this.state.lanes[i].cards[j].title, this.state.lanes[i].cards[j].description);
+            }
+        }
+        this.setState({ projects: projArray });
+        console.log(this.state.projects);
+        mydata.lanes = this.state.lanes;
+        console.log(this.state.projectList);
+        console.log("HERE");
 
     }
 
@@ -430,29 +475,40 @@ class ProjectManagement extends React.Component {
     //<button onClick={completeMilkEvent} style={{ margin: 5 }}>Complete Buy Milk</button>
     render() {
 
-        let listproj = this.state.projects.map(p => {
-            return (
-                <tr className="grey2" key={p.id}>
-                    {Object.keys(p).filter(k => k !== 'id').map(k => {
-                        return (<td className="grey1" key={p.id + '' + k}>
-                            <div suppressContentEditableWarning="true" contentEditable="false" value={k} onClick={() => alert("Hello")}>
-                                {p[k]}
-                            </div>
-                        </td>);
-                    })}
-                </tr>
-            );
-        });
-        const renderOption = item => <option value={item[0].name}>{item[0].name}</option>
-        const projectOptions = Object.keys(this.state.projects).map(renderOption)
+        // let listproj = this.state.projectList.map(p => {
+        //     return (
+        //         <tr className="grey2" key={p.id}>
+        //             {Object.keys(p).filter(k => k !== 'id').map(k => {
+        //                 return (<td className="grey1" key={p.id + '' + k}>
+        //                     <div suppressContentEditableWarning="true" contentEditable="false" value={k} onClick={() => this.displayedCards(1)}>
+        //                         {p[k]}
+        //                     </div>
+        //                 </td>);
+        //             })}
+        //         </tr>
+        //     );
+        // });
+        // const renderOption = item => <option value={item[0].name}>{item[0].name}</option>
+        // const projectOptions = Object.keys(this.state.projects).map(renderOption)
+
+        //<table width="500" cellSpacing="50" id="mytable">
+        //               <tbody>{listproj}</tbody>
+        //            </table>
+
+        //this.state && this.state.projectList && 
 
         return (
+
             <div>
                 <div style={div_style}>
                     <button onClick={() => { this.handleOpenModal(null, true, null) }} style={{ margin: 5 }}>Add New Card</button>
-                    <table width="500" cellSpacing="50" id="mytable">
-                        <tbody>{listproj}</tbody>
-                    </table>
+                    <div>
+                        <ul>
+                            {this.state.projectList.map(item => <li onClick={() => { this.displayedCards(item); console.log(item); console.log("MY ITEMS") }}>
+                                {item.name}
+                            </li>)}
+                        </ul>
+                    </div>
                 </div>
                 <Board
                     data={mydata}
