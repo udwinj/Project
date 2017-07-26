@@ -221,7 +221,7 @@ return (
 
     <div className="panel panel-primary">
         <div className="panel-heading clearfix">
-    <h2 className="pull-left">Issue Summary</h2>
+    <h2 className="pull-left">Issue List</h2>
     <div className='pull-right'>
             <IssueUpdate />
     </div>
