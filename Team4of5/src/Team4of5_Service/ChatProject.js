@@ -71,8 +71,6 @@ export const addNewCard = function (laneID, id, title, description) {
         var path = '0be3f584-33ce-11e2-7b8c-72fe4d59dc4f/data/lanes/' + card_lane;
 
         var thisRef = chatProject.child(path);
-        console.log("Checking");
-        console.log(thisRef);
 
         //f (user_display_name && user_role) {
         return thisRef.update({
@@ -136,11 +134,6 @@ export const removeCard = function (laneID, id) {
         //var index = cards.indexOf({id:id});
         var index = cards.findIndex(x => x.id == id);
 
-        console.log("Next is index");
-        console.log(index);
-        console.log("Next is cards");
-        console.log(cards.length);
-
         if (index > -1) {
             cards.splice(index, 1);
         }
@@ -150,8 +143,8 @@ export const removeCard = function (laneID, id) {
         var path = '0be3f584-33ce-11e2-7b8c-72fe4d59dc4f/data/lanes/' + card_lane;
 
         var thisRef = chatProject.child(path);
-        console.log("Checking");
-        console.log(thisRef);
+        //console.log("Checking");
+        //console.log(thisRef);
 
         //f (user_display_name && user_role) {
         return thisRef.update({
@@ -235,8 +228,8 @@ export const updateCard = function (id, laneID, targetLaneId) {
         var path = '0be3f584-33ce-11e2-7b8c-72fe4d59dc4f/data/lanes/' + card_lane;
 
         var thisRef = chatProject.child(path);
-        console.log("Checking");
-        console.log(thisRef);
+        //console.log("Checking");
+        //console.log(thisRef);
 
         //f (user_display_name && user_role) {
         return thisRef.update({
