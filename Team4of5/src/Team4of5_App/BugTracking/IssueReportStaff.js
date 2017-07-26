@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import './IssueTracker.css';
 //import react-bootstrap
 import {Table } from 'react-bootstrap';
+import * as ChatProj from '../../Team4of5_Service/ChatProject.js';
 
 import * as User from '../../Team4of5_Service/Users.js';
 
@@ -12,29 +13,80 @@ class IssueReportStaff extends Component {
      this.state = {
       reportIssue: [],
           data: [],
+          thisUser: '',
           projdata: [],
+          chatProjArray: [],
      errorInput:''
      };
       this.staffIssueForm = this.staffIssueForm.bind(this);
       this.appendColumn = this.appendColumn.bind(this);
       this.getData = this.getData.bind(this);
+      this.gotData = this.gotData.bind(this);
 }
 
  componentDidMount() {
           let self = this;
 
-          User.getAllUserData().then(function (data) {
+          this.state.thisUser = User.getCurrentUser().uid;
 
-                self.getData(data);
+            ChatProj.getProjects().then(function (data) {
+
+              self.getData(data);
+
+          },
+              function (err) {
+                  //Error occur
+                  console.log("Promise Error");
+                  console.log(err);
+              }
+          );
+}
+    
+    getData(data) {
+       let self = this;
+        const projdata = data.val();
+        var projArray = []
+        const keys = Object.keys(projdata);
+        for (var i = 0; i< keys.length; i++){
+          var members = []
+          var projname =''
+          var user_in_proj = false
+          const k = keys[i];
+
+          projname = projdata[k].name
+
+          for (var x = 0; x< projdata[k].members.length; x++){
+            if (projdata[k].members[x] == this.state.thisUser){
+              user_in_proj = true
+            }
+          }
+
+          if (user_in_proj == true){
+              projArray.push({name: projname});
+          }
+            
+        }
+
+        this.setState({chatProjArray: projArray});
+
+
+                  User.getAllUserData().then(function (data) {
+
+                self.gotData(data);
             }, function (err) {
                 //Error occur
                 console.log("Promise Error");
                 console.log(err);
             })
 
-    }
 
-    getData(data) {
+      }
+
+
+
+    
+
+    gotData(data) {
         const issuedata = data.val();
         const keys = Object.keys(issuedata);
 
@@ -49,7 +101,15 @@ class IssueReportStaff extends Component {
           var status = issuedata[k].status
           var exists = 0
           var new_cnt = 0
+          var match = false
 
+          for (let m =0; m < this.state.chatProjArray.length; m++){
+            if (this.state.chatProjArray[m].name == project) {
+              match = true;
+            }
+          }
+
+          if (match ==true) {
         for (var m = 1; m < userArray.length; m++) {
           var datum = userArray[m];
           if (datum.key == owner) {
@@ -193,6 +253,7 @@ class IssueReportStaff extends Component {
           }
 
         } //if
+      }
       }
 
         // for (var i = 0; i < userArray.length; i++) {

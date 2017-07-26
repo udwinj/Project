@@ -27,16 +27,16 @@ return (
       <div>
         <Nav bsStyle="tabs" >
             <LinkContainer  to='/menu/IssueTracker'>
-                  <NavItem  eventKey={1}>Issue</NavItem>
+                  <NavItem  eventKey={1}>Issue List</NavItem>
               </LinkContainer>
 
 
                 <LinkContainer  to='/menu/IssueReports'>
-                  <NavItem  eventKey={2}>Reports</NavItem>
+                  <NavItem  eventKey={2}>Issue Reports</NavItem>
               </LinkContainer>
 
                   <LinkContainer  to='/menu/NewIssue'>
-                  <NavItem  eventKey={4}>Report A New Issue</NavItem>
+                  <NavItem  eventKey={4}>Report a New Issue</NavItem>
               </LinkContainer>
             <LinkContainer  to="/menu/IssueWiki">
                   <NavItem  eventKey={3}>Issue Wiki</NavItem>
