@@ -33,38 +33,49 @@ class AdminSettings extends React.Component {
         super(props);
 
         this.state = {
-            company:'',
-            email:'',
+            // company:'',
+            //email:'',
             value: [],
+            curUserCompany: '',
             redirectToMenu: false,
-            userInfo: [],
+            //userInfo: [],
             formBtnTxt: 'Update User'
         };
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.gotData = this.gotData.bind(this);
+        //this.gotData = this.gotData.bind(this);
         //this.handleChange = this.handleChange.bind(this);
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.getUsers = this.getUsers.bind(this);
     }
-
     componentDidMount() {
-    var user = firebase.auth().currentUser;
-    var uid;
-
-        if (user != null) {
-            uid = user.uid;
-
-            var thisUser = firebase.database().ref().child('users/' + uid);
-            thisUser.on('value', this.gotData, this.errData);
-        }
+        //
+        let self = this;
+        Users.getCurUserCompany().then(function (company) {
+            self.setState({ curUserCompany: company.val() })
+            console.log(self.state.curUserCompany)
+        }).catch(function (err) {
+            console.log("Error:" + err)
+        })
     }
 
-    gotData = (data) => {
-        let newUser = []
-        const userdata = data.val();
-        //const keys = Object.keys(userdata);
-        this.state.company = userdata.company;
-    }
+    // componentDidMount() {
+    // var user = firebase.auth().currentUser;
+    // var uid;
+    //
+    //     if (user != null) {
+    //         uid = user.uid;
+    //
+    //         var thisUser = firebase.database().ref().child('users/' + uid);
+    //         thisUser.on('value', this.gotData, this.errData);
+    //     }
+    // }
+    //
+    // gotData = (data) => {
+    //     let newUser = []
+    //     const userdata = data.val();
+    //     //const keys = Object.keys(userdata);
+    //     this.state.company = userdata.company;
+    // }
 
     // handleChange(name, event) {
     //     let items = this.state;
@@ -101,7 +112,7 @@ class AdminSettings extends React.Component {
         let self = this;
 
         if (!input) {
-            console.log('here')
+            console.log('here');
             return Promise.resolve({ options: [] });
         }
 
@@ -111,9 +122,10 @@ class AdminSettings extends React.Component {
 
             .then((response) => response.json())
             .then((json) => {
+                console.log(json);
                 for (let key in json) {
                     //console.log(self.state.curUserCompany) self.state.curUserCompany
-                    if (json[key].company == 'A') {
+                    if (json[key].company == self.state.curUserCompany) {
                         contactEmails.push({ email: json[key].email, label: json[key].email })
                     }
                 }
@@ -171,6 +183,7 @@ const AsyncComponent = Select.Async
                                         //Options={this.state.options}
                                         valueKey="value"
                                         labelKey="label"
+                                        ignoreCase={false}
                                         loadOptions={this.getUsers}
                                         backspaceRemoves={true} />
                                 </FormGroup>
