@@ -147,7 +147,7 @@ class NewIssue extends React.Component {
         }
 //https://team4of5-8d52e.firebaseio.com/issues.json?orderBy=%22project%22&startAt=%22A%22&endAt=%22A%5Cuf8ff%22
         let projectID = []
-        return fetch('https://team4of5-8d52e.firebaseio.com/issues.json?orderBy=%22project%22&startAt=%22'
+        return fetch('https://team4of5-8d52e.firebaseio.com/chatProject.json?orderBy=%22name%22&startAt=%22'
             + input + '%22&endAt=%22' + input + '\uf8ff%22')
 
             .then((response) => response.json())
@@ -155,7 +155,7 @@ class NewIssue extends React.Component {
                 console.log(json);
                 for (let key in json) {
                     //console.log(self.state.curUserCompany) self.state.curUserCompany
-                    projectID.push({ project: json[key].project, label: json[key].project })
+                    projectID.push({ project: json[key].name, label: json[key].name })
 
                 }
                 self.setState({ options: projectID })
