@@ -90,9 +90,9 @@ let setEventBus = (handle) => {
     eventBus = handle
 }
 
-const addCard = (laneID, id, title, description) => {
+const addCard = (laneID, id, title, description, project) => {
     //console.log("adding: " + laneID + id + title + description)
-    ChatProj.addNewCard(laneID, id, title, description);
+    ChatProj.addNewCard(laneID, id, title, description, project);
     eventBus.publish({ type: 'ADD_CARD', laneId: laneID, card: { id: id, title: "", label: title, description: description } });
 }
 
@@ -101,13 +101,17 @@ const renderCard = (laneID, id, title, description) => {
     eventBus.publish({ type: 'ADD_CARD', laneId: laneID, card: { id: id, title: "", label: title, description: description } });
 }
 
-const deleteCard = (laneID, id, title, description) => {
-    ChatProj.removeCard(laneID, id);
+const deleteCard = (laneID, id, title, description, project) => {
+    ChatProj.removeCard(laneID, id, project);
     eventBus.publish({ type: 'REMOVE_CARD', laneId: laneID, cardId: id });
 }
 
-const updateLaneCard = (cardId, sourceLaneId, targetLaneId) => {
-    ChatProj.updateCard(cardId, sourceLaneId, targetLaneId);
+const updateLaneCard = (cardId, sourceLaneId, targetLaneId, project) => {
+    ChatProj.updateCard(cardId, sourceLaneId, targetLaneId, project);
+}
+
+const removeCard = (laneID, id) => {
+    eventBus.publish({ type: 'REMOVE_CARD', laneId: laneID, cardId: id });
 }
 
 
@@ -118,13 +122,7 @@ const handleDragStart = (cardId, laneId) => {
     console.log(`laneId: ${laneId}`)
 }
 
-const handleDragEnd = (cardId, sourceLaneId, targetLaneId) => {
-    console.log('drag ended')
-    console.log(`cardId: ${cardId}`)
-    console.log(`sourceLaneId: ${sourceLaneId}`)
-    console.log(`targetLaneId: ${targetLaneId}`)
-    updateLaneCard(cardId, sourceLaneId, targetLaneId);
-}
+
 
 const shouldReceiveNewData = (nextData) => {
     //console.log('data has changed')
@@ -192,7 +190,7 @@ class GetCardInfo extends React.Component {
     }
 
     getUsers(input) {
-        
+
         let self = this;
         console.log(self);
         if (!input) {
@@ -239,7 +237,7 @@ class GetCardInfo extends React.Component {
                         </div>
                         <div className="pure-control-group">
                             <label htmlFor="label"> Label: </label>
-                             <select id="label" name="label" onChange={this.handleChange}>
+                            <select id="label" name="label" onChange={this.handleChange}>
                                 <option value="login">Login & User Roles</option>
                                 <option value="chat">Chat</option>
                                 <option value="homepage">Homepage</option>
@@ -247,7 +245,7 @@ class GetCardInfo extends React.Component {
                                 <option value="kanban">Kanban Board</option>
                                 <option value="issue">Issue Tracking</option>
                                 <option value="multitenant">Multi-Tenant Management</option>
-                            </select> 
+                            </select>
                         </div>
                         <div className="pure-control-group">
                             <label htmlFor="assign">Assignment:</label>
@@ -272,7 +270,7 @@ class GetCardInfo extends React.Component {
                                 backspaceRemoves={true}
                                 id="assign"
                                 name="assignment"
-                                />
+                            />
 
                         </div>
                         <div className="pure-control-group">
@@ -345,7 +343,8 @@ class ProjectManagement extends React.Component {
             projects: [],
             thisUser: '',
             projectList: [],
-            curUserCompany: ''
+            curUserCompany: '',
+            curProject: ''
         };
 
         this.getData = this.getData.bind(this);
@@ -355,8 +354,18 @@ class ProjectManagement extends React.Component {
         this.handleDeleteModal = this.handleDeleteModal.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.displayedCards = this.displayedCards.bind(this);
+        this.handleDragEnd = this.handleDragEnd.bind(this);
+        this.removeAllCards = this.removeAllCards.bind(this);
         //
 
+    }
+
+    handleDragEnd = (cardId, sourceLaneId, targetLaneId) => {
+        console.log('drag ended')
+        console.log(`cardId: ${cardId}`)
+        console.log(`sourceLaneId: ${sourceLaneId}`)
+        console.log(`targetLaneId: ${targetLaneId}`)
+        updateLaneCard(cardId, sourceLaneId, targetLaneId, this.state.curProject);
     }
     //After the connect, what the state will do--gotdata
     componentDidMount() {
@@ -442,13 +451,14 @@ class ProjectManagement extends React.Component {
 
             if (user_in_proj == true) {
                 //listProjArray.push({ name: projname, id: k });
+                projdata[k].key = k;
                 listProjArray.push(projdata[k]);
             }
 
         }
         this.setState({ projectList: listProjArray });
-        console.log(this.state.projectList[0]);
-
+        console.log("ProjectData");
+        console.log(keys);
         this.displayedCards(this.state.projectList[0])
         /*
         projArray.push(projdata[keys[0]].data.lanes);
@@ -467,6 +477,8 @@ class ProjectManagement extends React.Component {
     }
 
     displayedCards(project) {
+        this.removeAllCards()
+        console.log(project);
         var projArray = []
         projArray.push(project.data.lanes);
         console.log(projArray);
@@ -474,15 +486,25 @@ class ProjectManagement extends React.Component {
         console.log(this.state.lanes);
         for (let i = 0; i < this.state.lanes.length; i++) {
             for (let j = 0; j < this.state.lanes[i].cards.length; j++) {
+                //renderCard(this.state.lanes[i].id, this.state.lanes[i].cards[j].id, this.state.lanes[i].cards[j].title, this.state.lanes[i].cards[j].description);
                 renderCard(this.state.lanes[i].id, this.state.lanes[i].cards[j].id, this.state.lanes[i].cards[j].title, this.state.lanes[i].cards[j].description);
+
             }
         }
         this.setState({ projects: projArray });
+        this.setState({ curProject: project.key });
         console.log(this.state.projects);
         mydata.lanes = this.state.lanes;
         console.log(this.state.projectList);
         console.log("HERE");
+    }
 
+    removeAllCards() {
+        for (let i = 0; i < this.state.lanes.length; i++) {
+            for (let j = 0; j < this.state.lanes[i].cards.length; j++) {
+                removeCard(this.state.lanes[i].id, this.state.lanes[i].cards[j].id);
+            }
+        }
     }
 
 
@@ -513,14 +535,14 @@ class ProjectManagement extends React.Component {
     handleSaveModal(isNew, laneId, id, title, description) {
         if (isNew) {
             var newId = Tools.guid();
-            addCard(laneId, newId, title, description);
+            addCard(laneId, newId, title, description, this.state.curProject);
         }
         else {
             let myFirstPromise = new Promise((resolve, reject) => {
                 // We call resolve(...) when what we were doing made async successful, and reject(...) when it failed.
                 // In this example, we use setTimeout(...) to simulate async code. 
                 // In reality, you will probably be using something like XHR or an HTML5 API.
-                deleteCard(laneId, id, title, description);
+                deleteCard(laneId, id, title, description, this.state.curProject);
                 setTimeout(function () {
                     resolve(); // Yay! Everything went well!
                 }, 250);
@@ -530,7 +552,7 @@ class ProjectManagement extends React.Component {
                 // successMessage is whatever we passed in the resolve(...) function above.
                 // It doesn't have to be a string, but if it is only a succeed message, it probably will be.
                 //console.log("Yay! ");
-                addCard(laneId, id, title, description);
+                addCard(laneId, id, title, description, this.state.curProject);
             });
 
             //deleteCard(laneId, id, title, description);
@@ -542,7 +564,7 @@ class ProjectManagement extends React.Component {
 
 
     handleDeleteModal(laneId, id, title, description) {
-        deleteCard(laneId, id, title, description)
+        deleteCard(laneId, id, title, description, this.state.curProject)
         this.setState({ showModal: false });
     }
 
@@ -587,7 +609,7 @@ class ProjectManagement extends React.Component {
                     <button onClick={() => { this.handleOpenModal(null, true, null) }} style={{ margin: 5 }}>Add New Card</button>
                     <div>
                         <ul>
-                            {this.state.projectList.map(item => <li onClick={() => { this.displayedCards(item); console.log(item); console.log("MY ITEMS") }}>
+                            {this.state.projectList.map(item => <li onClick={() => {this.displayedCards(item); console.log(item); console.log("MY ITEMS") }}>
                                 {item.name}
                             </li>)}
                         </ul>
@@ -598,7 +620,7 @@ class ProjectManagement extends React.Component {
                     draggable={true}
                     onDataChange={shouldReceiveNewData}
                     handleDragStart={handleDragStart}
-                    handleDragEnd={handleDragEnd}
+                    handleDragEnd={this.handleDragEnd}
                     tagStyle={{ fontSize: '80%' }}
                     onCardClick={(card, laneId) => this.handleOpenModal(card, false, laneId)}
                     eventBusHandle={setEventBus}

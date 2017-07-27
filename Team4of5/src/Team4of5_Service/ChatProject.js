@@ -27,7 +27,7 @@ export const getProjects = function () {
 
 
 
-export const addNewCard = function (laneID, id, title, description) {
+export const addNewCard = function (laneID, id, title, description, project) {
 
 
     var card_lane;
@@ -55,7 +55,7 @@ export const addNewCard = function (laneID, id, title, description) {
     }
     getProjectData().then(function (data) {
 
-        var Project = '0be3f584-33ce-11e2-7b8c-72fe4d59dc4f';
+        //var Project = '0be3f584-33ce-11e2-7b8c-72fe4d59dc4f';
 
         const projdata = data.val();
         var projArray = [];
@@ -68,7 +68,7 @@ export const addNewCard = function (laneID, id, title, description) {
         cards.push({ id: id, title: title, description: description });
         //chatProject.push(lanes);
 
-        var path = '0be3f584-33ce-11e2-7b8c-72fe4d59dc4f/data/lanes/' + card_lane;
+        var path = project + '/data/lanes/' + card_lane;
 
         var thisRef = chatProject.child(path);
 
@@ -88,7 +88,7 @@ export const addNewCard = function (laneID, id, title, description) {
 }
 
 
-export const removeCard = function (laneID, id) {
+export const removeCard = function (laneID, id, project) {
 
     var card_lane;
     switch (laneID) {
@@ -140,7 +140,7 @@ export const removeCard = function (laneID, id) {
 
         //chatProject.push(lanes);
 
-        var path = '0be3f584-33ce-11e2-7b8c-72fe4d59dc4f/data/lanes/' + card_lane;
+        var path = project + '/data/lanes/' + card_lane;
 
         var thisRef = chatProject.child(path);
         //console.log("Checking");
@@ -164,8 +164,8 @@ export const removeCard = function (laneID, id) {
 
 
 
-export const updateCard = function (id, laneID, targetLaneId) {
-
+export const updateCard = function (id, laneID, targetLaneId, project) {
+    
     var card_lane;
     switch (laneID) {
         case "Backlog":
@@ -218,14 +218,14 @@ export const updateCard = function (id, laneID, targetLaneId) {
             newDesc = cards[index].description;
             newTitle = cards[index].title;
             newId = cards[index].id;
-            addNewCard(targetLaneId, newId, newTitle, newDesc);
+            addNewCard(targetLaneId, newId, newTitle, newDesc, project);
 
             cards.splice(index, 1);
         }
 
         //chatProject.push(lanes);
 
-        var path = '0be3f584-33ce-11e2-7b8c-72fe4d59dc4f/data/lanes/' + card_lane;
+        var path = project + '/data/lanes/' + card_lane;
 
         var thisRef = chatProject.child(path);
         //console.log("Checking");
