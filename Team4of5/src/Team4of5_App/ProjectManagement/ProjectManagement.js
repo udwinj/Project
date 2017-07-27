@@ -12,6 +12,20 @@ import * as Tools from '../Tools.js';
 
 import { Input } from 'react-bootstrap';
 
+import fetch from 'isomorphic-fetch';
+//reference: https://github.com/JedWatson/react-select
+import Select from 'react-select';
+
+import {
+    Form,
+    FormGroup,
+    FormControl,
+    ControlLabel,
+    HelpBlock,
+    Button,
+    Col
+} from 'react-bootstrap';
+
 
 //Connect Firebase
 import * as firebase from 'firebase';
@@ -129,12 +143,16 @@ class GetCardInfo extends React.Component {
             description: this.props.description,
             label: this.props.assignment,
             assignment: "Unassigned",
-            stage: this.props.lane
+            stage: this.props.lane,
+            value: [],
+            curUserCompany: this.props.curUserCompany
         };
         //this.props.assignment
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleOwnerChange = this.handleOwnerChange.bind(this);
+        this.getUsers = this.getUsers.bind(this);
     }
 
     handleChange(event) {
@@ -165,11 +183,53 @@ class GetCardInfo extends React.Component {
         this.props.handleDeleteModal(this.props.lane, this.props.cardID, this.state.assignment, this.state.description);
     }
 
+    handleOwnerChange(value) {
+        console.log("change happening")
+        console.log(value)
+        this.setState({
+            assignment: value.owner,
+        });
+    }
+
+    getUsers(input) {
+        
+        let self = this;
+        console.log(self);
+        if (!input) {
+            console.log('here')
+            return Promise.resolve({ options: [] });
+        }
+
+        let contactEmails = []
+        return fetch('https://team4of5-8d52e.firebaseio.com/users.json?&orderBy=%22email%22&startAt=%22'
+            + input + '%22&endAt=%22' + input + '\uf8ff%22')
+
+            .then((response) => response.json())
+            .then((json) => {
+                for (let key in json) {
+                    //console.log(self.state.curUserCompany) self.state.curUserCompany
+                    if (json[key].company == self.state.curUserCompany) {
+                        contactEmails.push({ owner: json[key].display_name, label: json[key].display_name })
+                    }
+                }
+                self.setState({ options: contactEmails })
+                return {
+                    options: contactEmails,
+                    complete: true
+                };
+            });
+    }
+
+
+
     render() {
+        const AsyncComponent = Select.Async;
+
         return (
             <div className="warning">
 
                 <form className="pure-form pure-form-aligned" onSubmit={this.handleSubmit}>
+
                     <fieldset>
                         <div className="pure-control-group">
                             <label htmlFor="descrip">Description:</label>
@@ -179,7 +239,7 @@ class GetCardInfo extends React.Component {
                         </div>
                         <div className="pure-control-group">
                             <label htmlFor="label"> Label: </label>
-                            <select id="label" name="label" onChange={this.handleChange}>
+                             <select id="label" name="label" onChange={this.handleChange}>
                                 <option value="login">Login & User Roles</option>
                                 <option value="chat">Chat</option>
                                 <option value="homepage">Homepage</option>
@@ -187,18 +247,32 @@ class GetCardInfo extends React.Component {
                                 <option value="kanban">Kanban Board</option>
                                 <option value="issue">Issue Tracking</option>
                                 <option value="multitenant">Multi-Tenant Management</option>
-                            </select>
+                            </select> 
                         </div>
                         <div className="pure-control-group">
                             <label htmlFor="assign">Assignment:</label>
-                            <select id="assign" name="assignment" onChange={this.handleChange} >
+                            {/* <select id="assign" name="assignment" onChange={this.handleChange} >
                                 <option value="Unassigned">Unassigned</option>
                                 <option value="Kevin">Kevin</option>
                                 <option value="Alisa">Alisa</option>
                                 <option value="Kyle">Kyle</option>
                                 <option value="Yin">Yin</option>
                                 <option value="Joel">Joel</option>
-                            </select>
+                            </select> */}
+
+                            <AsyncComponent
+                                multi={false}
+                                value={this.state.assignment}
+                                onChange={this.handleOwnerChange}
+                                //onValueClick={this.gotoUser}
+                                //Options={this.state.options}
+                                valueKey="value"
+                                labelKey="label"
+                                loadOptions={this.getUsers}
+                                backspaceRemoves={true}
+                                id="assign"
+                                name="assignment"
+                                />
 
                         </div>
                         <div className="pure-control-group">
@@ -270,7 +344,8 @@ class ProjectManagement extends React.Component {
             projArray: [],
             projects: [],
             thisUser: '',
-            projectList: []
+            projectList: [],
+            curUserCompany: ''
         };
 
         this.getData = this.getData.bind(this);
@@ -300,6 +375,14 @@ class ProjectManagement extends React.Component {
                 console.log(err);
             }
         );
+
+        Users.getCurUserCompany().then(function (company) {
+            self.setState({ curUserCompany: company.val() })
+            console.log("MY COMPANY")
+            console.log(self.state.curUserCompany)
+        }).catch(function (err) {
+            console.log("Error:" + err)
+        })
 
 
 
@@ -536,6 +619,7 @@ class ProjectManagement extends React.Component {
                         isNew={this.state.isNew}
                         handleSaveModal={this.handleSaveModal}
                         handleDeleteModal={this.handleDeleteModal}
+                        curUserCompany={this.state.curUserCompany}
                     />
                     <button className="pure-button pure-button-primary" onClick={this.handleCloseModal}>Cancel</button>
                 </ReactModal>
