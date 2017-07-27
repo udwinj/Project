@@ -388,34 +388,34 @@ class ProjectManagement extends React.Component {
 
     }
 
-    getUserProjects(data) {
-        const projdata = data.val();
-        var projArray = []
-        const keys = Object.keys(projdata);
-        projArray.push({ name: 'Project Name', id: '0' })
-        for (var i = 0; i < keys.length; i++) {
-            var members = []
-            var projname = ''
-            var user_in_proj = false
-            const k = keys[i];
+    // getUserProjects(data) {
+    //     const projdata = data.val();
+    //     var projArray = []
+    //     const keys = Object.keys(projdata);
+    //     projArray.push({ name: 'Project Name', id: '0' })
+    //     for (var i = 0; i < keys.length; i++) {
+    //         var members = []
+    //         var projname = ''
+    //         var user_in_proj = false
+    //         const k = keys[i];
 
-            projname = projdata[k].name
+    //         projname = projdata[k].name
 
-            for (var x = 0; x < projdata[k].members.length; x++) {
-                if (projdata[k].members[x] == this.state.thisUser) {
-                    user_in_proj = true
-                }
-            }
+    //         for (var x = 0; x < projdata[k].members.length; x++) {
+    //             if (projdata[k].members[x] == this.state.thisUser) {
+    //                 user_in_proj = true
+    //             }
+    //         }
 
-            if (user_in_proj == true) {
-                projArray.push({ name: projname, id: k });
-            }
+    //         if (user_in_proj == true) {
+    //             projArray.push({ name: projname, id: k });
+    //         }
 
-        }
-        this.setState({ projdata: projArray });
+    //     }
+    //     this.setState({ projdata: projArray });
 
 
-    }
+    // }
 
 
     getData(data) {
@@ -447,7 +447,7 @@ class ProjectManagement extends React.Component {
 
         }
         this.setState({ projectList: listProjArray });
-        console.log(this.state.projectList);
+        console.log(this.state.projectList[0]);
 
         this.displayedCards(this.state.projectList[0])
         /*

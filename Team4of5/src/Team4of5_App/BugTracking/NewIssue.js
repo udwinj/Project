@@ -110,9 +110,8 @@ class NewIssue extends React.Component {
 
     }
     getUsers(input) {
-
+        
         let self = this;
-
         if (!input) {
             console.log('here')
             return Promise.resolve({ options: [] });
@@ -124,9 +123,10 @@ class NewIssue extends React.Component {
 
             .then((response) => response.json())
             .then((json) => {
+                console.log(json);
                 for (let key in json) {
                     //console.log(self.state.curUserCompany) self.state.curUserCompany
-                    if (json[key].company == 'A') {
+                    if (json[key].company == self.state.curUserCompany) {
                         contactEmails.push({ owner: json[key].email, label: json[key].email })
                     }
                 }
@@ -137,21 +137,25 @@ class NewIssue extends React.Component {
                 };
             });
     }
+
     getProjectID(input) {
         let self = this;
 
         if (!input) {
             console.log('Project')
+            console.log('no input')
             return Promise.resolve({ options: [] });
         }
+        console.log(input);
 
         let projectID = []        
 
-        return fetch('https://team4of5-8d52e.firebaseio.com/issues.json?orderBy=%22project%22&startAt=%22'
+        return fetch('https://team4of5-8d52e.firebaseio.com/chatProject.json?orderBy=%22project%22&startAt=%22'
             + input + '%22&endAt=%22' + input + '\uf8ff%22')
 
             .then((response) => response.json())
             .then((json) => {
+                console.log(json);
                 for (let key in json) {
                     //console.log(self.state.curUserCompany) self.state.curUserCompany
                     projectID.push({ project: json[key].project, label: json[key].project })
@@ -214,6 +218,7 @@ class NewIssue extends React.Component {
                                     valueKey="value"
                                     labelKey="label"
                                     loadOptions={this.getUsers}
+                                    ignoreCase={false}
                                     backspaceRemoves={true} />
                             </FormGroup>
                             <FormGroup controlId="formControlsText">
@@ -243,6 +248,7 @@ class NewIssue extends React.Component {
                                     valueKey="value"
                                     labelKey="label"
                                     loadOptions={this.getProjectID}
+                                    ignoreCase={false}
                                     backspaceRemoves={true} />
                             </FormGroup>
 
