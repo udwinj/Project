@@ -26,6 +26,8 @@ import {
     Col
 } from 'react-bootstrap';
 
+import './pm_style.css'
+
 
 //Connect Firebase
 import * as firebase from 'firebase';
@@ -207,7 +209,7 @@ class GetCardInfo extends React.Component {
                 for (let key in json) {
                     //console.log(self.state.curUserCompany) self.state.curUserCompany
                     if (json[key].company == self.state.curUserCompany) {
-                        contactEmails.push({ owner: json[key].display_name, label: json[key].display_name })
+                        contactEmails.push({ owner: json[key].email, label: json[key].email })
                     }
                 }
                 self.setState({ options: contactEmails })
@@ -270,6 +272,7 @@ class GetCardInfo extends React.Component {
                                 backspaceRemoves={true}
                                 id="assign"
                                 name="assignment"
+                                ignoreCase={false}
                             />
 
                         </div>
@@ -285,8 +288,9 @@ class GetCardInfo extends React.Component {
                             </select>
                         </div>
                         <div className="pure-controls">
-                            <input className="pure-button pure-button-primary" type="submit" value="Submit" />
-                            <button className="pure-button pure-button-primary" onClick={this.handleDelete}>Delete</button>
+                            <input className="pure-button pure-button-primary submit pmbutton" type="submit" value="Submit" />
+                            <button className="pure-button pure-button-primary delete pmbutton" onClick={this.handleDelete}>Delete</button>
+                            <button className="pure-button pure-button-primary cancel pmbutton" onClick={this.props.handleCloseModal}>Cancel</button>
                         </div>
 
                     </fieldset>
@@ -565,10 +569,10 @@ class ProjectManagement extends React.Component {
 
             <div>
                 <div style={div_style}>
-                    <button onClick={() => { this.handleOpenModal(null, true, null) }} style={{ margin: 5 }}>Add New Card</button>
+                    <button className="pure-button pure-button-primary newCard pmbutton" onClick={() => { this.handleOpenModal(null, true, null) }} style={{ margin: 5 }}>Add New Card</button>
                     <div>
-                        <ul>
-                            {this.state.projectList.map(item => <li onClick={() => { this.displayedCards(item); console.log(item); console.log("MY ITEMS") }}>
+                        <ul className="projectList">
+                            {this.state.projectList.map(item => <li className="projects" onClick={() => { this.displayedCards(item); console.log(item); console.log("MY ITEMS") }}>
                                 {item.name}
                             </li>)}
                         </ul>
@@ -601,8 +605,9 @@ class ProjectManagement extends React.Component {
                         handleSaveModal={this.handleSaveModal}
                         handleDeleteModal={this.handleDeleteModal}
                         curUserCompany={this.state.curUserCompany}
+                        handleCloseModal={this.handleCloseModal}
                     />
-                    <button className="pure-button pure-button-primary" onClick={this.handleCloseModal}>Cancel</button>
+                    
                 </ReactModal>
             </div>);
     }
