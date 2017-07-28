@@ -5,9 +5,6 @@ import * as Users from '../../Team4of5_Service/Users.js';
 import CreateProject from '../Chat/CreateProject';
 import ChartistGraph from 'react-chartist';
 import './chartist.css';
-import './chart.css';
-
-import { Button, Tab } from 'react-bootstrap';
 
 import {
     BrowserRouter as Router,
@@ -81,10 +78,21 @@ class ProjectSummary extends React.Component {
         console.log(this.state.projectList);
         //this.displayedCards(this.state.projectList[0])
 
+
     }
 
-    render() {
 
+    render() {
+        // let listproj = this.state.projdata.map(p => {
+        //     return (
+        //         <tr className="grey2" key={p.id}>
+        //             {Object.keys(p).filter(k => k !== 'id').map(k => {
+        //                 return (<td className="grey1" key={p.id + '' + k}><div suppressContentEditableWarning="true" contentEditable="false"
+        //                     value={k} >{p[k]}</div></td>);
+        //             })}
+        //         </tr>
+        //     );
+        // });
         function data(item) {
             var labels = ['Backlog', 'Next', 'In Progress', 'Staged', 'QA', 'Live'];
             var series = [];
@@ -102,20 +110,24 @@ class ProjectSummary extends React.Component {
             data.series = series;
             return data;
         };
-        var type = 'Pie';
-        var style={
-            width:500,
-            height:400,        
-        }
-
+        var type = 'Pie'
         return (
+            // <fieldset className="step-4">
+            //     <h2> My Projects </h2>
+            //     <div className="heading">
+            //     </div>
+            //     <div className=" padd-lr">
+            //         <table width="500" cellSpacing="50" id="mytable">
+            //             <tbody>{listproj}</tbody>
+            //         </table>
 
-             <div id="projectSummaryContainer">
-                    <div id="buttonRoll">
-                    {this.state.projectList.map(item =>
-                    <button className="projects" onClick={() =>
-                        { /*this.displayedCards(item);*/ console.log(item); console.log("MY ITEMS") }}>
+            //     </div>
 
+            // </fieldset>
+
+            <div>
+                <ul className="projectList">
+                    {this.state.projectList.map(item => <li className="projects" onClick={() => { /*this.displayedCards(item);*/ console.log(item); console.log("MY ITEMS") }}>
                         <Link to={{
                             pathname: '/menu/ProjectManagement',
                             state: { startingProject: item }
@@ -124,34 +136,15 @@ class ProjectSummary extends React.Component {
                             {console.log("info")}
                             {console.log(item)}
                         </Link>
-
-                    </button>
-            )}
-                </div>
-             <div className='AlignerProject'>
-            {this.state.projectList.map(item=>
-                <div className="panel panel-primary">
-                    <div className="panel-heading clearfix">
-                    <h1 className='panel-title'>
-                        {item.name}
-                    </h1>
-                </div>
-                <div className='panel-body'>
-                <ChartistGraph
-                    data={data(item)}
-                    type={'Pie'}
-                    style={style}
-                />
-                </div>
-                </div>
-            )}
-        </div>
-                <div className="createProject">
-                        <CreateProject />
-                </div>
+                        <ChartistGraph
+                            data={data(item)}
+                            type={'Pie'}
+                        />
+                    </li>)}
+                </ul>
+                <ChartistGraph data={data} type={type} />
+                <CreateProject />
             </div>
-
-
 
 
         );
