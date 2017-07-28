@@ -76,6 +76,29 @@ export const updateToAdmin = function (email, company) {
 
 }
 
+export const updateCompany = function (email, user_company) {
+    return usersRef.once("value", function(snap) {
+      const keys = Object.keys(snap.val());
+      for (let i = 0; i < keys.length; i++) {
+        const k = keys[i];
+        const uid = k
+        var thisUserRef =  usersRef.child(k)
+        thisUserRef.once("value", function(snap2){
+        if (snap2.val().email == email){
+
+            usersRef.child(k).update({
+                company: user_company
+            });
+        }
+
+
+        });
+
+      }
+    });
+
+}
+
 
 // this is reset password if email in manually given
 export const resetPwd = function (user_email) {
@@ -155,6 +178,7 @@ export const getUserData = function () {
     return firebase.database().ref().child('users/' + user.uid).once('value')
 }
 
+
 export const getCurrentUser = function () {
     return firebase.auth().currentUser;
 }
@@ -164,5 +188,13 @@ export const getAllUserData = function () {
     return issueRef.orderByKey().once("value");
 
 }
+
+
+export const getAllUsersData = function () {
+
+    return usersRef.orderByKey().once("value");
+
+}
+
 
 
