@@ -7,15 +7,7 @@ import ChartistGraph from 'react-chartist';
 import './chartist.css';
 import './chart.css';
 
-import {
-    Form,
-    FormGroup,
-    FormControl,
-    ControlLabel,
-    HelpBlock,
-    Button,
-    Modal
-} from 'react-bootstrap';
+import { Button, Tab } from 'react-bootstrap';
 
 import {
     BrowserRouter as Router,
@@ -112,14 +104,14 @@ class ProjectSummary extends React.Component {
         };
         var type = 'Pie';
         var style={
-            width:600,
-            height:250
+            width:500,
+            height:400,        
         }
 
         return (
 
              <div id="projectSummaryContainer">
-                    <div>
+                    <div id="buttonRoll">
                     {this.state.projectList.map(item =>
                     <button className="projects" onClick={() =>
                         { /*this.displayedCards(item);*/ console.log(item); console.log("MY ITEMS") }}>
@@ -139,10 +131,11 @@ class ProjectSummary extends React.Component {
              <div className='AlignerProject'>
             {this.state.projectList.map(item=>
                 <div className="panel panel-primary">
-                    <div className='panel-heading'>
+                    <div className="panel-heading clearfix">
+                    <h1 className='panel-title'>
                         {item.name}
-                    </div>
-
+                    </h1>
+                </div>
                 <div className='panel-body'>
                 <ChartistGraph
                     data={data(item)}
@@ -153,9 +146,9 @@ class ProjectSummary extends React.Component {
                 </div>
             )}
         </div>
-
-                {/* <ChartistGraph data={data} type={type} style={style}/> */}
-                <CreateProject />
+                <div className="createProject">
+                        <CreateProject />
+                </div>
             </div>
 
 
