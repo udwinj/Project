@@ -397,35 +397,6 @@ class ProjectManagement extends React.Component {
 
     }
 
-    // getUserProjects(data) {
-    //     const projdata = data.val();
-    //     var projArray = []
-    //     const keys = Object.keys(projdata);
-    //     projArray.push({ name: 'Project Name', id: '0' })
-    //     for (var i = 0; i < keys.length; i++) {
-    //         var members = []
-    //         var projname = ''
-    //         var user_in_proj = false
-    //         const k = keys[i];
-
-    //         projname = projdata[k].name
-
-    //         for (var x = 0; x < projdata[k].members.length; x++) {
-    //             if (projdata[k].members[x] == this.state.thisUser) {
-    //                 user_in_proj = true
-    //             }
-    //         }
-
-    //         if (user_in_proj == true) {
-    //             projArray.push({ name: projname, id: k });
-    //         }
-
-    //     }
-    //     this.setState({ projdata: projArray });
-
-
-    // }
-
 
     getData(data) {
         const projdata = data.val();
@@ -477,32 +448,42 @@ class ProjectManagement extends React.Component {
     }
 
     displayedCards(project) {
-        this.removeAllCards()
-        console.log(project);
-        var projArray = []
-        projArray.push(project.data.lanes);
-        console.log(projArray);
-        this.state.lanes = projArray[0];
-        console.log(this.state.lanes);
-        for (let i = 0; i < this.state.lanes.length; i++) {
-            for (let j = 0; j < this.state.lanes[i].cards.length; j++) {
-                //renderCard(this.state.lanes[i].id, this.state.lanes[i].cards[j].id, this.state.lanes[i].cards[j].title, this.state.lanes[i].cards[j].description);
-                renderCard(this.state.lanes[i].id, this.state.lanes[i].cards[j].id, this.state.lanes[i].cards[j].title, this.state.lanes[i].cards[j].description);
+        this.removeAllCards();
+        var projArray = [];
+        //if (project.data != undefined) {
+            projArray.push(project.data.lanes);
+            this.state.lanes = projArray[0];
+            for (let i = 0; i < this.state.lanes.length; i++) {
+                //if (this.state.lanes[i].cards != undefined) {
+                    for (let j = 0; j < this.state.lanes[i].cards.length; j++) {
+                        //renderCard(this.state.lanes[i].id, this.state.lanes[i].cards[j].id, this.state.lanes[i].cards[j].title, this.state.lanes[i].cards[j].description);
+                        renderCard(this.state.lanes[i].id, this.state.lanes[i].cards[j].id, this.state.lanes[i].cards[j].title, this.state.lanes[i].cards[j].description);
 
+                    }
+                //}
+                //else{
+                    //this.state.lanes[i].cards = [];
+                //}
             }
-        }
-        this.setState({ projects: projArray });
-        this.setState({ curProject: project.key });
+
+
+        //}
         console.log(this.state.projects);
         mydata.lanes = this.state.lanes;
-        console.log(this.state.projectList);
+        this.setState({ projects: projArray });
+        this.setState({ curProject: project.key });
+        console.log(mydata.lanes);
         console.log("HERE");
     }
 
     removeAllCards() {
-        for (let i = 0; i < this.state.lanes.length; i++) {
-            for (let j = 0; j < this.state.lanes[i].cards.length; j++) {
-                removeCard(this.state.lanes[i].id, this.state.lanes[i].cards[j].id);
+        if (this.state.lanes != undefined) {
+            for (let i = 0; i < this.state.lanes.length; i++) {
+                if (this.state.lanes[i].cards != undefined) {
+                    for (let j = 0; j < this.state.lanes[i].cards.length; j++) {
+                        removeCard(this.state.lanes[i].id, this.state.lanes[i].cards[j].id);
+                    }
+                }
             }
         }
     }
@@ -580,28 +561,6 @@ class ProjectManagement extends React.Component {
     //<button onClick={completeMilkEvent} style={{ margin: 5 }}>Complete Buy Milk</button>
     render() {
 
-        // let listproj = this.state.projectList.map(p => {
-        //     return (
-        //         <tr className="grey2" key={p.id}>
-        //             {Object.keys(p).filter(k => k !== 'id').map(k => {
-        //                 return (<td className="grey1" key={p.id + '' + k}>
-        //                     <div suppressContentEditableWarning="true" contentEditable="false" value={k} onClick={() => this.displayedCards(1)}>
-        //                         {p[k]}
-        //                     </div>
-        //                 </td>);
-        //             })}
-        //         </tr>
-        //     );
-        // });
-        // const renderOption = item => <option value={item[0].name}>{item[0].name}</option>
-        // const projectOptions = Object.keys(this.state.projects).map(renderOption)
-
-        //<table width="500" cellSpacing="50" id="mytable">
-        //               <tbody>{listproj}</tbody>
-        //            </table>
-
-        //this.state && this.state.projectList && 
-
         return (
 
             <div>
@@ -609,7 +568,7 @@ class ProjectManagement extends React.Component {
                     <button onClick={() => { this.handleOpenModal(null, true, null) }} style={{ margin: 5 }}>Add New Card</button>
                     <div>
                         <ul>
-                            {this.state.projectList.map(item => <li onClick={() => {this.displayedCards(item); console.log(item); console.log("MY ITEMS") }}>
+                            {this.state.projectList.map(item => <li onClick={() => { this.displayedCards(item); console.log(item); console.log("MY ITEMS") }}>
                                 {item.name}
                             </li>)}
                         </ul>

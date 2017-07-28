@@ -64,7 +64,9 @@ export const addNewCard = function (laneID, id, title, description, project) {
         const keys = Object.keys(projdata);
         projArray.push(projdata[keys[0]].data.lanes);
         lanes = projArray[0];
-        cards = lanes[card_lane].cards;
+        if (lanes[card_lane].cards != undefined) {
+            cards = lanes[card_lane].cards;
+        }
         cards.push({ id: id, title: title, description: description });
         //chatProject.push(lanes);
 
@@ -165,7 +167,7 @@ export const removeCard = function (laneID, id, project) {
 
 
 export const updateCard = function (id, laneID, targetLaneId, project) {
-    
+
     var card_lane;
     switch (laneID) {
         case "Backlog":
