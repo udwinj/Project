@@ -26,7 +26,7 @@ import {
     Col
 } from 'react-bootstrap';
 
-import './pm_style.css'
+import './pm_style.css';
 
 
 //Connect Firebase
@@ -209,7 +209,7 @@ class GetCardInfo extends React.Component {
                 for (let key in json) {
                     //console.log(self.state.curUserCompany) self.state.curUserCompany
                     if (json[key].company == self.state.curUserCompany) {
-                        contactEmails.push({ owner: json[key].email, label: json[key].email })
+                        contactEmails.push({ owner: json[key].display_name, label: json[key].email })
                     }
                 }
                 self.setState({ options: contactEmails })
@@ -349,7 +349,7 @@ class ProjectManagement extends React.Component {
             projectList: [],
             curUserCompany: '',
             curProject: '',
-            startingProject: {}
+            startingProject: undefined
 
         };
 
@@ -376,7 +376,9 @@ class ProjectManagement extends React.Component {
     //After the connect, what the state will do--gotdata
     componentDidMount() {
         let self = this;
-        this.state.startingProject = this.props.location.state.startingProject;
+        if (this.props.location.state != undefined) {
+            this.state.startingProject = this.props.location.state.startingProject;
+        }
         this.state.thisUser = Users.getCurrentUser().uid;
 
         ChatProj.getProjectData().then(function (data) {
@@ -437,7 +439,13 @@ class ProjectManagement extends React.Component {
         this.setState({ projectList: listProjArray });
         console.log("ProjectData");
         console.log(keys);
-        this.displayedCards(this.state.startingProject)
+        if (this.state.startingProject != undefined) {
+            this.displayedCards(this.state.startingProject);
+        }
+        else {
+            this.displayedCards(this.state.projectList[0])
+        }
+
         /*
         projArray.push(projdata[keys[0]].data.lanes);
 
@@ -457,24 +465,24 @@ class ProjectManagement extends React.Component {
     displayedCards(project) {
         this.removeAllCards();
         var projArray = [];
-        //if (project.data != undefined) {
+        if (project.data != undefined) {
             projArray.push(project.data.lanes);
             this.state.lanes = projArray[0];
             for (let i = 0; i < this.state.lanes.length; i++) {
-                //if (this.state.lanes[i].cards != undefined) {
+                if (this.state.lanes[i].cards != undefined) {
                     for (let j = 0; j < this.state.lanes[i].cards.length; j++) {
                         //renderCard(this.state.lanes[i].id, this.state.lanes[i].cards[j].id, this.state.lanes[i].cards[j].title, this.state.lanes[i].cards[j].description);
                         renderCard(this.state.lanes[i].id, this.state.lanes[i].cards[j].id, this.state.lanes[i].cards[j].title, this.state.lanes[i].cards[j].description);
 
                     }
-                //}
-                //else{
-                    //this.state.lanes[i].cards = [];
-                //}
+                }
+                else {
+                    this.state.lanes[i].cards = [];
+                }
             }
 
 
-        //}
+        }
         console.log(this.state.projects);
         mydata.lanes = this.state.lanes;
         this.setState({ projects: projArray });
@@ -610,7 +618,7 @@ class ProjectManagement extends React.Component {
                         curUserCompany={this.state.curUserCompany}
                         handleCloseModal={this.handleCloseModal}
                     />
-                    
+
                 </ReactModal>
             </div>);
     }

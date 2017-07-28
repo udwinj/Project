@@ -2,6 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as ChatProj from '../../Team4of5_Service/ChatProject.js';
 import * as Users from '../../Team4of5_Service/Users.js';
+import CreateProject from '../Chat/CreateProject';
+import ChartistGraph from 'react-chartist';
+import './chartist.css';
 
 import {
     BrowserRouter as Router,
@@ -24,7 +27,7 @@ class ProjectSummary extends React.Component {
         this.getData = this.getData.bind(this);
     }
     componentDidMount() {
-        
+
         let self = this;
         this.state.thisUser = Users.getCurrentUser().uid;
 
@@ -71,8 +74,8 @@ class ProjectSummary extends React.Component {
         }
         this.setState({ projdata: projArray });
         this.setState({ projectList: listProjArray });
-        console.log("ProjectData");
-        console.log(keys);
+        console.log("outside");
+        console.log(this.state.projectList);
         //this.displayedCards(this.state.projectList[0])
 
 
@@ -90,6 +93,24 @@ class ProjectSummary extends React.Component {
         //         </tr>
         //     );
         // });
+        function data(item) {
+            var labels = ['Backlog', 'Next', 'In Progress', 'Staged', 'QA', 'Live'];
+            var series = [];
+            for (var i = 0; i < item.data.lanes.length; i++) {
+                if(item.data.lanes[i].cards != undefined) {
+                    series.push(item.data.lanes[i].cards.length);
+                }
+                else {
+                    series.push(0);
+                }
+            }
+            //var series =  [item.data.lanes[0].cards.length, item.data.lanes[1].cards.length, item.data.lanes[2].cards.length, item.data.lanes[3].cards.length, item.data.lanes[4].cards.length, item.data.lanes[5].cards.length];
+            var data = {};
+            data.labels = labels;
+            data.series = series;
+            return data;
+        };
+        var type = 'Pie'
         return (
             // <fieldset className="step-4">
             //     <h2> My Projects </h2>
@@ -111,13 +132,18 @@ class ProjectSummary extends React.Component {
                             pathname: '/menu/ProjectManagement',
                             state: { startingProject: item }
                         }}>
-                        {item.name}
-                        {console.log("info")}
-                        {console.log(item)}
+                            {item.name}
+                            {console.log("info")}
+                            {console.log(item)}
                         </Link>
-
+                        <ChartistGraph
+                            data={data(item)}
+                            type={'Pie'}
+                        />
                     </li>)}
                 </ul>
+                <ChartistGraph data={data} type={type} />
+                <CreateProject />
             </div>
 
 
