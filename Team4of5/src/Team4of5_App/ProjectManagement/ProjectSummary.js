@@ -5,6 +5,7 @@ import * as Users from '../../Team4of5_Service/Users.js';
 import CreateProject from '../Chat/CreateProject';
 import ChartistGraph from 'react-chartist';
 import './chartist.css';
+import './chart.css';
 
 import {
     BrowserRouter as Router,
@@ -83,16 +84,7 @@ class ProjectSummary extends React.Component {
 
 
     render() {
-        // let listproj = this.state.projdata.map(p => {
-        //     return (
-        //         <tr className="grey2" key={p.id}>
-        //             {Object.keys(p).filter(k => k !== 'id').map(k => {
-        //                 return (<td className="grey1" key={p.id + '' + k}><div suppressContentEditableWarning="true" contentEditable="false"
-        //                     value={k} >{p[k]}</div></td>);
-        //             })}
-        //         </tr>
-        //     );
-        // });
+
         function data(item) {
             var labels = ['Backlog', 'Next', 'In Progress', 'Staged', 'QA', 'Live'];
             var series = [];
@@ -110,20 +102,12 @@ class ProjectSummary extends React.Component {
             data.series = series;
             return data;
         };
-        var type = 'Pie'
+        var type = 'Pie';
+        var style = {
+            height:500,
+            width: 500
+        }
         return (
-            // <fieldset className="step-4">
-            //     <h2> My Projects </h2>
-            //     <div className="heading">
-            //     </div>
-            //     <div className=" padd-lr">
-            //         <table width="500" cellSpacing="50" id="mytable">
-            //             <tbody>{listproj}</tbody>
-            //         </table>
-
-            //     </div>
-
-            // </fieldset>
 
             <div>
                 <ul className="projectList">
@@ -139,18 +123,25 @@ class ProjectSummary extends React.Component {
                     </li>)}
                 </ul>
                 <div className="mydummyname">
-                    {this.state.projectList.map(item => <div className="dummyname2" >
-                        <div>
+                    {this.state.projectList.map(item => <div className="chartImage panel panel-primary" >
+                        <div className="panel-heading clearfix">
+                            <h1 className='panel-title pull-left'>
                             {item.name}
+                            </h1>
                         </div>
+                        <div className='panel-body'>
                         <ChartistGraph
                             data={data(item)}
                             type={'Pie'}
+                            style={style}
                         />
+                        </div>
                     </div>)}
                 </div>
-                <ChartistGraph data={data} type={type} />
-                <CreateProject />
+                <div className="createProjectContainer">
+                    <CreateProject />
+                </div>
+
             </div>
 
 

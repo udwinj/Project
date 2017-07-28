@@ -24,14 +24,12 @@
 .projects:hover, a:hover{
     background: #B6F989;
 }
-.projects:active, a:after{
-    display: none;
-}
+
 #projectSummaryContainer .panel{
     margin-left: 20px;
     width: 50%;
 }
-.AlignerProject{
+.mydummyname{
     height: auto;
     text-decoration: none !important;
     margin-top: 50px;
@@ -41,6 +39,10 @@
 }
 .chartImage{
     margin-right: 20px;
+}
+.createProjectContainer{
+    margin-left: 20px;
+    margin-right: 40px;
 }
 .createProject .panel{
     width: 50%;
@@ -68,81 +70,4 @@
 }
 .ct-series-d .ct-area, .ct-series-d .ct-slice-donut-solid, .ct-series-d .ct-slice-pie{
     fill: #286054;
-}
-/*Budget*/
-#donutChartD{
-  height: 100%;
-  width: 100%;
-  z-index: 1;
-}
-#donutChartD .ct-series-a .ct-slice-donut{
-  stroke: #72CCBD;
-}
-#donutChartD .ct-series-b .ct-slice-donut{
-  stroke: #599DA0;
-}
-#donutChartD .ct-series-c .ct-slice-donut{
-  stroke: #B6F989;
-}
-#donutChartD .ct-series-d .ct-slice-donut{
-  stroke: #286054;
-}
-/*Alignment to Goal*/
-#lineBarChartD .ct-label{
-  height: 300px;
-  width: 100%;
-  font-size: 13px;
-
-}
-#lineBarChartD .ct-series-a .ct-bar,
-.ct-series-a .ct-point .ct-label{
-  stroke: #44AFC4;
-  stroke-width: 25px;
-}
-
-#lineBarChartD .ct-series-b .ct-bar,
-.ct-series-b .ct-point .ct-label {
-  stroke: #9BBC53;
-  stroke-width: 25px;
-}
-
-/*Council*/
-#horizontalBarChartD .ct-label{
-  font-size: 10px;
-  font-weight: bold;
-}
-
-#horizontalBarChartD  .ct-series-a .ct-bar,
-.ct-series-a .ct-point .ct-label{
-  stroke: #72CCBD;
-  stroke-width: 10px;
-}
-
-#horizontalBarChartD  .ct-series-b .ct-bar,
-.ct-series-b .ct-point .ct-label {
-  stroke: #286054;
-  stroke-width: 10px;
-}
-/*Training*/
-#councilChart{
-  height: 100%;
-  width: 100%;
-  font-size: 13px;
-}
-#councilChart .ct-series-a .ct-line {
-  stroke: #14a9b7;
-  stroke-width: 5px;
-
-}
-/*Event*/
-#barChartD .ct-series-a .ct-bar,
-.ct-series-a .ct-point .ct-label{
-  stroke: #72CCBD;
-  stroke-width: 15px;
-}
-
-#barChartD .ct-series-b .ct-bar,
-.ct-series-b .ct-point .ct-label {
-  stroke: #57894E;
-  stroke-width: 15px;
 }
