@@ -348,7 +348,9 @@ class ProjectManagement extends React.Component {
             thisUser: '',
             projectList: [],
             curUserCompany: '',
-            curProject: ''
+            curProject: '',
+            startingProject: {}
+
         };
 
         this.getData = this.getData.bind(this);
@@ -374,6 +376,7 @@ class ProjectManagement extends React.Component {
     //After the connect, what the state will do--gotdata
     componentDidMount() {
         let self = this;
+        this.state.startingProject = this.props.location.state.startingProject;
         this.state.thisUser = Users.getCurrentUser().uid;
 
         ChatProj.getProjectData().then(function (data) {
@@ -434,7 +437,7 @@ class ProjectManagement extends React.Component {
         this.setState({ projectList: listProjArray });
         console.log("ProjectData");
         console.log(keys);
-        this.displayedCards(this.state.projectList[0])
+        this.displayedCards(this.state.startingProject)
         /*
         projArray.push(projdata[keys[0]].data.lanes);
 
