@@ -26,16 +26,7 @@ import PropTypes from "prop-types";
 
 const Home = () => (
   <div className="container">
-    <div>
-        <h1>Menu</h1>
-        <div>
-            <button id="IssueTracker"><Link to='/menu/IssueTracker'>IssueTracker</Link></button>
-            <button id="Chat"><Link to='/menu/Chat'>Chat</Link></button>
-            <button id="ProjectManagement"><Link to='/menu/ProjectManagement'>Project Management</Link></button>
-            <button id="Settings"><Link to='/menu/Settings'>Settings</Link></button>
-            <button id="AdminSettings"><Link to='/menu/AdminSettings'>Admin Settings</Link></button>
-        </div>
-    </div>
+        <h1>Project Summary</h1>
     <div>
     <ProjectSummary/>
     </div>
