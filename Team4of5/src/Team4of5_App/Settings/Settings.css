@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
+  flex-direction: column;
 }
 .setingPanel{
     max-width: 50%;
@@ -12,6 +12,12 @@
     padding: 20px;
 }
 
+.adminSetingPanel{
+    width: 100%;
+}
+
 #setingBtn{
     margin-right: 15px;
 }
+
+

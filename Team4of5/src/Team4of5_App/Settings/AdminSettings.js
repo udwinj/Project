@@ -9,7 +9,7 @@ import * as Users from '../../Team4of5_Service/Users.js';
 import * as firebase from 'firebase';
 import * as Config from '../../Team4of5_Service/Config.js';
 
-import {BrowserRouter as Router, Route, Link, Redirect, withRouter} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom';
 
 import fetch from 'isomorphic-fetch';
 //reference: https://github.com/JedWatson/react-select
@@ -33,7 +33,7 @@ class AdminSettings extends React.Component {
 
         this.state = {
             // company:'',
-            email:'',
+            email: '',
             value: [],
             curUserCompany: '',
             redirectToMenu: false,
@@ -72,18 +72,18 @@ class AdminSettings extends React.Component {
             value: value,
         });
     }
-    handleSendEmail(event){
+    handleSendEmail(event) {
         let self = this;
-    event.preventDefault();
-    // check if user already exists, if so and company is blank, set to this user's company
+        event.preventDefault();
+        // check if user already exists, if so and company is blank, set to this user's company
         Users.getAllUsersData().then(function (data) {
 
-                self.gotData(data);
-            }, function (err) {
-                //Error occur
-                console.log("Promise Error");
-                console.log(err);
-            })
+            self.gotData(data);
+        }, function (err) {
+            //Error occur
+            console.log("Promise Error");
+            console.log(err);
+        })
 
     }
 
@@ -94,27 +94,27 @@ class AdminSettings extends React.Component {
         var matched = false
 
         for (let i = 0; i < keys.length; i++) {
-          const k = keys[i];
-          if (userdata[k].email == this.state.email){
-            matched = true;
-            if (userdata[k].company == '' || userdata[k].company == null){
-            alert(userdata[k].email + " company has been set to " + this.state.curUserCompany)
-            Users.updateCompany(this.state.email,this.state.curUserCompany)             
-            }
-            else{
-                alert("User already belongs to a company")
+            const k = keys[i];
+            if (userdata[k].email == this.state.email) {
+                matched = true;
+                if (userdata[k].company == '' || userdata[k].company == null) {
+                    alert(userdata[k].email + " company has been set to " + this.state.curUserCompany)
+                    Users.updateCompany(this.state.email, this.state.curUserCompany)
+                }
+                else {
+                    alert("User already belongs to a company")
 
+                }
             }
         }
-    }
-        if (matched == false){
+        if (matched == false) {
             var generator = require('generate-password');
- 
+
             var password = generator.generate({
                 length: 10,
                 numbers: true
             });
-            Users.create_user(this.state.email,password).then((Users)=>{
+            Users.create_user(this.state.email, password).then((Users) => {
                 Users.resetPwd(this.state.email)
             })
             alert("User has been created")
@@ -127,13 +127,13 @@ class AdminSettings extends React.Component {
         event.preventDefault();
         if (this.state.value.email) {
 
-            Users.updateToAdmin(this.state.value.email,this.state.company)
-             .then((Users)=>{
-                     //handle redirect
-                this.setState({redirectToMenu: true});
+            Users.updateToAdmin(this.state.value.email, this.state.company)
+                .then((Users) => {
+                    //handle redirect
+                    this.setState({ redirectToMenu: true });
 
 
-            })
+                })
         } else {
             alert("Please select a user ");
         }
@@ -171,21 +171,21 @@ class AdminSettings extends React.Component {
     }
 
     render() {
-const AsyncComponent = Select.Async
-        const {from} = this.props.location.state || {
-            from: {
-                pathname: '/menu'
-            }
-        }
-        const {redirectToMenu} = this.state
+        const AsyncComponent = Select.Async
+        //const { from } = this.props.location.state || {
+        //    from: {
+        //        pathname: '/menu'
+         //   }
+        //}
+        const { redirectToMenu } = this.state
 
-        if (redirectToMenu) {
-            return (<Redirect to={from}/>)
-        }
+        //if (redirectToMenu) {
+       //     return (<Redirect to={from} />)
+        //}
 
         return (
             <div className='AlignerSeting'>
-                <div className='setingPanel'>
+                <div className='adminSetingPanel'>
                     <div className="panel panel-primary">
                         <div className="panel-heading clearfix">
                             <h1 className="panel-title pull-left">Admin Settings</h1>
@@ -194,66 +194,66 @@ const AsyncComponent = Select.Async
                         </div>
                     </div>
                     <div>
-                    <form onSubmit={this.handleSendEmail}>
-                        <div className="panel panel-info" id="restRole">
-                            <div className="panel-heading clearfix">
-                                <h1 className="panel-title pull-left">
-                                    Invite User</h1>
+                        <form onSubmit={this.handleSendEmail}>
+                            <div className="panel panel-info" id="restRole">
+                                <div className="panel-heading clearfix">
+                                    <h1 className="panel-title pull-left">
+                                        Invite User</h1>
 
-                                <div className="pull-right">
-                                <p>Please enter the email address of the user you want to invite</p>
+                                    <div className="pull-right">
+                                        <p>Please enter the email address of the user you want to invite</p>
+                                    </div>
                                 </div>
-                           </div>  
-                        </div>
+                            </div>
                             <div className='panel-body'>
                                 <FormGroup controlId="formControlsText">
                                     <ControlLabel>Invitee Email</ControlLabel>
-                                    <FormControl type="text" value={this.state.email} onChange={this.handleChange.bind(this, 'email')}/>
+                                    <FormControl type="text" value={this.state.email} onChange={this.handleChange.bind(this, 'email')} />
                                 </FormGroup>
                                 {/* <FormControl componentClass="text" value={this.state.email} onChange={this.handleChange.bind(this, 'email')}/> */}
 
                             </div>
-                        <button type="submit" id="setingBtn" className="btn btn-primary"> Invite User </button>
-                        <Link to='/menu' className='btn btn-danger'>Cancel</Link>
-                    </form>
-                    <p></p>
-                    <form onSubmit={this.handleSubmit}>
+                            <button type="submit" id="setingBtn" className="btn btn-primary"> Invite User </button>
+                            <Link to='/menu' className='btn btn-danger'>Cancel</Link>
+                        </form>
+                        <p></p>
+                        <form onSubmit={this.handleSubmit}>
 
-                        <div className="panel panel-info" id="restRole">
-                            <div className="panel-heading clearfix">
-                                <h1 className="panel-title pull-left">
-                                    Reset Role</h1>
+                            <div className="panel panel-info" id="restRole">
+                                <div className="panel-heading clearfix">
+                                    <h1 className="panel-title pull-left">
+                                        Reset Role</h1>
 
-                                <div className="pull-right">
-                                <p>Please enter the user who want to make an admin</p>
+                                    <div className="pull-right">
+                                        <p>Please enter the user who want to make an admin</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className='panel-body'>
-                                <FormGroup controlId="formControlsSelect">
-                                    <ControlLabel>User Email</ControlLabel>
-                                    {/* <FormControl componentClass="input" value={this.state.email} onChange={this.handleChange.bind(this, 'email')}/> */}
-                                    <AsyncComponent
-                                        multi={false}
-                                        value={this.state.value}
-                                        onChange={this.handleEmailChange}
-                                        //onValueClick={this.gotoUser}
-                                        //Options={this.state.options}
-                                        valueKey="value"
-                                        labelKey="label"
-                                        ignoreCase={false}
-                                        loadOptions={this.getUsers}
-                                        backspaceRemoves={true} />
-                                </FormGroup>
-                            </div>
+                                <div className='panel-body'>
+                                    <FormGroup controlId="formControlsSelect">
+                                        <ControlLabel>User Email</ControlLabel>
+                                        {/* <FormControl componentClass="input" value={this.state.email} onChange={this.handleChange.bind(this, 'email')}/> */}
+                                        <AsyncComponent
+                                            multi={false}
+                                            value={this.state.value}
+                                            onChange={this.handleEmailChange}
+                                            //onValueClick={this.gotoUser}
+                                            //Options={this.state.options}
+                                            valueKey="value"
+                                            labelKey="label"
+                                            ignoreCase={false}
+                                            loadOptions={this.getUsers}
+                                            backspaceRemoves={true} />
+                                    </FormGroup>
+                                </div>
 
 
-                        </div>
-                        <button type="submit" id="setingBtn" className="btn btn-primary"> Update to Admin </button>
-                        <Link to='/menu' className='btn btn-danger'>Cancel</Link>
-                    </form>
+                            </div>
+                            <button type="submit" id="setingBtn" className="btn btn-primary"> Update to Admin </button>
+                            <Link to='/menu' className='btn btn-danger'>Cancel</Link>
+                        </form>
+                    </div>
                 </div>
             </div>
-</div>
 
 
         );
