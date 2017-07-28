@@ -136,12 +136,19 @@ class ProjectSummary extends React.Component {
                             {console.log("info")}
                             {console.log(item)}
                         </Link>
+                    </li>)}
+                </ul>
+                <div className="mydummyname">
+                    {this.state.projectList.map(item => <div className="dummyname2" >
+                        <div>
+                            {item.name}
+                        </div>
                         <ChartistGraph
                             data={data(item)}
                             type={'Pie'}
                         />
-                    </li>)}
-                </ul>
+                    </div>)}
+                </div>
                 <ChartistGraph data={data} type={type} />
                 <CreateProject />
             </div>
