@@ -36,7 +36,8 @@ class CreateProject extends React.Component {
         super(props);
         this.state = {
             options: [],
-            value: []
+            value: [],
+            inputTitle: ''
         }
         this.handleSelectChange = this.handleSelectChange.bind(this);
         this.handleConfirm = this.handleConfirm.bind(this);
@@ -73,13 +74,13 @@ class CreateProject extends React.Component {
     }
 
     handleSelectChange(value) {
-        console.log('You\'ve selected: ', value);
+        console.log('You\'ve selected:  ', value);
         this.setState({ value });
     }
 
     handleConfirm() {
         let self = this;
-        let title = this.refs.message.value;
+        let title = this.state.inputTitle.value
         if (title == "") {
             alert("Please input your project name!");
         } else if (this.state.value == "") {
@@ -100,7 +101,7 @@ class CreateProject extends React.Component {
                     alert("Error: " + err);
                 })
 
-                self.refs.message.value = "";
+                self.state.inputTitle.value = "";
                 self.setState({ value: [] })
             }).catch(function (err) {
                 alert(err);
@@ -117,7 +118,9 @@ class CreateProject extends React.Component {
             </div>
             <div className="panel-body">
 
-                <FormControl style={style} ref="message" placeholder="Project Name" className="message-input" />
+                <FormControl style={style} 
+                     inputRef={title => this.state.inputTitle = title}
+                     placeholder="Project Name" className="message-input" />
 
                 <Select multi={true}
                     disabled={false}
