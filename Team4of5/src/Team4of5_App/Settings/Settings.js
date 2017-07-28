@@ -7,8 +7,9 @@ import Menu from '../Menu.js';
 import * as Users from '../../Team4of5_Service/Users.js';
 import * as firebase from 'firebase';
 import * as Config from '../../Team4of5_Service/Config.js';
+import AdminSettings from './AdminSettings.js';
 
-import {BrowserRouter as Router, Route, Link, Redirect, withRouter} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom';
 // style
 import './Settings.css';
 //import react-bootstrap
@@ -20,6 +21,17 @@ import {
     Button
 } from 'react-bootstrap';
 
+
+function AdminPanal(props) {
+    if (!props.show) {
+        return null;
+    }
+
+    return (
+        <AdminSettings />
+    );
+}
+
 class Settings extends React.Component {
     constructor(props) {
         super(props);
@@ -29,7 +41,8 @@ class Settings extends React.Component {
             displayname: '',
             redirectToMenu: false,
             userInfo: [],
-            formBtnTxt: 'Update Settings'
+            formBtnTxt: 'Update Settings',
+            isAdmin: false
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -61,7 +74,10 @@ class Settings extends React.Component {
 
         newUser.push(userdata.role);
         newUser.push(userdata.display_name);
-        this.setState({userInfo: newUser});
+        this.setState({ userInfo: newUser });
+        if(newUser[0] == 'Sysadmin') {
+            this.setState({isAdmin: true});
+        }
     }
 
     handleChange(name, event) {
@@ -81,7 +97,7 @@ class Settings extends React.Component {
 
             Users.updateSettings(this.state.displayname, this.state.role).then((User) => {
                 //         //handle redirect
-                this.setState({redirectToMenu: false});
+                this.setState({ redirectToMenu: false });
             })
         };
 
@@ -94,15 +110,15 @@ class Settings extends React.Component {
 
     render() {
 
-        const {from} = this.props.location.state || {
+        const { from } = this.props.location.state || {
             from: {
                 pathname: '/menu'
             }
         }
-        const {redirectToMenu} = this.state
+        const { redirectToMenu } = this.state
 
         if (redirectToMenu) {
-            return (<Redirect to={from}/>)
+            return (<Redirect to={from} />)
         }
 
         return (
@@ -132,7 +148,7 @@ class Settings extends React.Component {
                             <div className="panel-body">
                                 <FormGroup controlId="formControlsText">
                                     <ControlLabel>Display Name</ControlLabel>
-                                    <FormControl type="text" value={this.state.displayname} onChange={this.handleChange.bind(this, 'displayname')}/>
+                                    <FormControl type="text" value={this.state.displayname} onChange={this.handleChange.bind(this, 'displayname')} />
                                 </FormGroup>
                                 {/* <input type="text" value={this.state.displayname} onChange={this.handleChange.bind(this, 'displayname')} /> */}
                             </div>
@@ -178,6 +194,9 @@ class Settings extends React.Component {
                         <button type="submit" id="setingBtn" className="btn btn-primary"> Update </button>
                         <Link to='/menu' className='btn btn-danger'>Cancel</Link>
                     </form>
+                </div>
+                <div className='setingPanel'>
+                    <AdminPanal show={this.state.isAdmin} />
                 </div>
             </div>
         );
