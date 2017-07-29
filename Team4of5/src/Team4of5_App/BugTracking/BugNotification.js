@@ -24,7 +24,7 @@ export default class BugNotification extends React.Component {
           },
           ]
     };
-    this.bugRef = firebase.database().ref().child('bugs');
+    this.bugRef = firebase.database().ref().child('issues');
   }
     componentDidMount() {
 

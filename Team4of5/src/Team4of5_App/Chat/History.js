@@ -1,15 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ChatRoom from './ChatRoom'
-import ContentSwitcher from './ContentSwitcher'
-import './History.css'
-import { connect } from 'react-redux'
-import * as actions from '../App_Redux/ActionCreator'
+import ContentSwitcher from './ContentSwitcher';
+import { connect } from 'react-redux';
+import * as actions from '../App_Redux/ActionCreator';
 import { bindActionCreators } from 'redux';
-import createStore from '../App_Redux/CreateStores'
-
+import createStore from '../App_Redux/CreateStores';
+import * as ChatService from '../../Team4of5_Service/Chat.js';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
+import './History.css'
+//import react-bootstrap
+import {
+    FormGroup,
+    FormControl,
+    ControlLabel,
+    HelpBlock,
+    Button
+} from 'react-bootstrap';
 //Reference: https://github.com/ankeetmaini/react-infinite-scroll-component
 
 const style = {
@@ -18,7 +26,7 @@ const style = {
   fontSize: 20
 };
 
-const title = 'Recent';
+const title = 'History';
 const colors = ['#ffffff'];
 
 
@@ -28,68 +36,113 @@ class History extends React.Component {
   constructor() {
     super();
 
-    this.generateDivs = this.generateDivs.bind(this);
+    //this.generateDivs = this.generateDivs.bind(this);
     this.switchToChat = this.switchToChat.bind(this);
+    this.setData = this.setData.bind(this);
+    // let moreDivs = [];
+    // let count = 0;
+    // for (let i = 0; i < 20; i++) {
+    //   moreDivs.push(
+    //     <div key={'div' + count++} style={{ height: 50, background:'#00ffffff', ...style }}>
+    //       <h4 onClick={this.switchToChat.bind(this, count)}>User{count} Last Msg
 
-    let moreDivs = [];
-    let count = 0;
-    for (let i = 0; i < 20; i++) {
-      moreDivs.push(
-        <div key={'div' + count++} style={{ height: 50, background:'#00ffffff', ...style }}>
-          <h4 onClick={this.switchToChat.bind(this, count)}>User{count} Last Msg
-              
-          </h4>
-          <span id="hisDateSpan">  June 17 2017</span>
-        </div>
-      );
-    }
+    //       </h4>
+    //       <span id="hisDateSpan">  June 17 2017</span>
+    //     </div>
+    //   );
+    // }
 
     this.state = {
-      divs: moreDivs
+      divs: [],
+      hasMoreData: true
     };
     //this.refresh = this.refresh.bind(this);
   }
 
-  switchToChat(userId) {
-    this.props.SwitchAction({GotoContent:"GotoChatRoom", UserId:userId, Title:"User"+userId})
+  componentDidMount() {
+    let self = this
+    ChatService.queryChatHistory().then(function (data) {
+      self.setData(data)
+    }).catch(function (err) {
+      console.log(err)
+    })
+  }
+
+  switchToChat(contactUid, data) {
+    this.props.SwitchAction({
+      GotoContent: "GotoChatRoom", ContactUid: contactUid, ContactData: data,
+      fromLeftHistory: true
+    })
+  }
+
+  setData(data) {
+    let moreDivs = [];
+    let count = this.state.divs.length;
+    for (let i = 0; i < data.length; i++) {
+
+      console.log(title)
+      let content = data[i].content;
+      if(content.length > 10){
+        content = content.substring(0, 30)+"..."
+      }
+      moreDivs.push(
+        <div className="panel panel-info">
+
+        <div style={{ height: 50, background:'#fbfbfb', margin:5, ...style }} key={data[i].chatroomUid} >
+          <h5 onClick={this.switchToChat.bind(this, data[i].chatroomUid, {
+            chatroomUid: data[i].chatroomUid,
+            name: data[i].title, type: data[i].type
+        })}>{data[i].senderName}: {content}  </h5>
+          <span id="hisDateSpan"> {new Date(parseInt(data[i].sendDate)).toString()}</span>
+        </div>
+
+        </div>
+
+      );
+    }
+    this.setState({ divs: this.state.divs.concat(moreDivs),
+    hasMoreData: false });
   }
 
   //  refresh () {
   //   this.generateDivs();
   // }
 
-  generateDivs() {
-    let moreDivs = [];
-    let count = this.state.divs.length;
-    for (let i = 0; i < 30; i++) {
-      moreDivs.push(
-        <div key={'div' + count++} style={{ height: 50, background: '#00ffffff', ...style }}>
-          <h4 onClick={this.switchToChat.bind(this, count)}>User{count} Last Msg
-              
-          </h4>
-          <span id="hisDateSpan">  June 17 2017</span>
-        </div>
-      );
-    }
-    setTimeout(() => {
-      this.setState({ divs: this.state.divs.concat(moreDivs) });
-    }, 500);
-  }
+  // generateDivs() {
+  //   let moreDivs = [];
+  //   let count = this.state.divs.length;
+  //   for (let i = 0; i < 30; i++) {
+  //     moreDivs.push(
+  //       <div key={'div' + count++} style={{ height: 50, background: '#00ffffff', ...style }}>
+  //         <h4 onClick={this.switchToChat.bind(this, count)}>User{count} Last Msg
+
+  //         </h4>
+  //         <span id="hisDateSpan">  June 17 2017</span>
+  //       </div>
+  //     );
+  //   }
+  //   setTimeout(() => {
+  //     this.setState({ divs: this.state.divs.concat(moreDivs) });
+  //   }, 500);
+  // }
 
   render() {
     return (
-      <div>
-        <h3>{title}</h3>
+      <div className="panel panel-info">
+          <div className="panel-heading clearfix">
+        <h1 className="panel-title">{title}</h1>
+    </div>
         <div id="HistoryScroll">
           <InfiniteScroll
             /*pullDownToRefresh
             pullDownToRefreshContent={<h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>}
             releaseToRefreshContent={<h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>}
             refreshFunction={this.refresh}*/
-            next={this.generateDivs.bind(this)}
-            hasMore={true}
+            //next={this.generateDivs.bind(this)}
+            hasMore={this.state.hasMoreData}
             height={615}
-            loader={<h4>Loading...</h4>}>
+            //loader={<h4>Loading...</h4>}
+            >
             {this.state.divs}
           </InfiniteScroll>
         </div>
@@ -176,7 +229,7 @@ export default connect(null, mapDispatchToProps)(History);
 //                     <label>
 //                         <h3>User{index}
 //                             <span>  LastMsg{index}</span>
-                            
+
 //                         </h3>
 //                     </label>
 //                     <label id="chatBtn">

@@ -19,7 +19,7 @@ const store = createStore();
 class ChatMenu extends React.Component {
     constructor(props) {
         super(props);
-        //Messaging.requestMsgPermission();
+        Messaging.requestMsgPermission();
     }
 
     render() {
@@ -46,15 +46,17 @@ class Chat extends React.Component {
     }
 
     render() {
-        
+
         return (
             <Provider store={store}>
+
                 <Grid>
                     <Row className="show-grid">
                         <Col id='leftMenu' xs={1} md={1}><ChatMenu /></Col>
                         <Col id='rightContent' xs={1} md={1}><ContentSwitcher/></Col>
                     </Row>
                 </Grid>
+
             </Provider>
         )
     }

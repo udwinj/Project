@@ -1,0 +1,73 @@
+#projectSummaryContainer{
+    display: flex;
+    flex-direction: column;
+}
+#buttonRoll{
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    margin-bottom: 0px;
+}
+.projects {
+    text-align:center;
+    background: #14a9b7;
+    padding: 10px 20px 10px 20px;
+    font-size: 28px;
+    margin: 20px;
+    border: #ffffff;
+    display: inline-block;
+}
+.projects a{
+    text-decoration: none !important;
+    color: #ffffff;
+}
+.projects:hover, a:hover{
+    background: #B6F989;
+}
+
+#projectSummaryContainer .panel{
+    margin-left: 20px;
+    width: 50%;
+}
+.mydummyname{
+    height: auto;
+    text-decoration: none !important;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.chartImage{
+    margin-right: 20px;
+}
+.createProjectContainer{
+    margin-left: 20px;
+    margin-right: 40px;
+}
+.createProject .panel{
+    width: 50%;
+    margin-left: 20px;
+}
+.ct-label{
+    font-size: 15px;
+    font-weight: bold;
+    fill: #ffffff;
+
+}
+.ct-series-a .ct-area, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-slice-pie{
+    fill: #72CCBD;
+
+}
+.ct-series-b .ct-area, .ct-series-b .ct-slice-donut-solid, .ct-series-b .ct-slice-pie{
+    fill: #599DA0;
+
+}
+.ct-series-c .ct-area, .ct-series-c .ct-slice-donut-solid, .ct-series-c .ct-slice-pie{
+    fill: #B6F989;
+}
+.ct-series-e .ct-area, .ct-series-e .ct-slice-donut-solid, .ct-series-e .ct-slice-pie{
+    fill: #14a9b7;
+}
+.ct-series-d .ct-area, .ct-series-d .ct-slice-donut-solid, .ct-series-d .ct-slice-pie{
+    fill: #286054;
+}

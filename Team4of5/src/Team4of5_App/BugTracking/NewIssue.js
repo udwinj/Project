@@ -1,141 +1,324 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, {Component} from 'react';
 import registerServiceWorker from '../../registerServiceWorker.js';
 import Navbar from '../Navbar/Nav.js';
 import IssueTrackerNav from './IssueTrackerNav.js';
+import IssueTracker from './IssueTracker.js';
+import Menu from '../Menu.js';
+import * as Users from '../../Team4of5_Service/Users.js';
+
 
 //Connect Firebase
 import * as Config from '../../Team4of5_Service/Config.js';
 import * as Issues from '../../Team4of5_Service/Issues.js';
 
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Redirect,
-  withRouter
-} from 'react-router-dom'
+import {BrowserRouter as Router, Route, Link, Redirect, withRouter} from 'react-router-dom';
+
+import fetch from 'isomorphic-fetch';
+//reference: https://github.com/JedWatson/react-select
+import Select from 'react-select';
 
 //import css
-import './IssueTracker.css'
+import './IssueTracker.css';
+//import react-bootstrap
+import {
+    Form,
+    FormGroup,
+    FormControl,
+    ControlLabel,
+    HelpBlock,
+    Button,
+    Col
+} from 'react-bootstrap';
 
 class NewIssue extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: '',
+            curUserCompany: '',
+            value: [],
+            project:[],
             formBtnTxt: 'Add Issue',
             redirectToIssue: false,
-            };
+
+        };
+
         this.handleChange = this.handleChange.bind(this);
-       this.handleSubmit = this.handleSubmit.bind(this);
-       //connect with firebase
+        this.getUsers = this.getUsers.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleOwnerChange = this.handleOwnerChange.bind(this);
+        this.handleProjectChange = this.handleProjectChange.bind(this);
+        this.getProjectID = this.getProjectID.bind(this);
+
+        //connect with firebase
+    }
+
+    componentDidMount() {
+        //
+        let self = this;
+        Users.getCurUserCompany().then(function (company) {
+            self.setState({ curUserCompany: company.val() })
+            console.log(self.state.curUserCompany)
+        }).catch(function (err) {
+            console.log("Error:" + err)
+        })
     }
 
     handleChange(name, event) {
-      let items = this.state;
-      items[name] = event.target.value;
-      this.setState(items);
+        let items = this.state;
+        items[name] = event.target.value;
+        this.setState(items);
+    }
+    handleOwnerChange(value) {
+        console.log("change happening")
+        console.log(value)
+        this.setState({
+            value: value,
+        });
+    }
+    handleProjectChange(project) {
+        console.log("change happening")
+        console.log(project)
+        this.setState({
+            project: project,
+        });
+    }
+    handleSubmit(event) {
+        event.preventDefault();
+
+        if (this.state.details && this.state.expComDate && this.state.value.owner && this.state.project.project && this.state.status && this.state.type && this.state.priority && this.state.severity) {
+            if (!this.state.completionDate) {
+                this.state.completionDate = 'null'
+            }
+
+            Issues.addNewIssue(this.state.completionDate, this.state.details, this.state.expComDate, this.state.value.owner, this.state.project.project, this.state.status, this.state.type, this.state.priority, this.state.severity)
+            {
+                console.log('Issue!');
+                this.setState({redirectToIssue: true});
+            }
+        } else {
+            alert("Please fill all fields except the completion date");
+        }
+        this.state.completionDate = '';
+        this.state.details = '';
+        this.state.expComDate = '';
+        this.state.value = [];
+        //this.state.project = '';
+        this.state.status = '';
+        this.state.type = '';
+        this.state.priority = '';
+        this.state.severity = '';
+
+    }
+    getUsers(input) {
+
+        let self = this;
+
+        if (!input) {
+            console.log('here');
+            return Promise.resolve({ options: [] });
+        }
+
+        let contactEmails = []
+        return fetch('https://team4of5-8d52e.firebaseio.com/users.json?&orderBy=%22email%22&startAt=%22'
+            + input + '%22&endAt=%22' + input + '\uf8ff%22')
+
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json);
+                for (let key in json) {
+                    //console.log(self.state.curUserCompany) self.state.curUserCompany
+                    if (json[key].company == self.state.curUserCompany) {
+                        contactEmails.push({ owner: json[key].email, label: json[key].email })
+                    }
+                }
+                self.setState({ options: contactEmails })
+                return {
+                    options: contactEmails,
+                    complete: true
+                };
+            });
+    }
+    getProjectID(input) {
+        let self = this;
+
+        if (!input) {
+            console.log('Project')
+            return Promise.resolve({ options: [] });
+        }
+//https://team4of5-8d52e.firebaseio.com/issues.json?orderBy=%22project%22&startAt=%22A%22&endAt=%22A%5Cuf8ff%22
+        let projectID = []
+        return fetch('https://team4of5-8d52e.firebaseio.com/chatProject.json?orderBy=%22name%22&startAt=%22'
+            + input + '%22&endAt=%22' + input + '\uf8ff%22')
+
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json);
+                for (let key in json) {
+                    //console.log(self.state.curUserCompany) self.state.curUserCompany
+                    projectID.push({ project: json[key].name, label: json[key].name })
+
+                }
+                self.setState({ options: projectID })
+                return {
+                    options: projectID,
+                    complete: true
+                };
+            });
     }
 
- handleSubmit(event) {
-     if (this.state.details&&this.state.expComDate
-         &&this.state.owner
-         &&this.state.project&&this.state.status) 
-     {
-      if(!this.state.completionDate){
-        this.state.completionDate = 'null'
-      }
+    render() {
+        const AsyncComponent = Select.Async
 
-             Issues.addNewIssue(
-                  this.state.completionDate,
-                  this.state.details,
-                  this.state.expComDate,
-                  this.state.owner,
-                  this.state.project,
-                  this.state.status)
-                  .then((Issue)=>{
-                      console.log(Issue);
-                     this.setState({redirectToIssue: true});
-                  })
-      }
-          else {
-            alert("Please fill all fields except the completion date");
-          }
+        const {from} = this.props.location.state || {
+            from: {
+                pathname: '/menu/IssueTracker'
+            }
+        }
+        const {redirectToIssue} = this.state
 
+        if (redirectToIssue) {
+            return (<Redirect to={from}/>)
+        }
+        return (
+            <div>
+                <IssueTrackerNav/>
+                <div className="AlignerNew">
 
-  event.preventDefault();
-}
+                    <div className='createIssue1'>
 
- render() {
-     const { from } = this.props.location.state ||{ from: { pathname: '/menu/BugTracking' }}
-     const { redirectToIssue } = this.state
+                        <div className="panel panel-primary">
+                            <div className="panel-heading clearfix">
+                                <h1 className="pull-left">Report a New Issue</h1>
+                            </div>
+                            <div className='panel-body'>
+                                <h3 >Please enter issue information</h3>
 
-     if (redirectToIssue) {
-           return (
-            <Redirect to={from}/>
-           )
-         }
-    return (
-        <div>
-        <IssueTrackerNav />
-      <form className='createIssue' onSubmit={this.handleSubmit}>
-          <div className="title">
-              <h1>Create New Issue</h1>
-              <p>Please enter issue information</p>
-          </div>
-        <div>
-        <label>
-        Status
-        <div> </div>
-        <select value={this.state.status} onChange={this.handleChange.bind(this, 'status')}>
-            <option value=""></option>
-            <option value="New">New</option>
-            <option value="Open">Open</option>
-            <option value="Assigned">Assigned</option>
-            <option value="Verified">Verified</option>
-            <option value="Closed">Closed</option>
-          </select>
-          </label>
-        </div>
-        <div>
-            <label>
-              Owner
-              <input type="text" value={this.state.owner} placeholder='The email of the issue owner' onChange={this.handleChange.bind(this, 'owner')} />
-            </label>
-        </div>
-        <div>
-            <label>
-              Expected days to complete
-              <input type="text" value={this.state.expComDate} placeholder='Estimated days to solve issue' onChange={this.handleChange.bind(this, 'expComDate')} />
-            </label>
-        </div>
-        <div>
-            <label>
-              Details
-              <input type="text" value={this.state.details} placeholder='Issue details' onChange={this.handleChange.bind(this, 'details')} />
-            </label>
-        </div>
-        <div>
-            <label>
-              Actual completion date
-              <div> </div>
-              <input type="date" value={this.state.completionDate} onChange={this.handleChange.bind(this, 'completionDate')} />
-            </label>
-        </div>
-        <div>
-            <label>
-              Project
-              <input type="text" value={this.state.project} placeholder='Enter project ID associated with this issue'  onChange={this.handleChange.bind(this, 'project')} />
-            </label>
-        </div>
+                        <Form onSubmit={this.handleSubmit}>
 
+                            <FormGroup controlId="formControlsText">
+                                <ControlLabel>Owner</ControlLabel>
+                                {/* <FormControl type="text" placeholder="Enter Owner email"
+                                    value={this.state.owner}
+                                    onChange={this.handleChange.bind(this, 'owner')}
 
-        <input type="submit" id="submitBtn" value={this.state.formBtnTxt} />
-      </form>
-      </div>
-    );
-  }
+                                /> */}
+                                <AsyncComponent
+                                    multi={false}
+                                    value={this.state.value}
+                                    onChange={this.handleOwnerChange}
+                                    //onValueClick={this.gotoUser}
+                                    //Options={this.state.options}
+                                    valueKey="value"
+                                    labelKey="label"
+                                    ignoreCase={false}
+                                    loadOptions={this.getUsers}
+                                    backspaceRemoves={true} />
+                            </FormGroup>
+                            <FormGroup controlId="formControlsText">
+
+                                <ControlLabel>Expected completion days</ControlLabel>
+
+                                <FormControl type="text" value={this.state.expComDate} placeholder='Estimated days to solve issue' onChange={this.handleChange.bind(this, 'expComDate')}/>
+
+                            </FormGroup>
+                            <FormGroup controlId="formControlsTextarea">
+                                <ControlLabel>Details</ControlLabel>
+
+                                <FormControl componentClass="textarea" value={this.state.details} placeholder='Issue details' onChange={this.handleChange.bind(this, 'details')}/>
+
+                            </FormGroup>
+                            <FormGroup controlId="formControlsText">
+
+                                <ControlLabel>Project</ControlLabel>
+
+                                {/* <FormControl type="text" value={this.state.project} placeholder='Enter project ID associated with this issue' onChange={this.handleChange.bind(this, 'project')}/> */}
+                                <AsyncComponent
+                                    multi={false}
+                                    value={this.state.project}
+                                    onChange={this.handleProjectChange}
+                                    //onValueClick={this.gotoUser}
+                                    //Options={this.state.options}
+                                    valueKey="value"
+                                    labelKey="label"
+                                    ignoreCase={false}
+                                    loadOptions={this.getProjectID}
+                                    backspaceRemoves={true} />
+                            </FormGroup>
+
+                            <FormGroup controlId="formControlsSelect">
+
+                                <ControlLabel>Status</ControlLabel>
+
+                                <FormControl componentClass="select" value={this.state.status} onChange={this.handleChange.bind(this, 'status')}>
+
+                                    <option value=""></option>
+                                    <option value="New">New</option>
+                                    <option value="Open">Open</option>
+                                    <option value="Assigned">Assigned</option>
+                                    <option value="Verified">Verified</option>
+                                    <option value="Closed">Closed</option>
+                                </FormControl>
+
+                            </FormGroup>
+                            <FormGroup controlId="formControlsSelect">
+                                <ControlLabel>Type</ControlLabel>
+                                <FormControl componentClass="select" value={this.state.type} onChange={this.handleChange.bind(this, 'type')}>
+
+                                    <option value=""></option>
+                                    <option value="Blocker">Blocker</option>
+                                    <option value="Critical">Critical</option>
+                                    <option value="Major">Major</option>
+                                    <option value="Minor">Minor</option>
+                                    <option value="Trivial">Trivial</option>
+                                </FormControl>
+                            </FormGroup>
+                            <FormGroup controlId="formControlsSelect">
+                                <ControlLabel>Priority</ControlLabel>
+                                <FormControl componentClass="select" value={this.state.priority} onChange={this.handleChange.bind(this, 'priority')}>
+
+                                    <option value=""></option>
+                                    <option value="Immediate">Immediate</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Verified">Verified</option>
+                                    <option value="Fix if time">Fix if time</option>
+                                </FormControl>
+                            </FormGroup>
+                            <FormGroup controlId="formControlsSelect">
+                                <ControlLabel>Severity</ControlLabel>
+                                <FormControl componentClass="select" value={this.state.severity} onChange={this.handleChange.bind(this, 'severity')}>
+
+                                    <option value=""></option>
+                                    <option value="Critical">Critical</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Low">Low</option>
+                                    <option value="None">None</option>
+                                </FormControl>
+                            </FormGroup>
+
+                            <FormGroup controlId="formControlsText">
+
+                                <ControlLabel>Actual completion date</ControlLabel>
+
+                                <FormControl type="date" value={this.state.completionDate} onChange={this.handleChange.bind(this, 'completionDate')}/>
+
+                            </FormGroup>
+
+                            <button type="submit" id="newIssueBtn" className="btn btn-primary">
+                                Submit
+                            </button>
+                            <Link to='/menu/IssueTracker' className='btn btn-danger'>Cancel</Link>
+
+                        </Form>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
 }
 export default NewIssue;

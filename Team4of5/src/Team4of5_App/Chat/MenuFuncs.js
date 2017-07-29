@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-    Grid, Row, Col, Thumbnail, Button, MenuItem,
+    Grid, Row, Col, Thumbnail, Button, ButtonGroup, MenuItem,
     DropdownButton, ButtonToolbar, Media, Image
 } from 'react-bootstrap';
 import './MenuFuncs.css'
@@ -24,6 +24,7 @@ import { bindActionCreators } from 'redux';
 import createStore from '../App_Redux/CreateStores'
 import PropTypes from 'prop-types';
 import * as User from '../../Team4of5_Service/Users.js';
+import * as ChatService from '../../Team4of5_Service/Chat.js';
 
 const store = createStore();
 
@@ -46,18 +47,9 @@ class MenuFuncs extends React.Component {
 
     componentDidMount() {
         let self = this;
-        console.log("User.userExist: "+ User.userExist());
-        if(User.userExist() == true){
+        console.log("User.userExist: " + User.userExist());
+        if (User.userExist() == true) {
             User.getUserData().then(function (data) {
-                //Update UI, 
-                // const userdata = data.val();
-                // console.log("get data");
-                // console.log(userdata);
-                // //  getData(data).bind(this);
-
-                // let newUser = [];
-                // newUser.push(userdata.display_name);
-                // self.setState({ userInfo: newUser });
                 self.getData(data);
             }, function (err) {
                 //Error occur
@@ -65,6 +57,17 @@ class MenuFuncs extends React.Component {
                 console.log(err);
             })
         }
+
+        ChatService.getUserStatus().then(function (data) {
+            if (data.val() == null) {
+                ChatService.updateStatus('Active').then(function () {
+                }).catch(function (err) {
+                    alert(err);
+                })
+            } else {
+                self.setState({ selectValue: data.val() });
+            }
+        })
 
     }
     getData(data) {
@@ -77,24 +80,31 @@ class MenuFuncs extends React.Component {
     }
 
     updateValue(newValue) {
-        this.setState({
-            selectValue: newValue
-        });
+        let self = this;
+        ChatService.updateStatus(newValue).then(function () {
+            self.setState({
+                selectValue: newValue
+            });
+        }).catch(function (err) {
+            alert(err);
+        })
+
     }
 
     render() {
         console.log("CCCCCHHHAATTT!!!")
         return (
-            <Grid>
+            <Grid id="funcsGrid">
                 <Row id='funcsRow'>
+
                     <Col xs={1} md={1}> <Media.Left>
-                        <TiUserIcon size={48} />
+                        <TiUserIcon size={38} />
                     </Media.Left></Col>
                     <Col xs={1} md={1}>
-                        <div>
+                        <div >
                             <h4>{this.state.userInfo[0]}</h4>
                             <Select
-                                style={{ width: 100 }}
+                                style={{ width: 150 }}
                                 autosize
                                 ref="stateSelect"
                                 autofocus
@@ -113,41 +123,41 @@ class MenuFuncs extends React.Component {
                 <Row id='funcsRow'>
                     <Col xs={1} md={1}> <Media.Left>
                         {/*<Image width={64} height={64} src="https://www.wikipedia.org/portal/wikipedia.org/assets/img/Wikipedia-logo-v2.png" alt="Image" />*/}
-                        <TiContactsIcon size={48} />
+                        <TiContactsIcon size={28} />
                     </Media.Left></Col>
-                    <Col xs={1} md={1}><Button bsStyle="default"
+                    <Col xs={1} md={1}><button className="menuBtn"
                         //!!! Name tag cannot be removed name={["GotoContact"]}
 
-                        onClick={() => { return this.props.SwitchAction({ GotoContent: "GotoContact" }) }}>Contact</Button></Col>
+                        onClick={() => { return this.props.SwitchAction({ GotoContent: "GotoContact" }) }}>Contact</button></Col>
 
                 </Row>
                 <Row id='funcsRow'>
                     <Col xs={1} md={1}> <Media.Left>
-                        <TiUserAddIcon size={48} />
+                        <TiUserAddIcon size={28} />
                     </Media.Left></Col>
-                    <Col xs={1} md={1}><Button
+                    <Col xs={1} md={1}><button className="menuBtn"
                         //I found the trick, use the name to pass the data to the component
-                        bsStyle="default"
+
                         //name={["GotoAdd", "123"]}
-                        onClick={() => { return this.props.SwitchAction({ GotoContent: "GotoAdd" }) }}>Add</Button></Col>
+                        onClick={() => { return this.props.SwitchAction({ GotoContent: "GotoAdd" }) }}>Add</button></Col>
                 </Row>
                 <Row id='funcsRow'>
                     <Col xs={1} md={1}> <Media.Left>
-                        <AddProjectIcon size={48} />
+                        <AddProjectIcon size={28} />
                     </Media.Left></Col>
-                    <Col xs={1} md={1}><Button
-                        bsStyle="default"
+                    <Col xs={1} md={1}><button className="menuBtn"
+
                         //name={["GotoProject"]}
-                        onClick={() => { return this.props.SwitchAction({ GotoContent: "GotoProject" }) }}>Create Project</Button></Col>
+                        onClick={() => { return this.props.SwitchAction({ GotoContent: "GotoProject" }) }}>Create Project</button></Col>
                 </Row>
                 <Row id='funcsRow'>
                     <Col xs={1} md={1}> <Media.Left>
-                        <FaHistoryIcon size={48} />
+                        <FaHistoryIcon size={28} />
                     </Media.Left></Col>
-                    <Col xs={1} md={1}><Button
-                        bsStyle="default"
+                    <Col xs={1} md={1}><button className="menuBtn"
+
                         //name={["GotoHistory"]}
-                        onClick={() => { return this.props.SwitchAction({ GotoContent: "GotoHistory" }) }}>History</Button></Col>
+                        onClick={() => { return this.props.SwitchAction({ GotoContent: "GotoHistory" }) }}>History</button></Col>
                 </Row>
             </Grid>
 
@@ -160,4 +170,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(null, mapDispatchToProps)(MenuFuncs);
-

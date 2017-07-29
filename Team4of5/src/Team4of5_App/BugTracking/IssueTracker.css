@@ -1,44 +1,43 @@
-.createIssue{
-    margin-top: 10%;
-    margin-left: 25%;
-    margin-right:25%;
-    width: 50%;
-    text-align: center;
-}
-.title h1{
-  text-align: center;
-  font-family: monospace;
-  font-size: 50px;
-  font-weight: bold;
-}
-.title p{
-  text-align: center;
-  font-family: sans-serif;
-  font-size: 20px;
-}
-input[type="text"]{
-  font-family: sans-serif;
-   width: 300px;
-   height: 40px;
-   display: block;
-   font-size: 15px;
-   font-weight: 300;
-}
-#submitBtn{
-  background: #3498db;
-  padding: 10px 20px 10px 20px;
-  color: #ffffff;
-  font-size: 20px;
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
+/*Creat New Issue*/
+.AlignerNew {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
 
+}
+.AligenrNew .panel-body h3{
+    color:#777;
+}
+.createIssue1{
+    max-width: 70%;
+    border: 1px solid #d9dbdd;
+    width: 100%;
+    padding: 20px;
+}
+#formControlsSelect{
+
+    width: 50%;
+}
+#formControlsText, #formControlsTextarea{
+    width: 80%;
+}
+
+#newIssueBtn{
+ margin-right: 15px;
 }
 
 /*Report Table*/
-#mytable{
-    font-weight: 500;
-    margin: 50px 20px;
+.issueReportBody{
+    display: flex;
+    justify-content:center;
+    flex-direction: column;
 }
+.AlignerReport{
+    display: flex;
+    flex-direction: row;
+}
+
 .grey1 {
     border: 1px solid;
     margin: 20px 50px;
@@ -46,4 +45,40 @@ input[type="text"]{
     height: 50px;
     font-size: 15px;
     text-align: center;
+}
+.padd-lr{
+    max-width: 50%;
+    width: 100%;
+    padding: 20px;
+}
+
+
+/*Issue Wiki*/
+.AlignerWiki{
+    display: flex;
+    flex-direction: column;
+    margin: 30px 30px;
+}
+.IssueType, .IssuePriority, .IssueSeverity{
+    margin: 20px 20px;
+}
+/*Issue Update*/
+#issueID{
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+#updateBtn {
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    background: rgb(66, 184, 221); /* this is a light blue */
+}
+/*Issue Body*/
+#issueUpdateBody{
+     margin-top: 50px;
+     margin-left: 20px;
+     margin-right: 20px;
+}
+#modleTitle{
+    color:#777;
 }

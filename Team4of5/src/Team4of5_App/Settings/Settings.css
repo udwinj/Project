@@ -1,35 +1,23 @@
-.submitform{
-    margin-top: 10%;
-    margin-left: 25%;
-    margin-right:25%;
-    width: 50%;
-    text-align: center;
+/*flexbox*/
+.AlignerSeting {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
-.title h1{
-  text-align: center;
-  font-family: monospace;
-  font-size: 50px;
-  font-weight: bold;
+.setingPanel{
+    max-width: 50%;
+    border: 1px solid #d9dbdd;
+    width: 100%;
+    padding: 20px;
 }
-.title p{
-  text-align: center;
-  font-family: sans-serif;
-  font-size: 20px;
-}
-input[type="text"]{
-  font-family: sans-serif;
-   width: 300px;
-   height: 40px;
-   display: block;
-   font-size: 15px;
-   font-weight: 300;
-}
-#submitBtn{
-  background: #3498db;
-  padding: 10px 20px 10px 20px;
-  color: #ffffff;
-  font-size: 20px;
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
 
+.adminSetingPanel{
+    width: 100%;
 }
+
+#setingBtn{
+    margin-right: 15px;
+}
+
+

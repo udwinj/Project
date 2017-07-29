@@ -3,7 +3,6 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import IssueTrackerNav from './IssueTrackerNav.js';
 import Navbar from '../Navbar/Nav.js';
 import IssueReportStaff from './IssueReportStaff.js';
-import IssueReportProject from './IssueReportProject.js';
 
 class IssueReports extends React.Component {
   render() {
@@ -17,10 +16,6 @@ class IssueReports extends React.Component {
             <IssueReportStaff />
       </div>
       <br/>
-      <br/>
-      <div>
-            <IssueReportProject />
-      </div>
       </div>
     );
   }
